@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/ukoloff/win-root-cas/issues"
   },
-  "homepage": "https://github.com/ukoloff/win-root-cas#readme"
+  "homepage": "https://github.com/ukoloff/win-root-cas#readme",
+  "dependencies": {
+    "ffi": "^2.2.0",
+    "node-forge": "^0.6.45"
+  }
 }
