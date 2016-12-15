@@ -2,6 +2,7 @@
   "name": "win-root-cas",
   "version": "0.1.0",
   "description": "Get Windows System Root certificates",
+  "os": ["win32"],
   "main": "lib",
   "scripts": {
     "test": "node ."
