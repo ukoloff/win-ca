@@ -2,9 +2,16 @@
   "name": "win-ca-ffi",
   "version": "0.1.0",
   "description": "Get Windows System Root certificates",
-  "os": ["win32"],
+  "os": [
+    "win32"
+  ],
   "main": "lib",
+  "files": [
+    "lib"
+  ],
   "scripts": {
+    "pretest": "coffee build",
+    "prepublish": "coffee build",
     "test": "node ."
   },
   "repository": {
@@ -21,5 +28,8 @@
   "dependencies": {
     "ffi": "^2.2.0",
     "node-forge": "^0.6.45"
+  },
+  "devDependencies": {
+    "coffee-script": "^1.12.2"
   }
 }
