@@ -1,2 +1,3 @@
-# win-root-cas
+# win-ca
+
 Get Windows System Root certificates

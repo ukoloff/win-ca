@@ -6,6 +6,7 @@ path = require 'path'
 
 pckg = require '../package'
 pckg = JSON.parse JSON.stringify pckg
+
 name = pckg.name
 
 pckg.name = name.replace /\W\w+$/, ''
