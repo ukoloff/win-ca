@@ -1,5 +1,6 @@
 {
   "name": "win-ca-ffi",
+  "private": true,
   "version": "0.1.0",
   "description": "Get Windows System Root certificates",
   "os": [
@@ -18,11 +19,20 @@
     "type": "git",
     "url": "git+https://ukoloff@github.com/ukoloff/win-ca.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "ssl",
+    "tls",
+    "ca",
+    "root",
+    "windows"
+  ],
+  "author": {
+    "name": "Stas Ukolov",
+    "email": "ukoloff@gmail.com"
+  },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ukoloff/win-root-cas/issues"
+    "url": "https://github.com/ukoloff/win-ca/issues"
   },
   "homepage": "https://github.com/ukoloff/win-ca",
   "dependencies": {
