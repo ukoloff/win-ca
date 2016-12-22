@@ -1,6 +1,10 @@
+coffee = require 'coffee-script'
+
 pckg = require '../package'
 
-module.exports = """
-module.exports = require('#{pckg.name}')
-
+src = """
+try
+  module.exports = require #{JSON.stringify pckg.name}
 """
+
+module.exports = coffee.compile src, bare: true
