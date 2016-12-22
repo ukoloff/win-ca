@@ -7,4 +7,4 @@ try
   module.exports = require #{JSON.stringify pckg.name}
 """
 
-module.exports = coffee.compile src, bare: true
+module.exports = coffee.compile src, bare: true, header: true

@@ -27,7 +27,7 @@ dst = path.join src, 'top'
 try fs.mkdirSync dst
 
 fs.writeFile path.join(dst, 'package.json'), JSON.stringify(pckg, null, '  '), ->
-fs.writeFile path.join(dst, pckg.files[0]), require('./glue'), ->
+fs.writeFile path.join(dst, pckg.files[0]), require('./js'), ->
 
 for k in 'README.md'.split ' '
   fs.createReadStream path.join src, k
