@@ -10,14 +10,13 @@ pckg = JSON.parse JSON.stringify pckg
 name = pckg.name
 
 pckg.name = name.replace /\W\w+$/, ''
-for k in 'os main scripts'.split ' '
+for k in 'os main files scripts'.split ' '
   delete pckg[k]
 
 Object.keys pckg
 .filter (s)-> /dependencies$/i.test s
 .forEach (s)->
   delete pckg[s]
-pckg.files = ['index.js']
 pckg.optionalDependencies =
   "#{name}": pckg.version
 
@@ -27,7 +26,7 @@ dst = path.join src, 'top'
 try fs.mkdirSync dst
 
 fs.writeFile path.join(dst, 'package.json'), JSON.stringify(pckg, null, '  '), ->
-fs.writeFile path.join(dst, pckg.files[0]), require('./js'), ->
+fs.writeFile path.join(dst, 'index.js'), require('./js'), ->
 
 for k in 'README.md'.split ' '
   fs.createReadStream path.join src, k
