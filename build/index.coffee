@@ -4,8 +4,9 @@ Build top package
 fs = require 'fs'
 path = require 'path'
 
-pckg = require '../package'
-pckg = JSON.parse JSON.stringify pckg
+paths = require './paths'
+
+pckg = JSON.parse JSON.stringify paths.package
 
 name = pckg.name
 
@@ -20,14 +21,11 @@ Object.keys pckg
 pckg.optionalDependencies =
   "#{name}": pckg.version
 
-src = path.join __dirname, '..'
-dst = path.join src, 'top'
+try fs.mkdirSync paths.top
 
-try fs.mkdirSync dst
-
-fs.writeFile path.join(dst, 'package.json'), JSON.stringify(pckg, null, '  '), ->
-fs.writeFile path.join(dst, 'index.js'), require('./js'), ->
+fs.writeFile path.join(paths.top, 'package.json'), JSON.stringify(pckg, null, '  '), ->
+fs.writeFile path.join(paths.top, 'index.js'), require('./js'), ->
 
 for k in 'README.md'.split ' '
-  fs.createReadStream path.join src, k
-  .pipe fs.createWriteStream path.join dst, k
+  fs.createReadStream path.join paths.root, k
+  .pipe fs.createWriteStream path.join paths.top, k
