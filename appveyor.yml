@@ -7,12 +7,6 @@ environment:
   matrix:
     - NOV: 7
     - NOV: 6
-    - NOV: 5
-    - NOV: 4
-    - NOV: 3
-    - NOV: 2
-    - NOV: 1
-    - NOV: 0
 
 platform:
   - x64
