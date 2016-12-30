@@ -13,7 +13,7 @@
   "scripts": {
     "pretest": "coffee build",
     "prepublish": "coffee build",
-    "test": "node ."
+    "test": "coffee test"
   },
   "repository": {
     "type": "git",
