@@ -1,0 +1,3 @@
+###
+Compile .coffee -> .js
+###
