@@ -7,9 +7,8 @@ asn1 = forge.asn1
 pki = forge.pki
 
 @crt = ->
-  res = @pbCertEncoded.reinterpret @cbCertEncoded
-  res = asn1.fromDer res.toString 'binary'
-  pki.certificateFromAsn1 res
+  der = @pbCertEncoded.reinterpret @cbCertEncoded
+  pki.certificateFromAsn1 asn1.fromDer der.toString 'binary'
 
 @pem = ->
   pki.certificateToPem @crt()

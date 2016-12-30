@@ -9,8 +9,7 @@ module.exports = (cb)->
     ctx = null
     while 1
       ctx = crypt.CertEnumCertificatesInStore store, ctx
-      break if ctx.isNull()
+      return if ctx.isNull()
       cb ctx.deref().pem()
   finally
     crypt.CertCloseStore store, 0
-  return
