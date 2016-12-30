@@ -1,11 +1,4 @@
-enm = require '../lib/enum'
+fs = require 'fs'
 
-ca = []
-
-console.time 'fetch'
-
-enm (pem)->
-  ca.push pem
-
-console.timeEnd 'fetch'
-console.log 'Found:', ca.length
+for f in fs.readdirSync __dirname
+  require "./#{f}"
