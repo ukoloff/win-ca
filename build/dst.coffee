@@ -13,6 +13,6 @@ fs.readdir src = paths.src, (err, files)->
     return unless files.length
     fs.readFile path.join(src, file = files.pop()), (err, coffee)->
       throw err if err
-
+      do compile
       fs.writeFile path.join(paths.dst, "#{path.parse(file).name}.js"),
         cc(String coffee), ->
