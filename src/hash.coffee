@@ -23,6 +23,6 @@ stripSeq = (buffer)->
   buffer.getBytes()
 
 module.exports = (crt)->
-  sha1 = crypto.createHash 'sha1'
-  sha1.update stripSeq asn1.toDer pki.distinguishedNameToAsn1 canon crt.subject
-  sha1.digest().readUInt32BE 0
+  crypto.createHash 'sha1'
+  .update stripSeq asn1.toDer pki.distinguishedNameToAsn1 canon crt.subject
+  .digest().readUInt32BE 0

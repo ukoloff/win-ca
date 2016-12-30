@@ -7,6 +7,6 @@ pki = forge.pki
 asn1 = forge.asn1
 
 module.exports = (crt)->
-  md5 = crypto.createHash 'md5'
-  md5.update asn1.toDer pki.distinguishedNameToAsn1 crt.subject
-  md5.digest().readUInt32BE 0
+  crypto.createHash 'md5'
+  .update asn1.toDer pki.distinguishedNameToAsn1 crt.subject
+  .digest().readUInt32BE 0
