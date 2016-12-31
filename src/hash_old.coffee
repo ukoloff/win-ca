@@ -11,5 +11,5 @@ bytes = (buffer)->
 
 module.exports = (dn)->
   crypto.createHash 'md5'
-  .update bytes asn1.toDer pki.distinguishedNameToAsn1 dn
+  .update bytes(asn1.toDer pki.distinguishedNameToAsn1 dn), 'binary'
   .digest().readUInt32LE 0
