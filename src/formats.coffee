@@ -20,7 +20,9 @@ valid = (crt)->
 valid.join = ' - '
 
 @saved = ->
-  "#{new Date} by #{self.name}@#{self.version}"
+  d = new Date
+  "#{d.toLocaleDateString()} #{
+    d.toTimeString().replace /\s*\(.*\)\s*/, ''} by #{self.name}@#{self.version}"
 
 @pem =
 pem = (crt)->

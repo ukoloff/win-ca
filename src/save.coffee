@@ -15,4 +15,4 @@ mkdir dst, ->
   do save = ->
     return unless all.length
     crt = all.pop()
-    fs.writeFile path.join(dst, ''+all.length), format(crt), save
+    fs.writeFile path.join(dst, "#{all.length}.cer"), format(crt), save
