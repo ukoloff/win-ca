@@ -5,7 +5,7 @@ pki = require 'node-forge'
   .pki
 self = require '../package'
 
-@subject
+@subject =
 subject = (crt)->
   crt.subject.attributes.map (rdn)->
     "/#{rdn.shortName || rdn.name || rdn.type}=#{rdn.value}"
@@ -14,8 +14,8 @@ subject.join = ''
 
 @valid =
 valid = (crt)->
-  for k in crt.validity
-    x[k].toISOString()
+  for k, v of crt.validity
+    v.toISOString()
 
 valid.join = ' - '
 

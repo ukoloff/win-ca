@@ -1,6 +1,8 @@
 ###
 Format Certificate output
 ###
+forge = require 'node-forge'
+
 module.exports =
 format = (crt)->
   formats crt
@@ -9,10 +11,10 @@ format = (crt)->
 formats = (crt)->
   for k, v of require './formats'
     s = v crt
-    if v.join
+    if v.join?
       s = s.join v.join
-    if false is v.title
-      s = "#{k.replace /./, (s)->s.toUpperCase()}: #{s}"
+    if false != v.title
+      s = "#{k.replace /./, (s)->s.toUpperCase()}\t#{s}"
     s
 
 # Add OIDs
@@ -20,7 +22,7 @@ do
 format.oids =
 oids = ->
   list = forge.oids
-  for k, v in require './oids'
+  for k, v of require './oids'
     list[v] = k
     list[k] = v
   return
