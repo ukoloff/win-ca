@@ -24,3 +24,11 @@ before_test:
 
 test_script:
   - npm test
+
+after_test:
+  - 7z a root.zip .\pem\*
+
+artifacts:
+  - path: root.zip
+    name: Root certificates
+    type: zip
