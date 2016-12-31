@@ -6,10 +6,13 @@ forge = require 'node-forge'
 pki = forge.pki
 asn1 = forge.asn1
 
-bytes = (buffer)->
-  buffer.getBytes()
+encode = (dn)->
+  asn1.toDer pki.distinguishedNameToAsn1 dn
+  .getBytes()
+  # returns string with binary encoding
 
 module.exports = (dn)->
   crypto.createHash 'md5'
-  .update bytes(asn1.toDer pki.distinguishedNameToAsn1 dn), 'binary'
-  .digest().readUInt32LE 0
+  .update encode(dn), 'binary'
+  .digest()
+  .readUInt32LE 0

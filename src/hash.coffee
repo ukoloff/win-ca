@@ -21,8 +21,13 @@ stripSeq = (buffer)->
   buffer.getByte()              # skip SEQUENCE
   asn1.getBerValueLength buffer # skip Length
   buffer.getBytes()
+  # returns string with binary encoding
+
+encode = (dn)->
+  stripSeq asn1.toDer pki.distinguishedNameToAsn1 canon dn
 
 module.exports = (dn)->
   crypto.createHash 'sha1'
-  .update stripSeq(asn1.toDer pki.distinguishedNameToAsn1 canon dn), 'binary'
-  .digest().readUInt32LE 0
+  .update encode(dn), 'binary'
+  .digest()
+  .readUInt32LE 0
