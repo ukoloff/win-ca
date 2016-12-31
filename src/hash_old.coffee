@@ -6,7 +6,10 @@ forge = require 'node-forge'
 pki = forge.pki
 asn1 = forge.asn1
 
-module.exports = (crt)->
+bytes = (buffer)->
+  buffer.getBytes()
+
+module.exports = (dn)->
   crypto.createHash 'md5'
-  .update asn1.toDer pki.distinguishedNameToAsn1 crt.subject
-  .digest().readUInt32BE 0
+  .update bytes asn1.toDer pki.distinguishedNameToAsn1 dn
+  .digest().readUInt32LE 0
