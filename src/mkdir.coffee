@@ -13,4 +13,4 @@ module.exports = (s, fn)->
       if !err2 and stat.isDirectory()
         do fn
       else
-        fn err
+        throw err
