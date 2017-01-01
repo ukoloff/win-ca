@@ -21,4 +21,4 @@ ffi.Library 'crypt32',
   CertOpenSystemStoreA: [HCertStore, ['pointer', 'string']]
   CertCloseStore: ['int', [HCertStore, 'long']]
   CertEnumCertificatesInStore: [pCtx, [HCertStore, pCtx]]
-  exports
+  @
