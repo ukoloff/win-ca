@@ -2,6 +2,7 @@
 X509_NAME_hash
 ###
 crypto = require 'crypto'
+
 forge = require 'node-forge'
 pki = forge.pki
 asn1 = forge.asn1
@@ -26,8 +27,12 @@ stripSeq = (buffer)->
 encode = (dn)->
   stripSeq asn1.toDer pki.distinguishedNameToAsn1 canon dn
 
-module.exports = (dn)->
+sha1 = (data)->
   crypto.createHash 'sha1'
-  .update encode(dn), 'binary'
+  .update data, 'binary'
   .digest()
+
+module.exports = (dn)->
+  sha1 encode dn
   .readUInt32LE 0
+

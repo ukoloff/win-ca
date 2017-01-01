@@ -2,6 +2,7 @@
 X509_NAME_hash_old
 ###
 crypto = require 'crypto'
+
 forge = require 'node-forge'
 pki = forge.pki
 asn1 = forge.asn1
@@ -11,8 +12,12 @@ encode = (dn)->
   .getBytes()
   # returns string with binary encoding
 
-module.exports = (dn)->
+md5 = (data)->
   crypto.createHash 'md5'
-  .update encode(dn), 'binary'
+  .update data, 'binary'
   .digest()
+
+module.exports = (dn)->
+  md5 encode dn
   .readUInt32LE 0
+
