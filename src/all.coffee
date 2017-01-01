@@ -7,7 +7,6 @@ forge = require 'node-forge'
 pki = forge.pki
 asn1 = forge.asn1
 
-require './format'
 e = require './enum'
 module.exports =
 all = []
