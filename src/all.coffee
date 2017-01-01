@@ -17,14 +17,14 @@ sha1 = (data)->
   .update data, 'binary'
   .digest 'hex'
 
-hash = (crt)->
-  der = asn1.toDer pki.certificateToAsn1 crt
-  sha1 der.getBytes()
+der = (crt)->
+  asn1.toDer pki.certificateToAsn1 crt
+  .getBytes()
 
 seen = {}
 
 e (crt)->
-  if seen[z = hash crt]
+  if seen[z = sha1 der crt]
     return
   seen[z] = 1
   all.push crt
