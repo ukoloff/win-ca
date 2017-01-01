@@ -23,6 +23,7 @@ mkdir dst, ->
   hashes = {}
   names = {}
 
+  # Get name for file/symlink
   name = (hash)->
     x = hex hash
     hashes[x] ||= 0
@@ -31,8 +32,25 @@ mkdir dst, ->
     names[n] = 1
     n
 
+  # Delete unused files
+  drop = ->
+    fs.readdir dst, (err, files)->
+      throw err if err
+      do drop = ->
+        return unless file = files.pop()
+
+        if names[file]
+          setImmediate drop
+          return
+
+        fs.unlink path.join(dst, file), (err)->
+          throw err if err
+          do drop
+
   do save = ->
-    return unless crt = list.pop()
+    unless crt = list.pop()
+      do drop
+      return
 
     fs.writeFile path.join(dst, pem = name hash crt.subject), format(crt), (err)->
       throw err if err
