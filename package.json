@@ -12,6 +12,7 @@
   "scripts": {
     "pretest": "coffee build",
     "prepublish": "coffee build",
+    "postinstall": "coffee src",
     "test": "coffee test"
   },
   "repository": {
