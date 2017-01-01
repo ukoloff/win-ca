@@ -22,8 +22,8 @@ It is safe to use it under other OSes (not M$ Windows).
 Uses [node-forge][]
 and [node-ffi][].
 
-See also [openssl-win-root][].
+See also [OpenSSL::Win::Root][].
 
 [node-ffi]: https://github.com/node-ffi/node-ffi
 [node-forge]: https://github.com/digitalbazaar/forge
-[openssl-win-root]: https://github.com/ukoloff/openssl-win-root
+[OpenSSL::Win::Root]: https://github.com/ukoloff/openssl-win-root
