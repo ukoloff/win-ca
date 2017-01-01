@@ -10,6 +10,7 @@ format = require './format'
 hash = require './hash'
 hach = require './hash_old'
 
+exports.path =
 dst = path.join __dirname, '../pem'
 
 hex = (hash)->
@@ -19,7 +20,7 @@ hex = (hash)->
   x
 
 mkdir dst, ->
-  process.env.SSL_CERT_DIR = exports.path = dst
+  process.env.SSL_CERT_DIR = dst
   list = all.slice()
   hashes = {}
   names = {}
