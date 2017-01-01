@@ -1,0 +1,34 @@
+version: 1.0.{build}-{branch}
+
+cache:
+  - node_modules
+
+environment:
+  matrix:
+    - NOV: 7
+    - NOV: 6
+
+platform:
+  - x64
+  - x86
+
+install:
+  - ps: Install-Product node $env:NOV $env:PLATFORM
+  - npm install
+
+build: off
+
+before_test:
+  - node -v
+  - npm -v
+
+test_script:
+  - npm test
+
+after_test:
+  - 7z a root.zip .\pem\*
+
+artifacts:
+  - path: root.zip
+    name: Root certificates
+    type: zip

@@ -1,25 +1,44 @@
 {
-  "name": "win-root-cas",
+  "name": "win-ca-ffi",
   "version": "0.1.0",
   "description": "Get Windows System Root certificates",
-  "os": ["win32"],
+  "os": [
+    "win32"
+  ],
   "main": "lib",
+  "files": [
+    "lib"
+  ],
   "scripts": {
-    "test": "node ."
+    "pretest": "coffee build",
+    "prepublish": "coffee build",
+    "test": "coffee test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://ukoloff@github.com/ukoloff/win-root-cas.git"
+    "url": "git+https://ukoloff@github.com/ukoloff/win-ca.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "ssl",
+    "tls",
+    "ca",
+    "root",
+    "windows"
+  ],
+  "author": {
+    "name": "Stas Ukolov",
+    "email": "ukoloff@gmail.com"
+  },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ukoloff/win-root-cas/issues"
+    "url": "https://github.com/ukoloff/win-ca/issues"
   },
-  "homepage": "https://github.com/ukoloff/win-root-cas#readme",
+  "homepage": "https://github.com/ukoloff/win-ca",
   "dependencies": {
     "ffi": "^2.2.0",
     "node-forge": "^0.6.45"
+  },
+  "devDependencies": {
+    "coffee-script": "^1.12.2"
   }
 }
