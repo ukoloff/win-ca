@@ -19,6 +19,7 @@ hex = (hash)->
   x
 
 mkdir dst, ->
+  process.env.SSL_CERT_DIR = exports.path = dst
   list = all.slice()
   hashes = {}
   names = {}
