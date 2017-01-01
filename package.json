@@ -1,6 +1,5 @@
 {
   "name": "win-ca-ffi",
-  "private": true,
   "version": "0.1.0",
   "description": "Get Windows System Root certificates",
   "os": [

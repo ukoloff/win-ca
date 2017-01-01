@@ -4,6 +4,11 @@
 
 Get Windows System Root certificates
 
-Uses [node-forge][].
+Uses [node-forge][]
+and [node-ffi][].
 
+See also [openssl-win-root][].
+
+[node-ffi]: https://github.com/node-ffi/node-ffi
 [node-forge]: https://github.com/digitalbazaar/forge
+[openssl-win-root]: https://github.com/ukoloff/openssl-win-root
