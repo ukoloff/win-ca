@@ -26,9 +26,16 @@ test_script:
   - npm test
 
 after_test:
+  - npm publish
+  - cd top
+  - npm publish
+  - copy /b *.tgz ..
+  - cd ..
   - 7z a root.zip .\pem\*
 
 artifacts:
   - path: root.zip
     name: Root certificates
     type: zip
+  - path: *.tgz
+    name: NPM package(s)
