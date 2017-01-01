@@ -12,7 +12,7 @@
   "scripts": {
     "pretest": "coffee build",
     "prepublish": "coffee build",
-    "postinstall": "coffee src",
+    "postinstall": "node -e \"try{require('.')}catch(e){}\"",
     "test": "coffee test"
   },
   "repository": {
