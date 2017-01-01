@@ -7,4 +7,4 @@ require './inject'
 @path =  require './save'
   .path
 
-@enum = require './enum'
+@each = require './each'

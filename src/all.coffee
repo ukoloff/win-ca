@@ -7,7 +7,7 @@ forge = require 'node-forge'
 pki = forge.pki
 asn1 = forge.asn1
 
-e = require './enum'
+each = require './each'
 module.exports =
 all = []
 
@@ -22,7 +22,7 @@ der = (crt)->
 
 seen = {}
 
-e (crt)->
+each (crt)->
   if seen[z = sha1 der crt]
     return
   seen[z] = 1
