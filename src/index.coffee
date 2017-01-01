@@ -8,3 +8,6 @@ require './inject'
   .path
 
 @each = require './each'
+
+@async = (cb)->
+  require('./async') cb
