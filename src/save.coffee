@@ -34,4 +34,9 @@ mkdir dst, ->
   do save = ->
     return unless crt = list.pop()
 
-    fs.writeFile path.join(dst, pem = name hash crt.subject), format(crt), save
+    fs.writeFile path.join(dst, pem = name hash crt.subject), format(crt), (err)->
+      throw err if err
+      fs.unlink link = path.join(dst, name hach crt.subject), (err)->
+        fs.symlink pem, link, 'file', (err)->
+          throw err if err
+          do save
