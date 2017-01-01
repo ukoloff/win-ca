@@ -1,4 +1,5 @@
-enm = require '../lib/enum'
+enm = require '..'
+  .enum
 
 ca = []
 
