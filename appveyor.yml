@@ -19,6 +19,7 @@ install:
 build: off
 
 before_test:
+  - openssl version
   - node -v
   - npm -v
 
