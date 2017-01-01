@@ -26,9 +26,9 @@ test_script:
   - npm test
 
 after_test:
-  - npm publish
+  - npm pack
   - cd top
-  - npm publish
+  - npm pack
   - copy /b *.tgz ..
   - cd ..
   - 7z a root.zip .\pem\*
