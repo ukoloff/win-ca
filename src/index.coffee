@@ -3,4 +3,6 @@ require './format.oids'
 @all = require './all'
 
 require './inject'
-require './save'
+@path =  require './save'
+  .path
+

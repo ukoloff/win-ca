@@ -3,5 +3,5 @@ pckg = require '../package'
 
 module.exports = cc """
 try
-  require #{JSON.stringify pckg.name}
+  module.exports = require #{JSON.stringify pckg.name}
 """
