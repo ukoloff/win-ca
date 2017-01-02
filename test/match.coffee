@@ -34,8 +34,12 @@ run ['version'], (error, ver)->
   list = require '..'
     .all().slice()
 
+  N = 0
+
   do match = ->
-    return unless crt = list.pop()
+    unless crt = list.pop()
+      console.log 'Hashes ok: 2 *', N
+      return
 
     run 'x509 -noout -subject_hash -subject_hash_old', (error, out)->
       throw error if error
@@ -43,6 +47,7 @@ run ['version'], (error, ver)->
       assert.equal 2, out.length
       assert.equal out[0], hex hash crt.subject
       assert.equal out[0], hex hash crt.subject
+      N++
 
       do match
     .end pki.certificateToPem crt

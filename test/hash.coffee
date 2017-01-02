@@ -16,3 +16,5 @@ crt = pki.certificateFromPem pem
 
 assert.equal 0x3aa90a40, hach crt.subject
 assert.equal 0x09926f58, hash crt.subject
+
+console.log "Hashes ok:", 2
