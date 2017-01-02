@@ -17,9 +17,9 @@ module.exports = (cb)->
     more null
 
   free = ->
-    return unless h
-    crypt.CertCloseStore.async h, 0, ->
-    h = 0
+    return unless store
+    crypt.CertCloseStore.async store, 0, ->
+    store = 0
 
   croak = (error)->
     return unless error
@@ -33,7 +33,7 @@ module.exports = (cb)->
       try
         if result.isNull()
           do free
-          do cb
+          setImmediate cb
           return
         cb null, result.deref().crt()
         more result
