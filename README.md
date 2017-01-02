@@ -3,7 +3,35 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/e6xhpp9d7aml95j2?svg=true)](https://ci.appveyor.com/project/ukoloff/win-ca)
 [![NPM version](https://badge.fury.io/js/win-ca.svg)](http://badge.fury.io/js/win-ca)
 
-Get Windows System Root certificates.
+Get Windows System Root certificates for [Node.js][].
+
+## Rationale
+
+Unlike [Ruby][], [Node.js][] on Windows **allows**
+HTTPS requests out-of-box.
+But it is implemented in a rather bizzare way -
+
+> Node uses a
+> [statically compiled, manually updated, hardcoded list][node.pem]
+> of certificate authorities,
+> rather than relying on the system's trust store...
+> [Read more][node/4175]
+
+It's very strange behavour under any OS,
+but Windows differs from most of them
+by having its own trust store,
+fully incompatible with [OpenSSL].
+
+This package is intended to
+fetch Root CAs from Windows' store
+and make them available to
+[Node.js] application with minimal efforts.
+
+### Advantages
+
+- No internet access is required at all
+- Manually installed Root certificates are used
+- Enterpise trusted certificates (GPO etc.) are made available too
 
 ## Usage
 
@@ -40,7 +68,7 @@ ca.each (crt)->
   dst.write forge.pki.certificateToPem crt
 ```
 
-But these list may contain duplicates.
+But this list may contain duplicates.
 
 Asynchronous enumeration is provided via `.async()` method:
 
@@ -61,7 +89,9 @@ Path to folder containing all the certificates
 is available as `require('win-ca').path`.
 Environment variable `SSL_CERT_DIR`
 is set to point at it,
-so OpenSSL-based software will use it automatically.
+so [OpenSSL][]-based software will use it automatically.
+The layout of that folder mimics
+that of [OpenSSL][]'s `c_rehash` utility.
 
 ## Building
 
@@ -81,3 +111,8 @@ See also [OpenSSL::Win::Root][].
 [node-ffi]: https://github.com/node-ffi/node-ffi
 [node-forge]: https://github.com/digitalbazaar/forge
 [OpenSSL::Win::Root]: https://github.com/ukoloff/openssl-win-root
+[Node.js]: http://nodejs.org/
+[Ruby]: https://www.ruby-lang.org/
+[node.pem]: https://github.com/nodejs/node/blob/master/src/node_root_certs.h
+[node/4175]: https://github.com/nodejs/node/issues/4175
+[OpenSSL]: https://www.openssl.org/
