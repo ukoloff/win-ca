@@ -26,7 +26,7 @@ run = (args, cb)->
     cb null, out.trim()  if out?
   child.stdin
 
-run ['version'], (error, ver)->
+run 'version', (error, ver)->
   if error
     console.error 'OpenSSL not found. Skipping hashes test...'
     return
