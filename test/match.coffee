@@ -46,7 +46,7 @@ run ['version'], (error, ver)->
       out = out.split /\s+/
       assert.equal 2, out.length
       assert.equal out[0], hex hash crt.subject
-      assert.equal out[0], hex hash crt.subject
+      assert.equal out[1], hex hach crt.subject
       N++
 
       do match
