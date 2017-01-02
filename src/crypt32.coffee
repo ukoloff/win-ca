@@ -17,7 +17,8 @@ pCtx = ref.refType Ctx
 for k, v of require './ctx'
   Ctx::[k] = v
 
-module.exports = ffi.Library 'crypt32',
+ffi.Library 'crypt32',
   CertOpenSystemStoreA: [HCertStore, ['pointer', 'string']]
   CertCloseStore: ['int', [HCertStore, 'long']]
   CertEnumCertificatesInStore: [pCtx, [HCertStore, pCtx]]
+  @

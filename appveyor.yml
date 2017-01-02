@@ -19,6 +19,7 @@ install:
 build: off
 
 before_test:
+  - openssl version
   - node -v
   - npm -v
 
@@ -26,9 +27,16 @@ test_script:
   - npm test
 
 after_test:
+  - npm pack
+  - cd top
+  - npm pack
+  - copy /b *.tgz ..
+  - cd ..
   - 7z a root.zip .\pem\*
 
 artifacts:
   - path: root.zip
     name: Root certificates
     type: zip
+  - path: .\*.tgz
+    name: NPM package(s)

@@ -1,9 +1,11 @@
 fs = require 'fs'
 path = require 'path'
 
-for f in fs.readdirSync __dirname
-  continue if f == path.basename __filename
-  continue unless '.coffee' == path.extname f
+return if do require './mutex'
+
+fs.readdirSync __dirname
+.forEach (f)-> setImmediate ->
+  return unless '.coffee' == path.extname f
   try
     require "./#{f}"
   catch e
