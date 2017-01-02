@@ -31,7 +31,7 @@ forge = require 'node-forge'
 for crt in ca.all()
   dst.write forge.pki.certificateToPem crt
 ```
-One can enumerate Root CAs himself using '.each()' method:
+One can enumerate Root CAs himself using `.each()` method:
 
 ```coffee
 ca = require 'win-ca'
@@ -42,7 +42,7 @@ ca.each (crt)->
 
 But these list may contain duplicates.
 
-Asynchronous enumeration is provided via '.async()' method:
+Asynchronous enumeration is provided via `.async()` method:
 
 ```coffee
 ca = require 'win-ca'
