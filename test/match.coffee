@@ -1,10 +1,19 @@
 ###
 Test for hashes match with OpenSSL
 ###
+assert = require 'assert'
 spawn = require 'child_process'
   .spawn
 
+forge = require 'node-forge'
+pki = forge.pki
+
+hash = require '../lib/hash'
+hach = require '../lib/hash_old'
+
 run = (args, cb)->
+  if "string" == typeof args
+    args = args.split /\s+/
   out = ''
   child = spawn 'openssl', args
   child.on 'error', (error)->
@@ -24,3 +33,22 @@ run ['version'], (error, ver)->
   console.log 'Found:', ver
   list = require '..'
     .all().slice()
+
+  do match = ->
+    return unless crt = list.pop()
+
+    run 'x509 -noout -subject_hash -subject_hash_old', (error, out)->
+      throw error if error
+      out = out.split /\s+/
+      assert.equal 2, out.length
+      assert.equal out[0], hex hash crt.subject
+      assert.equal out[0], hex hash crt.subject
+
+      do match
+    .end pki.certificateToPem crt
+
+hex = (hash)->
+  x = hash.toString 16
+  while x.length < 8
+    x = '0' + x
+  x
