@@ -8,6 +8,12 @@ pki = forge.pki
 asn1 = forge.asn1
 
 # Convert Subject to canonic form (as OpenSSL 1+ does)
+#
+# See x509_name_canon in OpenSSL sources:
+# In it all strings are converted to UTF8, leading, trailing and
+# multiple spaces collapsed, converted to lower case and the leading
+# SEQUENCE header removed.
+# In future we could also normalize the UTF8 too.
 canon = (dn)->
   attributes: dn.attributes.map (rdn)->
     valueTagClass: asn1.Type.UTF8
