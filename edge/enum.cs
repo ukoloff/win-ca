@@ -17,6 +17,6 @@ public class Startup
       // all.Add(crt.ToString());
       all.Add(crt.Subject);
     }
-    return all.ToArray();
+    return all;
   }
 }
