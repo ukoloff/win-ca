@@ -11,8 +11,8 @@ public class Startup
 
     System.Console.WriteLine("Version: " + System.Environment.Version.ToString());
     System.Console.Beep();
-    List<string> all = new List<string>();
-    foreach(X509Certificate2 crt in store.Certificates)
+    var all = new List<string>();
+    foreach(var crt in store.Certificates)
     {
       // all.Add(crt.ToString());
       all.Add(crt.Subject);
