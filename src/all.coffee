@@ -7,10 +7,6 @@ forge = require 'node-forge'
 pki = forge.pki
 asn1 = forge.asn1
 
-each = require './each'
-module.exports =
-all = []
-
 sha1 = (data)->
   crypto.createHash 'sha1'
   .update data, 'binary'
@@ -18,14 +14,14 @@ sha1 = (data)->
 
 der = (crt)->
   asn1.toDer pki.certificateToAsn1 crt
-  .getBytes()
+    .getBytes()
 
 seen = {}
 
-each (crt)->
-  if seen[z = sha1 der crt]
-    return
-  seen[z] = 1
-  all.push crt
+module.exports = require './x509.net'
+  .filter (crt)->
+    if seen[z = sha1 der crt]
+      return
+    seen[z] = 1
 
 seen = 0
