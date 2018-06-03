@@ -54,6 +54,7 @@ are available via `.all()` method
 (in [node-forge][]'s format).
 
 ```coffee
+# NB: CoffeeScript below (not JavaScript!)
 ca = require 'win-ca'
 forge = require 'node-forge'
 
