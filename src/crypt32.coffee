@@ -1,7 +1,7 @@
 ###
 FFI interface to crypt32.dll
 ###
-ffi = require 'ffi'
+ffi = require 'ffi-napi'
 ref = require 'ref'
 struct = require 'ref-struct'
 
