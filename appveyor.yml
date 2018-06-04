@@ -1,7 +1,7 @@
 version: 1.0.{build}-{branch}
 
 cache:
-  - node_modules
+#  - node_modules
 
 environment:
   matrix:
