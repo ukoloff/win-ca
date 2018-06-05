@@ -5,6 +5,9 @@ cache:
 
 environment:
   matrix:
+    - NOV: 10
+    - NOV: 9
+    - NOV: 8
     - NOV: 7
     - NOV: 6
 

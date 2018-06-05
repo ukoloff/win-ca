@@ -1,9 +1,11 @@
 ###
-FFI interface to crypt32.dll
+FFI-NAPI interface to crypt32.dll
 ###
-ffi = require 'ffi'
-ref = require 'ref'
-struct = require 'ref-struct'
+ffi = require 'ffi-napi'
+ref = require 'ref-napi'
+struct = require 'ref-struct-di'
+
+struct = struct ref
 
 Ctx = struct
   dwCertEncodingType: 'long'

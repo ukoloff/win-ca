@@ -53,21 +53,20 @@ For use in other places, these certificates
 are available via `.all()` method
 (in [node-forge][]'s format).
 
-```coffee
-# NB: CoffeeScript below (not JavaScript!)
-ca = require 'win-ca'
-forge = require 'node-forge'
+```js
+let ca = require('win-ca')
+let forge = require('node-forge')
 
-for crt in ca.all()
-  dst.write forge.pki.certificateToPem crt
+for (let crt of ca.all())
+  console.log(forge.pki.certificateToPem(crt))
 ```
 One can enumerate Root CAs himself using `.each()` method:
 
-```coffee
-ca = require 'win-ca'
+```js
+let ca = require('win-ca')
 
-ca.each (crt)->
-  dst.write forge.pki.certificateToPem crt
+ca.each(crt=>
+  console.log(forge.pki.certificateToPem(crt)))
 ```
 
 But this list may contain duplicates.
@@ -75,14 +74,15 @@ But this list may contain duplicates.
 Asynchronous enumeration is provided via `.async()` method:
 
 ```coffee
-ca = require 'win-ca'
+let ca = require('win-ca')
 
-ca.async (error, crt)->
-  throw error if error
-  if crt
-    dst.write forge.pki.certificateToPem crt
+ca.async((error, crt)=> {
+  if (error) throw error;
+  if(crt)
+    console.log(forge.pki.certificateToPem(crt))
   else
-    console.log "That's all folks!"
+    console.log("That's all folks!")
+})    
 ```
 
 Finally, `win-ca` saves fetched ceritificates to disk
@@ -103,14 +103,25 @@ that of [OpenSSL][]'s `c_rehash` utility.
 - cd top
 - npm publish
 
+## Caveats
+
+Package `ffi-napi` is heavily used.
+For it to compile under Windows
+one need Windows Build Tools for Node.js properly installed.
+It is usually achieved by:
+```sh
+npm install --global windows-build-tools
+```
+
 ## Credits
 
 Uses [node-forge][]
-and [node-ffi][].
+and [node-ffi-napi][] (ancestor of [node-ffi][]).
 
 See also [OpenSSL::Win::Root][].
 
 [node-ffi]: https://github.com/node-ffi/node-ffi
+[node-ffi-napi]: https://github.com/node-ffi-napi/node-ffi-napi
 [node-forge]: https://github.com/digitalbazaar/forge
 [OpenSSL::Win::Root]: https://github.com/ukoloff/openssl-win-root
 [Node.js]: http://nodejs.org/

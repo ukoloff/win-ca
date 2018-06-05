@@ -1,6 +1,6 @@
 {
   "name": "win-ca-ffi",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Get Windows System Root certificates",
   "os": [
     "win32"
@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/ukoloff/win-ca",
   "dependencies": {
-    "ffi": "^2.2.0",
+    "ffi-napi": "^2.4.3",
     "node-forge": "^0.6.45"
   },
   "devDependencies": {

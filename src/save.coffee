@@ -58,5 +58,5 @@ mkdir dst, ->
       throw err if err
       fs.unlink link = path.join(dst, name hach crt.subject), (err)->
         fs.symlink pem, link, 'file', (err)->
-          throw err if err
+          # throw err if err
           do save
