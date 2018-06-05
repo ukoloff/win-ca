@@ -107,7 +107,7 @@ that of [OpenSSL][]'s `c_rehash` utility.
 
 Package `ffi-napi` is heavily used.
 For it to compile under Windows
-one need Windows Build Tools for Node.js proeprly installed.
+one need Windows Build Tools for Node.js properly installed.
 It is usually achieved by:
 ```sh
 npm install --global windows-build-tools
@@ -116,11 +116,12 @@ npm install --global windows-build-tools
 ## Credits
 
 Uses [node-forge][]
-and [node-ffi][].
+and [node-ffi-napi][] (ancestor of [node-ffi][]).
 
 See also [OpenSSL::Win::Root][].
 
 [node-ffi]: https://github.com/node-ffi/node-ffi
+[node-ffi-napi]: https://github.com/node-ffi-napi/node-ffi-napi
 [node-forge]: https://github.com/digitalbazaar/forge
 [OpenSSL::Win::Root]: https://github.com/ukoloff/openssl-win-root
 [Node.js]: http://nodejs.org/
