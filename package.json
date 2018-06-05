@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/ukoloff/win-ca",
   "dependencies": {
-    "ffi-napi": "^2.4.0",
+    "ffi-napi": "^2.4.3",
     "node-forge": "^0.6.45"
   },
   "devDependencies": {
