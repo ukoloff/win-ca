@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "description": "",
+  "os": [
+    "win32"
+  ],
   "gypfile": true,
   "main": "index.js",
   "scripts": {
