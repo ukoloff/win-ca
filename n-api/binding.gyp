@@ -16,7 +16,10 @@
       ],
       "defines": [
         "NAPI_DISABLE_CPP_EXCEPTIONS"
-      ]
+      ],
+      "link_settings": {
+        "libraries": ["-lcrypt32"]
+      }
     }
   ]
 }
