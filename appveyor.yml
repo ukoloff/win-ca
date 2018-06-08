@@ -8,16 +8,27 @@ environment:
     - NOV: 10
     - NOV: 9
     - NOV: 8
-    - NOV: 7
     - NOV: 6
+
+  NOV_LTS: 8
 
 platform:
   - x64
   - x86
 
 install:
-  - ps: Install-Product node $env:NOV $env:PLATFORM
+  - ps: Install-Product node $env:NOV_LTS $env:x64
   - npm install
+  - cd n-api
+  - npm install
+  - ps $arch = node -p process.arch
+  - ps Copy-Item .\build\Release\crypt32.node -Destination ..\lib\crypt32-$arch.node
+  - ps: Install-Product node $env:NOV_LTS $env:x86
+  - npm install
+  - ps $arch = node -p process.arch
+  - ps Copy-Item .\build\Release\crypt32.node -Destination ..\lib\crypt32-$arch.node
+  - cd ..
+  - ps: Install-Product node $env:NOV $env:$PLATFORM
 
 build: off
 
@@ -27,15 +38,11 @@ before_test:
   - npm -v
 
 test_script:
-  - npm test
+  # - npm test
 
 after_test:
   - npm pack
-  - cd top
-  - npm pack
-  - copy /b *.tgz ..
-  - cd ..
-  - 7z a root.zip .\pem\*
+  # - 7z a root.zip .\pem\*
 
 artifacts:
   - path: root.zip
