@@ -8,7 +8,8 @@ class Crypt32 : public Napi::ObjectWrap<Crypt32> {
  public:
   Crypt32(const Napi::CallbackInfo& info);
 
-  static Napi::Object Init(Napi::Env env, Napi::Object exports);
+  static void Init(Napi::Env env);
+  static Napi::Object New(Napi::Env env);
 
  private:
   HCERTSTORE hStore;
@@ -43,7 +44,7 @@ Napi::Value Crypt32::done(const Napi::CallbackInfo& info) {
   return info.Env().Undefined();
 }
 
-Napi::Object Crypt32::Init(Napi::Env env, Napi::Object exports) {
+void Crypt32::Init(Napi::Env env) {
   Napi::HandleScope scope(env);
 
   Napi::Function func = DefineClass(env, "Crypt32",
@@ -54,13 +55,21 @@ Napi::Object Crypt32::Init(Napi::Env env, Napi::Object exports) {
 
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
-
-  exports.Set("Crypt32", func);
-  return exports;
 }
 
-static Napi::Object Init(Napi::Env env, Napi::Object exports) {
-  return Crypt32::Init(env, exports);
+Napi::Object Crypt32::New(Napi::Env env) {
+  Napi::EscapableHandleScope scope(env);
+  Napi::Object obj = constructor.New({});
+  return scope.Escape(napi_value(obj)).ToObject();
 }
 
-NODE_API_MODULE(addon, Init)
+static Napi::Object CreateCrypt32(const Napi::CallbackInfo& info) {
+  return Crypt32::New(info.Env());
+}
+
+static Napi::Object Init(Napi::Env env, Napi::Object) {
+  Crypt32::Init(env);
+  return Napi::Function::New(env, CreateCrypt32, "Crypt32");
+}
+
+NODE_API_MODULE(crypt32, Init)
