@@ -33,9 +33,8 @@ Crypt32::Crypt32(const Napi::CallbackInfo& info)
 Napi::Value Crypt32::next(const Napi::CallbackInfo& info) {
   pCtx = CertEnumCertificatesInStore(hStore, pCtx);
   if (!pCtx) return info.Env().Undefined();
-  auto pem = Napi::TypedArrayOf<uint8_t>::New(info.Env(), pCtx->cbCertEncoded);
-  //, begin(), pCtx->cbCertEncoded);
-  std::copy(begin(), end(), (char*)pem.Data());
+  auto pem = Napi::Buffer<uint8_t>::New(info.Env(), pCtx->cbCertEncoded);
+  std::copy(begin(), end(), pem.Data());
   return pem;
 }
 

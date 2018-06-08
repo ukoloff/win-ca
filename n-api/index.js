@@ -10,7 +10,7 @@ let a = new crypt;
 
 console.log('Fetching')
 for (let q; q = a.next();) {
-  console.log(pki.certificateFromAsn1(asn1.fromDer(q)))
+  console.log(pki.certificateFromAsn1(asn1.fromDer(q.toString('binary'))))
 }
 
 console.log('Freeing')
