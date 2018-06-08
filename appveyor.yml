@@ -17,18 +17,18 @@ platform:
   - x86
 
 install:
-  - ps: Install-Product node $env:NOV_LTS $env:x64
+  - ps: Install-Product node $env:NOV_LTS x64
   - npm install
   - cd n-api
   - npm install
-  - ps $arch = node -p process.arch
-  - ps Copy-Item .\build\Release\crypt32.node -Destination ..\lib\crypt32-$arch.node
-  - ps: Install-Product node $env:NOV_LTS $env:x86
+  - ps: $arch = node -p process.arch
+  - ps: Copy-Item .\build\Release\crypt32.node -Destination ..\lib\crypt32-$arch.node
+  - ps: Install-Product node $env:NOV_LTS x86
   - npm install
-  - ps $arch = node -p process.arch
-  - ps Copy-Item .\build\Release\crypt32.node -Destination ..\lib\crypt32-$arch.node
+  - ps: $arch = node -p process.arch
+  - ps: Copy-Item .\build\Release\crypt32.node -Destination ..\lib\crypt32-$arch.node
   - cd ..
-  - ps: Install-Product node $env:NOV $env:$PLATFORM
+  - ps: Install-Product node $env:NOV $env:PLATFORM
 
 build: off
 
