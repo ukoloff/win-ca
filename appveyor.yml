@@ -3,6 +3,8 @@ version: 1.0.{build}-{branch}
 cache:
   - node_modules
 
+shallow_clone: true
+
 environment:
   matrix:
     - NOV: 10
@@ -17,13 +19,13 @@ platform:
   - x86
 
 install:
-  - ps: Install-Product node $env:NOV_LTS x64
+  - ps: Install-Product node $env:NOV_LTS x86
   - npm install
   - cd n-api
   - npm install
   - ps: $arch = node -p process.arch
   - ps: Copy-Item .\build\Release\crypt32.node -Destination ..\lib\crypt32-$arch.node
-  - ps: Install-Product node $env:NOV_LTS x86
+  - ps: Install-Product node $env:NOV_LTS x64
   - npm install
   - ps: $arch = node -p process.arch
   - ps: Copy-Item .\build\Release\crypt32.node -Destination ..\lib\crypt32-$arch.node
@@ -45,8 +47,8 @@ after_test:
   # - 7z a root.zip .\pem\*
 
 artifacts:
-  - path: root.zip
-    name: Root certificates
-    type: zip
+  # - path: root.zip
+  #   name: Root certificates
+  #   type: zip
   - path: .\*.tgz
     name: NPM package(s)
