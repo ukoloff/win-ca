@@ -50,7 +50,7 @@ so they are automatically used for all
 requests with Node.js' https module.
 
 For use in other places, these certificates
-are available via `.all()` method
+are also available via `.all()` method
 (in [node-forge][]'s format).
 
 ```js
@@ -82,7 +82,7 @@ ca.async((error, crt)=> {
     console.log(forge.pki.certificateToPem(crt))
   else
     console.log("That's all folks!")
-})    
+})
 ```
 
 Finally, `win-ca` saves fetched ceritificates to disk
@@ -95,28 +95,37 @@ so [OpenSSL][]-based software will use it automatically.
 The layout of that folder mimics
 that of [OpenSSL][]'s `c_rehash` utility.
 
+## Availability
+
+Current version uses [N-API][],
+so it can be used in Node.js versions with
+N-API support, i.e. v6 and all versions starting from v8.
+
+Thanks to N-API it is possible to precompile
+Windows DLL and save it to package,
+so no compilation is needed at installation.
+
+If you still use older Node.js
+(v4, 5 or 7) you can use v1.x of `win-ca`
+or try to compile it yourself.
+
 ## Building
 
 - npm install
-- npm test
-- npm publish
-- cd top
+- npm run pretest
+- npm run [nvm$][]
 - npm publish
 
-## Caveats
+This builds `x86` and `x64` versions with [N-API][] support.
 
-Package `ffi-napi` is heavily used.
-For it to compile under Windows
-one need Windows Build Tools for Node.js properly installed.
-It is usually achieved by:
-```sh
-npm install --global windows-build-tools
-```
+The process possibly may be used for older versions of Node.js
+(generating DLL suitable for all versions of Node.js
+with the same major version number).
 
 ## Credits
 
 Uses [node-forge][]
-and [node-ffi-napi][] (ancestor of [node-ffi][]).
+and used to use [node-ffi-napi][] (ancestor of [node-ffi][]).
 
 See also [OpenSSL::Win::Root][].
 
@@ -129,3 +138,5 @@ See also [OpenSSL::Win::Root][].
 [node.pem]: https://github.com/nodejs/node/blob/master/src/node_root_certs.h
 [node/4175]: https://github.com/nodejs/node/issues/4175
 [OpenSSL]: https://www.openssl.org/
+[nvm$]: https://github.com/ukoloff/nvms
+[N-API]: https://nodejs.org/api/n-api.html

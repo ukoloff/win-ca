@@ -1,8 +1,11 @@
 {
   "name": "win-ca",
-  "version": "1.1.0",
+  "version": "2.0.0-rc1",
   "description": "Get Windows System Root certificates",
   "main": "lib",
+  "engines": {
+    "node": "^6 || >=8"
+  },
   "files": [
     "lib"
   ],
@@ -17,6 +20,7 @@
     "url": "git+https://ukoloff@github.com/ukoloff/win-ca.git"
   },
   "keywords": [
+    "n-api",
     "ssl",
     "tls",
     "ca",

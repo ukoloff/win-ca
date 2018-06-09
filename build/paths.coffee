@@ -6,7 +6,6 @@ pckg = require '../package'
 @root =
 root = path.join __dirname, '..'
 
-for f in 'src top'.split ' '
-  @[f] = path.join root, f
+@src = path.join root, 'src'
 
 @dst = path.join root, pckg.files[0]
