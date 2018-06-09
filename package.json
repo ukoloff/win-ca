@@ -2,16 +2,13 @@
   "name": "win-ca",
   "version": "1.1.0",
   "description": "Get Windows System Root certificates",
-  "os": [
-    "win32"
-  ],
   "main": "lib",
   "files": [
     "lib"
   ],
   "scripts": {
+    "nvm$": "n-api\\nvm$deploy",
     "pretest": "coffee build",
-    "prepublish": "coffee build",
     "postinstall": "node -e \"try{require('.')}catch(e){}\"",
     "test": "coffee test"
   },

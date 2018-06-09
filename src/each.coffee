@@ -1,15 +1,16 @@
 ###
 Enumerate system root CAs synchronously
 ###
-crypt = require './crypt32'
+crypt = require "./crypt32-#{process.arch}"
+forge = require 'node-forge'
+
+asn1 = forge.asn1
+pki = forge.pki
 
 module.exports = (cb)->
-  store = crypt.CertOpenSystemStoreA null, 'ROOT'
+  store = crypt()
   try
-    ctx = null
-    while 1
-      ctx = crypt.CertEnumCertificatesInStore store, ctx
-      return if ctx.isNull()
-      cb ctx.deref().crt()
+    while blob = store.next()
+      cb pki.certificateFromAsn1 asn1.fromDer blob.toString 'binary'
   finally
-    crypt.CertCloseStore store, 0
+    store.done()

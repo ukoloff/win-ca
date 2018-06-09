@@ -21,14 +21,15 @@ platform:
 install:
   - ps: Install-Product node $env:NOV_LTS x86
   - npm install
+  - npm run pretest
   - cd n-api
   - npm install
-  - ps: $arch = node -p process.arch
-  - ps: Copy-Item .\build\Release\crypt32.node -Destination ..\lib\crypt32-$arch.node
+  - node test
+  - node deploy
   - ps: Install-Product node $env:NOV_LTS x64
   - npm install
-  - ps: $arch = node -p process.arch
-  - ps: Copy-Item .\build\Release\crypt32.node -Destination ..\lib\crypt32-$arch.node
+  - node test
+  - node deploy
   - cd ..
   - ps: Install-Product node $env:NOV $env:PLATFORM
 
@@ -40,15 +41,15 @@ before_test:
   - npm -v
 
 test_script:
-  # - npm test
+  - npm test
 
 after_test:
   - npm pack
-  # - 7z a root.zip .\pem\*
+  - 7z a root.zip .\pem\*
 
 artifacts:
-  # - path: root.zip
-  #   name: Root certificates
-  #   type: zip
+  - path: root.zip
+    name: Root certificates
+    type: zip
   - path: .\*.tgz
     name: NPM package(s)

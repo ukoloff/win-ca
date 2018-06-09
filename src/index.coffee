@@ -1,3 +1,6 @@
+if process.platform != 'win32'
+  return
+
 require './format.oids'
 
 @all = ->
