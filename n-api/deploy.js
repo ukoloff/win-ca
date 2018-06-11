@@ -1,14 +1,21 @@
 const fs = require('fs')
 const path = require('path')
 
-const src = './build/Release/crypt32.node'
+const src = 'build/Release/crypt32.node'
+const exe = 'roots.exe'
 
-const from = path.join(__dirname, src)
+let from = path.join(__dirname, src)
 require(from) // Safeguard
 
-const parts = path.parse(from)
-const save = path.join(__dirname, '../lib', `${parts.name}-${process.arch}${parts.ext}`)
-console.log(save)
+let parts = path.parse(from)
+let save = path.join(__dirname, '../lib', `${parts.name}-${process.arch}${parts.ext}`)
+
+console.log('Creating:', save)
+fs.createReadStream(from).pipe(fs.createWriteStream(save))
+
+parts = path.parse(exe)
+save = path.join(path.dirname(save), `${parts.name}-${process.arch}${parts.ext}`)
+from = path.join(path.dirname(from), exe)
 
 console.log('Creating:', save)
 fs.createReadStream(from).pipe(fs.createWriteStream(save))
