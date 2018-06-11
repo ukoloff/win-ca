@@ -32,7 +32,7 @@ const split = require('split')
 
 let NN = 0
 
-let exec = child.spawn(path.join(__dirname, '../lib/roots'))
+let exec = child.spawn(path.join(__dirname, 'build/Release/roots'))
 exec.stdout.pipe(split(onCrt)).on('end', onEnd)
 
 function onCrt(pem) {
