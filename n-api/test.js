@@ -23,3 +23,28 @@ console.log('Freeing...')
 a.done()
 
 console.log('Total:', N)
+
+console.log('Dump with standalone utility...')
+
+const child = require('child_process')
+const path = require('path')
+const split = require('split')
+
+let NN = 0
+
+let exec = child.spawn(path.join(__dirname, '../lib/roots'))
+exec.stdout.pipe(split(onCrt)).on('end', onEnd)
+
+function onCrt(pem) {
+  if (!pem) return
+  NN++
+  assert(NN < 1000)
+  let q = Buffer.from(pem, 'hex')
+  let crt = pki.certificateFromAsn1(asn1.fromDer(q.toString('binary')))
+  assert(crt.serialNumber)
+}
+
+function onEnd() {
+  console.log('Total:', NN)
+  assert(N == NN)
+}
