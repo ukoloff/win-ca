@@ -24,6 +24,7 @@ fully incompatible with [OpenSSL].
 
 This package is intended to
 fetch Root CAs from Windows' store
+(*Trusted Root Certification Authorities*)
 and make them available to
 [Node.js] application with minimal efforts.
 
