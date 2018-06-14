@@ -5,13 +5,13 @@ var src = 'build/Release/crypt32.node'
 var exe = 'roots.exe'
 
 var from = path.join(__dirname, src)
-// require(from) // Safeguard
+require(from) // Safeguard
 
 var parts = path.parse(from)
 var save = path.join(__dirname, '../lib', `${parts.name}-${process.arch}${parts.ext}`)
 
-// console.log('Creating:', save)
-// fs.createReadStream(from).pipe(fs.createWriteStream(save))
+console.log('Creating:', save)
+fs.createReadStream(from).pipe(fs.createWriteStream(save))
 
 if (process.arch != "ia32") return
 
