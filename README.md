@@ -73,10 +73,10 @@ But this list may contain duplicates.
 
 Asynchronous enumeration is provided via `.async()` method:
 
-```coffee
+```js
 let ca = require('win-ca')
 
-ca.async((error, crt)=> {
+ca.each.async((error, crt)=> {
   if (error) throw error;
   if(crt)
     console.log(forge.pki.certificateToPem(crt))
@@ -98,16 +98,17 @@ that of [OpenSSL][]'s `c_rehash` utility.
 ## Availability
 
 Current version uses [N-API][],
-so it can be used in Node.js versions with
-N-API support, i.e. v6 and all versions starting from v8.
+so it can be used in [Node.js versions with N-API support][N-API-support],
+i.e. v6 and all versions starting from v8.
 
 Thanks to N-API it is possible to precompile
 Windows DLL and save it to package,
 so no compilation is needed at installation.
 
-If you still use older Node.js
-(v4, 5 or 7) you can use v1.x of `win-ca`
-or try to compile it yourself.
+For other Node.js versions
+(v4, 5 or 7)
+speciall fallback utility is called
+in the background to fetch the list anyway.
 
 ## Building
 
@@ -116,11 +117,8 @@ or try to compile it yourself.
 - npm run [nvm$][]
 - npm publish
 
-This builds `x86` and `x64` versions with [N-API][] support.
-
-The process possibly may be used for older versions of Node.js
-(generating DLL suitable for all versions of Node.js
-with the same major version number).
+This builds both `x86` and `x64` versions with [N-API][] support.
+For older Node.js versions standalone binary utility is built.
 
 ## Credits
 
@@ -140,3 +138,4 @@ See also [OpenSSL::Win::Root][].
 [OpenSSL]: https://www.openssl.org/
 [nvm$]: https://github.com/ukoloff/nvms
 [N-API]: https://nodejs.org/api/n-api.html
+[N-API-support]: https://github.com/nodejs/node-addon-api/blob/master/index.js#L17
