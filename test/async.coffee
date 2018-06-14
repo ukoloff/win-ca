@@ -4,7 +4,7 @@ Test asynchronous enumeration
 assert = require 'assert'
 
 async = require '..'
-  .async
+  .each.async
 
 N = 0
 async (error, crt)->

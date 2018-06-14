@@ -6,23 +6,23 @@ Returns:
   cb(null, crt):  certificate
   cb():           done
 ###
-path = require 'path'
-spawn = require 'child_process'
-  .spawn
-
-split = require 'split'
+crypt = require "./binding"
 forge = require 'node-forge'
 
 asn1 = forge.asn1
 pki = forge.pki
 
-module.exports = (cb)->
-  spawn path.join __dirname, 'roots'
-    .stdout.pipe split (blob)->
-      unless blob
+module.exports = (cb)-> setImmediate ->
+  store = crypt()
+  do step = -> setImmediate ->
+    try
+      if blob = store.next()
+        cb null, pki.certificateFromAsn1 asn1.fromDer blob.toString 'binary'
+        do step
+      else
+        store.done()
+        do cb
         return
-      blob = Buffer.from blob, 'hex'
-      cb null, pki.certificateFromAsn1 asn1.fromDer blob.toString 'binary'
-    .on 'end', ->
-      cb null
-      return
+    catch error
+      store.done()
+      cb error
