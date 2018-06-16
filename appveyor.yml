@@ -14,6 +14,7 @@ environment:
     - NOV: 6
     - NOV: 5
     - NOV: 4
+    - NOV: 0
 
   NOV_LTS: 8
 

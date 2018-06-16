@@ -9,6 +9,9 @@ var child = require('child_process')
 var path = require('path')
 var split = require('split')
 
+bufferFrom = Buffer.from || function(data, encoding) {
+  return new Buffer(data, encoding);
+};
 
 var binUtility = path.join(__dirname, 'build/Release/roots')
 console.log('Dump with standalone utility...')
@@ -40,7 +43,7 @@ function assertCrt(blob) {
 function onCrt(pem) {
   if (!pem) return
   NN++
-  assertCrt(Buffer.from(pem, 'hex'))
+  assertCrt(bufferFrom(pem, 'hex'))
   assert(NN < 1000)
 }
 
