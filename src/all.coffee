@@ -7,7 +7,8 @@ forge = require 'node-forge'
 pki = forge.pki
 asn1 = forge.asn1
 
-each = require './each'
+each = require '..'
+  .each
 module.exports =
 all = []
 

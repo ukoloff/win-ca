@@ -3,6 +3,8 @@ version: 1.0.{build}-{branch}
 cache:
   - node_modules
 
+shallow_clone: true
+
 environment:
   matrix:
     - NOV: 10
@@ -10,14 +12,30 @@ environment:
     - NOV: 8
     - NOV: 7
     - NOV: 6
+    - NOV: 5
+    - NOV: 4
+    - NOV: 0
+
+  NOV_LTS: 8
 
 platform:
   - x64
   - x86
 
 install:
-  - ps: Install-Product node $env:NOV $env:PLATFORM
+  - ps: Install-Product node $env:NOV_LTS x86
   - npm install
+  - npm run pretest
+  - cd n-api
+  - npm install
+  - node test
+  - node deploy
+  - ps: Install-Product node $env:NOV_LTS x64
+  - npm install
+  - node test
+  - node deploy
+  - cd ..
+  - ps: Install-Product node $env:NOV $env:PLATFORM
 
 build: off
 
@@ -31,10 +49,6 @@ test_script:
 
 after_test:
   - npm pack
-  - cd top
-  - npm pack
-  - copy /b *.tgz ..
-  - cd ..
   - 7z a root.zip .\pem\*
 
 artifacts:

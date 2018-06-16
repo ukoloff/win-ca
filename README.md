@@ -24,6 +24,7 @@ fully incompatible with [OpenSSL].
 
 This package is intended to
 fetch Root CAs from Windows' store
+(*Trusted Root Certification Authorities*)
 and make them available to
 [Node.js] application with minimal efforts.
 
@@ -50,7 +51,7 @@ so they are automatically used for all
 requests with Node.js' https module.
 
 For use in other places, these certificates
-are available via `.all()` method
+are also available via `.all()` method
 (in [node-forge][]'s format).
 
 ```js
@@ -73,16 +74,16 @@ But this list may contain duplicates.
 
 Asynchronous enumeration is provided via `.async()` method:
 
-```coffee
+```js
 let ca = require('win-ca')
 
-ca.async((error, crt)=> {
+ca.each.async((error, crt)=> {
   if (error) throw error;
   if(crt)
     console.log(forge.pki.certificateToPem(crt))
   else
     console.log("That's all folks!")
-})    
+})
 ```
 
 Finally, `win-ca` saves fetched ceritificates to disk
@@ -95,28 +96,35 @@ so [OpenSSL][]-based software will use it automatically.
 The layout of that folder mimics
 that of [OpenSSL][]'s `c_rehash` utility.
 
+## Availability
+
+Current version uses [N-API][],
+so it can be used in [Node.js versions with N-API support][N-API-support],
+i.e. v6 and all versions starting from v8.
+
+Thanks to N-API it is possible to precompile
+Windows DLL and save it to package,
+so no compilation is needed at installation.
+
+For other Node.js versions
+(v4, 5 or 7)
+speciall fallback utility is called
+in the background to fetch the list anyway.
+
 ## Building
 
 - npm install
-- npm test
-- npm publish
-- cd top
+- npm run pretest
+- npm run [nvm$][]
 - npm publish
 
-## Caveats
-
-Package `ffi-napi` is heavily used.
-For it to compile under Windows
-one need Windows Build Tools for Node.js properly installed.
-It is usually achieved by:
-```sh
-npm install --global windows-build-tools
-```
+This builds both `x86` and `x64` versions with [N-API][] support.
+For older Node.js versions standalone binary utility is built.
 
 ## Credits
 
 Uses [node-forge][]
-and [node-ffi-napi][] (ancestor of [node-ffi][]).
+and used to use [node-ffi-napi][] (ancestor of [node-ffi][]).
 
 See also [OpenSSL::Win::Root][].
 
@@ -129,3 +137,6 @@ See also [OpenSSL::Win::Root][].
 [node.pem]: https://github.com/nodejs/node/blob/master/src/node_root_certs.h
 [node/4175]: https://github.com/nodejs/node/issues/4175
 [OpenSSL]: https://www.openssl.org/
+[nvm$]: https://github.com/ukoloff/nvms
+[N-API]: https://nodejs.org/api/n-api.html
+[N-API-support]: https://github.com/nodejs/node-addon-api/blob/master/index.js#L17

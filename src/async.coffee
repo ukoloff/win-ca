@@ -6,37 +6,23 @@ Returns:
   cb(null, crt):  certificate
   cb():           done
 ###
-crypt = require './crypt32'
+crypt = require "./binding"
+forge = require 'node-forge'
 
-module.exports = (cb)->
-  store = null
+asn1 = forge.asn1
+pki = forge.pki
 
-  crypt.CertOpenSystemStoreA.async null, 'ROOT', (error, result)->
-    return if croak error
-    store = result
-    more null
-
-  free = ->
-    return unless store
-    crypt.CertCloseStore.async store, 0, ->
-    store = 0
-
-  croak = (error)->
-    return unless error
-    do free
-    cb error
-    return true
-
-  more = (ctx)->
-    crypt.CertEnumCertificatesInStore.async store, ctx, (error, result)->
-      return if croak error
-      try
-        if result.isNull()
-          do free
-          setImmediate cb
-          return
-        cb null, result.deref().crt()
-        more result
-      catch error
-        do free
-        cb error
+module.exports = (cb)-> setImmediate ->
+  store = crypt()
+  do step = -> setImmediate ->
+    try
+      if blob = store.next()
+        cb null, pki.certificateFromAsn1 asn1.fromDer blob.toString 'binary'
+        do step
+      else
+        store.done()
+        do cb
+        return
+    catch error
+      store.done()
+      cb error
