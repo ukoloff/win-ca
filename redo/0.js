@@ -13,8 +13,15 @@ var crt = pki.certificateFromAsn1(tree)
 
 var subj = tree.value[0].value[5]
 
-var sha1 = crypto.createHash('sha1')
+subj = asn1.copy(subj)
 
+// Old hash
+var md5 = crypto.createHash('md5')
+md5.update(asn1.toDer(subj).getBytes(), 'binary')
+console.log(md5.digest('hex'))
+
+// New hash
+var sha1 = crypto.createHash('sha1')
 subj.value.forEach(rdn)
 console.log(sha1.digest('hex'))
 
