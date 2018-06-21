@@ -3,11 +3,10 @@ if process.platform != 'win32'
 
 require './format.oids'
 
-if @nApi = !!process.versions.napi
-  each = require './each'
+@each = if @nApi = !!process.versions.napi
+  require './each'
 else
-  each = require './each.fallback'
-@each = each
+  require './each.fallback'
 
 @all = ->
   require './all'

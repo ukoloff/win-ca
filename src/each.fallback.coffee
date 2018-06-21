@@ -1,5 +1,5 @@
 ###
-Enumerate system root CAs synchronously
+Enumerate system root CAs
 ###
 path = require 'path'
 spawn = require 'child_process'
@@ -26,7 +26,7 @@ module.exports = each = (cb)->
 ###
 Asynchronous enumeration
 
-Returns:
+Callback:
   cb(error):      error
   cb(null, crt):  certificate
   cb():           done

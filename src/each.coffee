@@ -1,5 +1,5 @@
 ###
-Enumerate system root CAs synchronously
+Enumerate system root CAs
 ###
 crypt = require "./binding"
 forge = require 'node-forge'
@@ -18,7 +18,7 @@ module.exports = each = (cb)->
 ###
 Asynchronous enumeration
 
-Returns:
+Callback:
   cb(error):      error
   cb(null, crt):  certificate
   cb():           done

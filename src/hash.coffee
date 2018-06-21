@@ -38,7 +38,7 @@ sha1 = (data)->
   .update data, 'binary'
   .digest()
 
-module.exports = (dn)->
-  sha1 encode dn
+module.exports = (crt)->
+  sha1 encode crt.subject
   .readUInt32LE 0
 

@@ -17,7 +17,7 @@ md5 = (data)->
   .update data, 'binary'
   .digest()
 
-module.exports = (dn)->
-  md5 encode dn
+module.exports = (crt)->
+  md5 encode crt.subject
   .readUInt32LE 0
 
