@@ -14,31 +14,38 @@ asn1 = forge.asn1
 # multiple spaces collapsed, converted to lower case and the leading
 # SEQUENCE header removed.
 # In future we could also normalize the UTF8 too.
-canon = (dn)->
-  attributes: dn.attributes.map (rdn)->
-    valueTagClass: asn1.Type.UTF8
-    type: rdn.type
-    value: rdn.value
+module.exports = (crt)->
+  sha1 = crypto.createHash 'sha1'
+
+  crt2asn1 crt
+  .subject
+  .value.forEach (rdn)->
+    rdn = asn1.copy rdn
+
+    pair = rdn.value[0].value[1]
+    pair.type = asn1.Type.UTF8
+    unless pair.value
+      return
+    pair.value = pair.value
       .toLowerCase()
       .replace /\s+/g, ' '
       .replace /^\s+|\s+$/, ''
+    sha1.update asn1.toDer(rdn).getBytes(), 'binary'
 
-# Strip SEQUENCE header
-stripSeq = (buffer)->
-  buffer.getByte()              # skip SEQUENCE
-  asn1.getBerValueLength buffer # skip Length
-  buffer.getBytes()
-  # returns string with binary encoding
+  sha1.digest()
+    .readUInt32LE 0
 
-encode = (dn)->
-  stripSeq asn1.toDer pki.distinguishedNameToAsn1 canon dn
-
-sha1 = (data)->
-  crypto.createHash 'sha1'
-  .update data, 'binary'
-  .digest()
-
-module.exports = (crt)->
-  sha1 encode crt.subject
-  .readUInt32LE 0
-
+# Mini-parser for X.509 ASN.1
+crt2asn1 = (crt)->
+  crt = pki.certificateToAsn1 crt # Certificate
+    .value[0].value               # TBSCertificate
+  serial = crt[0]
+  hasSerial =
+    serial.tagClass == asn1.Class.CONTEXT_SPECIFIC and
+    serial.type == 0 and
+    serial.constructed
+  crt = crt.slice hasSerial
+  serial:  crt[0]
+  issuer:  crt[2]
+  valid:   crt[3]
+  subject: crt[4]
