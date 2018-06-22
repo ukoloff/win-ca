@@ -32,8 +32,7 @@ module.exports = (crt)->
       .replace /^\s+|\s+$/, ''
     sha1.update asn1.toDer(rdn).getBytes(), 'binary'
 
-  sha1.digest()
-    .readUInt32LE 0
+  hex sha1
 
 # Mini-parser for X.509 ASN.1
 crt2asn1 = (crt)->
@@ -49,3 +48,9 @@ crt2asn1 = (crt)->
   issuer:  crt[2]
   valid:   crt[3]
   subject: crt[4]
+
+hex = (hash)->
+  hash = hash.digest().slice 0, 4
+  # Buffer::swap32()
+  hash.writeUInt32LE hash.readUInt32BE(0), 0
+  hash.toString 'hex'

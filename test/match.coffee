@@ -45,15 +45,9 @@ run 'version', (error, ver)->
       throw error if error
       out = out.split /\s+/
       assert.equal 2, out.length
-      assert.equal out[0], hex hash crt
-      assert.equal out[1], hex hach crt
+      assert.equal out[0], hash crt
+      assert.equal out[1], hach crt
       N++
 
       do match
     .end pki.certificateToPem crt
-
-hex = (hash)->
-  x = hash.toString 16
-  while x.length < 8
-    x = '0' + x
-  x

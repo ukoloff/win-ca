@@ -13,12 +13,6 @@ hach = require './hash_old'
 exports.path =
 dst = path.join __dirname, '../pem'
 
-hex = (hash)->
-  x = hash.toString 16
-  while x.length < 8
-    x = '0' + x
-  x
-
 mkdir dst, ->
   process.env.SSL_CERT_DIR = dst
   list = all.slice()
@@ -27,10 +21,8 @@ mkdir dst, ->
 
   # Get name for file/symlink
   name = (hash)->
-    x = hex hash
-    hashes[x] ||= 0
-    n = hashes[x]++
-    n = "#{x}.#{n}"
+    hashes[hash] ||= 0
+    n = "#{hash}.#{hashes[hash]++}"
     names[n] = 1
     n
 
