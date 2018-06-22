@@ -34,25 +34,22 @@ mkdir dst, ->
     fs.readdir dst, (err, files)->
       throw err if err
 
-      do drop = ->
-        loop
-          unless file = files.pop()
-            return
-          unless names[file]
-            break
+      files = files.filter (file)->!names[file]
 
-        fs.unlink path.join(dst, file), (err)->
-          throw err if err
-          do drop
+      drop = (err)->
+        throw err if err
+        if files.length
+          fs.unlink path.join(dst, files.pop()), drop
+      do drop
 
-  do save = ->
-    unless crt = list.pop()
+  save = (err)->
+    throw err if err
+
+    unless list.length
       pems.end()
       do drop
       return
 
-    pems.write text = format crt
-
-    fs.writeFile path.join(dst, pem = name hash crt), text, (err)->
-      throw err if err
-      do save
+    pems.write text = format crt = list.pop()
+    fs.writeFile path.join(dst, name hash crt), text, save
+  do save
