@@ -49,7 +49,7 @@ test_script:
 
 after_test:
   - npm pack
-  - 7z a root.zip .\pem\*
+  - 7z a root.zip .\pem\* -xr!*.pem
 
 artifacts:
   - path: root.zip

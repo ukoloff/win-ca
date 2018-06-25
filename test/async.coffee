@@ -3,14 +3,14 @@ Test asynchronous enumeration
 ###
 assert = require 'assert'
 
-async = require '..'
-  .each.async
+me = require '..'
 
 N = 0
-async (error, crt)->
+
+me.each.async me.der2.asn1, (error, crt)->
   throw error if error
   unless crt
     console.log 'Async:', N
     return
   N++
-  assert crt.serialNumber
+  assert crt.subject

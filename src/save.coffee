@@ -5,32 +5,27 @@ fs = require 'fs'
 path = require 'path'
 
 all = require './all'
-mkdir = require './mkdir'
-format = require './format'
 hash = require './hash'
-hach = require './hash_old'
+mkdir = require './mkdir'
+der2 = require './der2'
 
 exports.path =
 dst = path.join __dirname, '../pem'
 
-hex = (hash)->
-  x = hash.toString 16
-  while x.length < 8
-    x = '0' + x
-  x
-
 mkdir dst, ->
   process.env.SSL_CERT_DIR = dst
-  list = all.slice()
+
+  list = all der2.der
   hashes = {}
   names = {}
 
+  pems = fs.createWriteStream path.join dst, roots = 'roots.pem'
+  names[roots] = 1
+
   # Get name for file/symlink
   name = (hash)->
-    x = hex hash
-    hashes[x] ||= 0
-    n = hashes[x]++
-    n = "#{x}.#{n}"
+    hashes[hash] ||= 0
+    n = "#{hash}.#{hashes[hash]++}"
     names[n] = 1
     n
 
@@ -38,25 +33,21 @@ mkdir dst, ->
   drop = ->
     fs.readdir dst, (err, files)->
       throw err if err
-      do drop = ->
-        return unless file = files.pop()
 
-        if names[file]
-          setImmediate drop
-          return
+      files = files.filter (file)->!names[file]
 
-        fs.unlink path.join(dst, file), (err)->
-          throw err if err
-          do drop
+      do drop = (err = false)->
+        throw err if err
+        if files.length
+          fs.unlink path.join(dst, files.pop()), drop
 
-  do save = ->
-    unless crt = list.pop()
+  do save = (err = false)->
+    throw err if err
+
+    unless list.length
+      pems.end()
       do drop
       return
 
-    fs.writeFile path.join(dst, pem = name hash crt.subject), format(crt), (err)->
-      throw err if err
-      fs.unlink link = path.join(dst, name hach crt.subject), (err)->
-        fs.symlink pem, link, 'file', (err)->
-          # throw err if err
-          do save
+    pems.write text = der2 der2.txt, crt = list.pop()
+    fs.writeFile path.join(dst, name hash crt), text, save

@@ -1,15 +1,14 @@
 var assert = require('assert')
+var child = require('child_process')
+var path = require('path')
 
+var split = require('split')
 var forge = require('node-forge')
 
 var asn1 = forge.asn1
 var pki = forge.pki
 
-var child = require('child_process')
-var path = require('path')
-var split = require('split')
-
-bufferFrom = Buffer.from || function(data, encoding) {
+var bufferFrom = Buffer.from || function (data, encoding) {
   return new Buffer(data, encoding);
 };
 
@@ -26,18 +25,11 @@ console.log('Asynchronous dump with standalone utility...')
 NN = 0
 child.spawn(binUtility).stdout.pipe(split(onCrt)).on('end', onEnd)
 
-var crypt
-try {
-  crypt = require('bindings')('crypt32')
-} catch (e) {
-  console.log('! Skipping N-API bindings test...')
-}
-
-nApi(crypt)
+nApi()
 
 function assertCrt(blob) {
-  var crt = pki.certificateFromAsn1(asn1.fromDer(blob.toString('binary')))
-  assert(crt.serialNumber)
+  var tree = asn1.fromDer(blob.toString('binary'))
+  assert(tree.value.length)
 }
 
 function onCrt(pem) {
@@ -52,10 +44,14 @@ function onEnd() {
   assert(NN === Total)
 }
 
-function nApi(crypt) {
-  if (!crypt) return
+function nApi() {
+  if (!process.versions.napi) {
+    console.log('! Skipping N-API bindings test...')
+    return
+  }
 
   console.log('Starting N-API connection...')
+  crypt = require('bindings')('crypt32')
   var a = new crypt
 
   var N = 0
