@@ -5,7 +5,6 @@ fs = require 'fs'
 path = require 'path'
 
 all = require './all'
-format = require './format'
 hash = require './hash'
 mkdir = require './mkdir'
 der2 = require './der2'

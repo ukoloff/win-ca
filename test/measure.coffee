@@ -4,9 +4,9 @@ ca = []
 
 console.time 'fetch'
 
-self.each (pem)->
+self.each self.der2.der, (pem)->
   ca.push pem
 
-console.timeEnd 'fetch'
+console.timeEnd 'Fetch'
 console.log 'Found:', ca.length
-console.log 'Unique:', self.all().length
+console.log 'Unique:', self.all(self.der2.der).length

@@ -7,6 +7,7 @@ asn1 = require 'node-forge'
   .asn1
 
 der2 = require './der2'
+hex = require './hex'
 
 # Convert Subject to canonic form (as OpenSSL 1+ does)
 #
@@ -34,9 +35,3 @@ module.exports = (der)->
     sha1.update asn1.toDer(rdn).getBytes(), 'binary'
 
   hex sha1
-
-hex = (hash)->
-  hash = hash.digest().slice 0, 4
-  # Buffer::swap32()
-  hash.writeUInt32LE hash.readUInt32BE(0), 0
-  hash.toString 'hex'

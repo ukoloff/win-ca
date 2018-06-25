@@ -31,7 +31,7 @@ convert.txt = (der)->
   Subject\t#{crt.subject.value.map((rdn)->rdn.value[0].value[1].value).join '/'}
   Valid\t#{crt.valid.value.map((date)->date.value).join ' - '}
   Saved\t#{d.toLocaleDateString()} #{
-    d.toTimeString().replace /\s*\(.*\)\s*/, ''} by #{self.name}@#{self.version}"
+    d.toTimeString().replace /\s*\(.*\)\s*/, ''} by #{self.name}@#{self.version}
   #{pem der}
   """
 

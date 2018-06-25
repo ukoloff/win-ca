@@ -7,6 +7,7 @@ asn1 = require 'node-forge'
   .asn1
 
 der2 = require './der2'
+hex = require './hex'
 
 module.exports = (der)->
   md5 = crypto.createHash 'md5'
@@ -14,9 +15,3 @@ module.exports = (der)->
     .subject
   md5.update asn1.toDer(subj).getBytes(), 'binary'
   hex md5
-
-hex = (hash)->
-  hash = hash.digest().slice 0, 4
-  # Buffer::swap32()
-  hash.writeUInt32LE hash.readUInt32BE(0), 0
-  hash.toString 'hex'
