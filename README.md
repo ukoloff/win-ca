@@ -150,7 +150,7 @@ in the background to fetch the list anyway.
 
 ## VSCode extension
 
-Special [extension](vsode) for [VSCode][]
+Special [extension](vscode) for [VSCode][]
 was created to import `win-ca`
 in context of VSCode's Extension Host.
 
