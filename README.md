@@ -98,9 +98,6 @@ But this list may contain duplicates.
 
 Asynchronous enumeration is provided via `.async()` method:
 
-Both `.each` and `.each.async` methods
-accept format as the first parameter.
-
 ```js
 let ca = require('win-ca')
 
@@ -112,6 +109,9 @@ ca.each.async((error, crt)=> {
     console.log("That's all folks!")
 })
 ```
+
+Both `.each` and `.each.async` methods
+accept `format` as the first parameter.
 
 Finally, `win-ca` saves fetched ceritificates to disk
 for use by other software.
@@ -127,7 +127,7 @@ In addition, file `roots.pem` is placed
 in the said folder.
 It contains all root certificates in PEM format
 concatenated together.
-It can also be used by most cryptography software.
+It can also be used by most cryptographic software.
 In particular, `OpenSSL` will take it into account if one say
 ```cmd
 set SSL_CERT_FILE = %SSL_CERT_DIR%\roots.pem
@@ -139,9 +139,9 @@ Current version uses [N-API][],
 so it can be used in [Node.js versions with N-API support][N-API-support],
 i.e. v6 and all versions starting from v8.
 
-Thanks to N-API it is possible to precompile
+Thanks to N-API, it is possible to precompile
 Windows DLL and save it to package,
-so no compilation is needed at installation.
+so no compilation is needed at installation time.
 
 For other Node.js versions
 (v4, 5 or 7)
