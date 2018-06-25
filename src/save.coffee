@@ -8,6 +8,7 @@ all = require './all'
 format = require './format'
 hash = require './hash'
 mkdir = require './mkdir'
+der2 = require './der2'
 
 exports.path =
 dst = path.join __dirname, '../pem'
@@ -15,7 +16,7 @@ dst = path.join __dirname, '../pem'
 mkdir dst, ->
   process.env.SSL_CERT_DIR = dst
 
-  list = all.slice()
+  list = all der2.der
   hashes = {}
   names = {}
 
@@ -36,13 +37,12 @@ mkdir dst, ->
 
       files = files.filter (file)->!names[file]
 
-      drop = (err)->
+      do drop = (err = false)->
         throw err if err
         if files.length
           fs.unlink path.join(dst, files.pop()), drop
-      do drop
 
-  save = (err)->
+  do save = (err = false)->
     throw err if err
 
     unless list.length
@@ -50,6 +50,5 @@ mkdir dst, ->
       do drop
       return
 
-    pems.write text = format crt = list.pop()
+    pems.write text = der2 der2.txt, crt = list.pop()
     fs.writeFile path.join(dst, name hash crt), text, save
-  do save

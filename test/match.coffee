@@ -8,6 +8,8 @@ spawn = require 'child_process'
 forge = require 'node-forge'
 pki = forge.pki
 
+ca = require '..'
+der2 = ca.der2
 hash = require '../lib/hash'
 hach = require '../lib/hash_old'
 
@@ -31,8 +33,7 @@ run 'version', (error, ver)->
     console.error 'OpenSSL not found. Skipping hashes test...'
     return
   console.log 'Found:', ver
-  list = require '..'
-    .all().slice()
+  list = ca.all der2.der
 
   N = 0
 
@@ -50,4 +51,4 @@ run 'version', (error, ver)->
       N++
 
       do match
-    .end pki.certificateToPem crt
+    .end der2 der2.pem, crt

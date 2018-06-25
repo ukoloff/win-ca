@@ -10,8 +10,7 @@ require './format.oids'
 else
   require './each.fallback'
 
-@all = ->
-  require './all'
+@all = require './all'
 
 require './inject'
 @path =  require './save'

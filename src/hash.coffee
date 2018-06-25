@@ -3,9 +3,10 @@ X509_NAME_hash
 ###
 crypto = require 'crypto'
 
-forge = require 'node-forge'
-pki = forge.pki
-asn1 = forge.asn1
+asn1 = require 'node-forge'
+  .asn1
+
+der2 = require './der2'
 
 # Convert Subject to canonic form (as OpenSSL 1+ does)
 #
@@ -14,10 +15,10 @@ asn1 = forge.asn1
 # multiple spaces collapsed, converted to lower case and the leading
 # SEQUENCE header removed.
 # In future we could also normalize the UTF8 too.
-module.exports = (crt)->
+module.exports = (der)->
   sha1 = crypto.createHash 'sha1'
 
-  crt2asn1 crt
+  der2 der2.asn1, der
   .subject
   .value.forEach (rdn)->
     rdn = asn1.copy rdn
@@ -33,21 +34,6 @@ module.exports = (crt)->
     sha1.update asn1.toDer(rdn).getBytes(), 'binary'
 
   hex sha1
-
-# Mini-parser for X.509 ASN.1
-crt2asn1 = (crt)->
-  crt = pki.certificateToAsn1 crt # Certificate
-    .value[0].value               # TBSCertificate
-  serial = crt[0]
-  hasSerial =
-    serial.tagClass == asn1.Class.CONTEXT_SPECIFIC and
-    serial.type == 0 and
-    serial.constructed
-  crt = crt.slice hasSerial
-  serial:  crt[0]
-  issuer:  crt[2]
-  valid:   crt[3]
-  subject: crt[4]
 
 hex = (hash)->
   hash = hash.digest().slice 0, 4

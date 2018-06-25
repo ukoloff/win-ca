@@ -3,30 +3,24 @@ Fetch all root CAs
 ###
 crypto = require 'crypto'
 
-forge = require 'node-forge'
-pki = forge.pki
-asn1 = forge.asn1
+der2 = require './der2'
 
-each = require '..'
-  .each
-module.exports =
 all = []
+
+module.exports = (format)->
+  all.map (der)->
+    der2 format, der
 
 sha1 = (data)->
   crypto.createHash 'sha1'
   .update data, 'binary'
   .digest 'hex'
 
-der = (crt)->
-  asn1.toDer pki.certificateToAsn1 crt
-  .getBytes()
-
 seen = {}
 
-each (crt)->
-  if seen[z = sha1 der crt]
-    return
-  seen[z] = 1
-  all.push crt
-
-seen = 0
+require '..'
+.each der2.der, (der)->
+  if not seen[z = sha1 der]
+    seen[z] = 1
+    all.push der
+  return
