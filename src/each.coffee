@@ -33,10 +33,7 @@ each.async = (format, cb)-> setImmediate ->
       else
         store.done()
         do cb
-        return
     catch error
       store.done()
       cb error
-
-getCrt = (blob)->
-  pki.certificateFromAsn1 asn1.fromDer blob.toString 'binary'
+    return

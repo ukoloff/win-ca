@@ -3,6 +3,8 @@ if process.platform != 'win32'
 
 require './format.oids'
 
+@der2 = require './der2'
+
 @each = if @nApi = !!process.versions.napi
   require './each'
 else

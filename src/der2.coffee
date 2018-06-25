@@ -6,6 +6,8 @@ forge = require 'node-forge'
 asn1 = forge.asn1
 pki = forge.pki
 
+self = require '../package'
+
 module.exports = der2 = (format, der)->
   (formats[format] or formats[formats.length-1]) der
 
@@ -23,9 +25,17 @@ convert.pem = pem = (der)->
   lines.join "\r\n"
 
 convert.txt = (der)->
-  pem der
+  crt = myASN der
+  d = new Date
+  """
+  Subject\t#{crt.subject.value.map((rdn)->rdn.value[0].value[1].value).join '/'}
+  Valid\t#{crt.valid.value.map((date)->date.value).join ' - '}
+  Saved\t#{d.toLocaleDateString()} #{
+    d.toTimeString().replace /\s*\(.*\)\s*/, ''} by #{self.name}@#{self.version}"
+  #{pem der}
+  """
 
-convert.asn1 = (der)->
+convert.asn1 = myASN = (der)->
   crt = asn1.fromDer der.toString 'binary'  # Certificate
     .value[0].value                         # TBSCertificate
   serial = crt[0]
