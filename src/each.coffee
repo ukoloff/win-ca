@@ -2,18 +2,17 @@
 Enumerate system root CAs
 ###
 crypt = require "./binding"
-forge = require 'node-forge'
+der2 = require './der2'
 
-asn1 = forge.asn1
-pki = forge.pki
-
-module.exports = each = (cb)->
+module.exports = each = (format, cb)->
+  cb ||= format
   store = crypt()
   try
     while blob = store.next()
-      cb getCrt blob
+      cb der2 format, blob
   finally
     store.done()
+  return
 
 ###
 Asynchronous enumeration
@@ -23,12 +22,13 @@ Callback:
   cb(null, crt):  certificate
   cb():           done
 ###
-each.async = (cb)-> setImmediate ->
+each.async = (format, cb)-> setImmediate ->
+  cb ||= format
   store = crypt()
   do step = -> setImmediate ->
     try
       if blob = store.next()
-        cb null, getCrt blob
+        cb null, der2 format, blob
         do step
       else
         store.done()

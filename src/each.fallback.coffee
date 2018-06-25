@@ -5,21 +5,19 @@ path = require 'path'
 spawn = require 'child_process'
 
 split = require 'split'
-forge = require 'node-forge'
 
-asn1 = forge.asn1
-pki = forge.pki
+der2 = require './der2'
 
 bufferFrom = Buffer.from or (data, encoding)->
   new Buffer data, encoding
 
-module.exports = each = (cb)->
+module.exports = each = (format, cb)->
+  cb ||= format
   child = spawn.spawnSync exe()
   split (blob)->
     unless blob
       return
-    blob = bufferFrom blob, 'hex'
-    cb getCrt blob
+    cb der2 format, bufferFrom blob, 'hex'
   .end child.stdout
   return
 
@@ -31,19 +29,16 @@ Callback:
   cb(null, crt):  certificate
   cb():           done
 ###
-each.async = (cb)->
+each.async = (format, cb)->
+  cb ||= format
   spawn.spawn exe()
     .stdout.pipe split (blob)->
       unless blob
         return
-      blob = bufferFrom blob, 'hex'
-      cb null, getCrt blob
+      cb null, der2 format, bufferFrom blob, 'hex'
     .on 'end', ->
       cb null
       return
 
 exe = ->
   path.join __dirname, 'roots'
-
-getCrt = (blob)->
-  pki.certificateFromAsn1 asn1.fromDer blob.toString 'binary'
