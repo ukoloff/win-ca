@@ -148,6 +148,19 @@ For other Node.js versions
 speciall fallback utility is called
 in the background to fetch the list anyway.
 
+## VSCode extension
+
+Special [extension](vsode) for [VSCode][]
+was created to import `win-ca`
+in context of VSCode's Extension Host.
+
+Since all VSCode extensions share the same process,
+root certificates imported by one of them
+are immediately available to others.
+This can allow VSCode to connect to
+(properly configured)
+intranet sites from Windows machines.
+
 ## Building
 
 - npm install
@@ -178,3 +191,4 @@ See also [OpenSSL::Win::Root][].
 [nvm$]: https://github.com/ukoloff/nvms
 [N-API]: https://nodejs.org/api/n-api.html
 [N-API-support]: https://github.com/nodejs/node-addon-api/blob/master/index.js#L17
+[VSCode]: https://code.visualstudio.com/
