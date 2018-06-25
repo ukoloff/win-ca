@@ -61,6 +61,30 @@ let forge = require('node-forge')
 for (let crt of ca.all())
   console.log(forge.pki.certificateToPem(crt))
 ```
+Unfortunately, `node-forge` at the time of writing is unable to
+parse non-RSA certificates
+(namely, ECC certificates becoming more popular).
+If your *Trusted Root Certification Authorities* store
+contains modern certificates,
+`.all()` method will throw exception.
+
+To fix this, one can pass `format` parameter to `.all` method:
+```js
+let ca = require('win-ca')
+
+for (let crt of ca.all(ca.der2.pem))
+  console.log(crt)
+```
+Available values for `format` are:
+
+| Constant | Value | Meaning
+|---|---:|---
+der2.der | 0 | DER-format (binary, Node's [Buffer][])
+|der2.pem | 1 | PEM-format (text, Base64-encoded)
+|der2.txt| 2 | PEM-format plus some info as text
+|der2.asn1| 3 | ASN.1-parsed certificate
+| * | * | Certificate in `node-forge` format (RSA only)
+
 One can enumerate Root CAs himself using `.each()` method:
 
 ```js
@@ -73,6 +97,9 @@ ca.each(crt=>
 But this list may contain duplicates.
 
 Asynchronous enumeration is provided via `.async()` method:
+
+Both `.each` and `.each.async` methods
+accept format as the first parameter.
 
 ```js
 let ca = require('win-ca')
@@ -87,7 +114,7 @@ ca.each.async((error, crt)=> {
 ```
 
 Finally, `win-ca` saves fetched ceritificates to disk
-for use by other soft.
+for use by other software.
 Path to folder containing all the certificates
 is available as `require('win-ca').path`.
 Environment variable `SSL_CERT_DIR`
@@ -95,6 +122,16 @@ is set to point at it,
 so [OpenSSL][]-based software will use it automatically.
 The layout of that folder mimics
 that of [OpenSSL][]'s `c_rehash` utility.
+
+In addition, file `roots.pem` is placed
+in the said folder.
+It contains all root certificates in PEM format
+concatenated together.
+It can also be used by most cryptography software.
+In particular, `OpenSSL` will take it into account if one say
+```cmd
+set SSL_CERT_FILE = %SSL_CERT_DIR%\roots.pem
+```
 
 ## Availability
 
@@ -133,6 +170,7 @@ See also [OpenSSL::Win::Root][].
 [node-forge]: https://github.com/digitalbazaar/forge
 [OpenSSL::Win::Root]: https://github.com/ukoloff/openssl-win-root
 [Node.js]: http://nodejs.org/
+[Buffer]: https://nodejs.org/api/buffer.html
 [Ruby]: https://www.ruby-lang.org/
 [node.pem]: https://github.com/nodejs/node/blob/master/src/node_root_certs.h
 [node/4175]: https://github.com/nodejs/node/issues/4175

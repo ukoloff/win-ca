@@ -2,7 +2,7 @@ self = require '..'
 
 ca = []
 
-console.time 'fetch'
+console.time 'Fetch'
 
 self.each self.der2.der, (pem)->
   ca.push pem
