@@ -29,7 +29,6 @@
   },
   "license": "ISC",
   "dependencies": {
-    "split": "^1.0.1",
     "win-ca": "^2.1.0"
   }
 }
