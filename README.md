@@ -171,12 +171,15 @@ intranet sites from Windows machines.
 This builds both `x86` and `x64` versions with [N-API][] support.
 For older Node.js versions standalone binary utility is built.
 
+## See also
+
+- [OpenSSL::Win::Root][] for Ruby version
+- [mac-ca][] for Mac OS version
+
 ## Credits
 
 Uses [node-forge][]
 and used to use [node-ffi-napi][] (ancestor of [node-ffi][]).
-
-See also [OpenSSL::Win::Root][].
 
 [node-ffi]: https://github.com/node-ffi/node-ffi
 [node-ffi-napi]: https://github.com/node-ffi-napi/node-ffi-napi
@@ -192,3 +195,4 @@ See also [OpenSSL::Win::Root][].
 [N-API]: https://nodejs.org/api/n-api.html
 [N-API-support]: https://github.com/nodejs/node-addon-api/blob/master/index.js#L17
 [VSCode]: https://code.visualstudio.com/
+[mac-ca]: https://github.com/jfromaniello/mac-ca
