@@ -7,6 +7,7 @@ shallow_clone: true
 
 environment:
   matrix:
+    - NOV: 11
     - NOV: 10
     - NOV: 9
     - NOV: 8
