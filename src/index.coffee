@@ -3,9 +3,12 @@ if process.platform != 'win32'
 
 require './format.oids'
 
+isElectron = require 'is-electron'
+
 @der2 = require './der2'
 
-@each = if @nApi = !!process.versions.napi
+@electron = electron = do isElectron
+@each = if electron or @nApi = !!process.versions.napi
   require './each'
 else
   require './each.fallback'

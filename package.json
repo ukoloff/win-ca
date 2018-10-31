@@ -1,6 +1,6 @@
 {
   "name": "win-ca",
-  "version": "2.1.0",
+  "version": "2.1.0-electron",
   "description": "Get Windows System Root certificates",
   "main": "lib",
   "files": [
@@ -34,6 +34,7 @@
   },
   "homepage": "https://github.com/ukoloff/win-ca",
   "dependencies": {
+    "is-electron": "^2.2.0",
     "node-forge": "^0.7.5",
     "split": "^1.0.1"
   },
