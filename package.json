@@ -22,7 +22,9 @@
     "tls",
     "ca",
     "root",
-    "windows"
+    "windows",
+    "vscode",
+    "electron"
   ],
   "author": {
     "name": "Stas Ukolov",
