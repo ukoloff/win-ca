@@ -5,6 +5,10 @@ cache:
 
 shallow_clone: true
 
+matrix:
+  allow_failures:
+    - NOV: 11
+
 environment:
   matrix:
     - NOV: 11
@@ -16,9 +20,6 @@ environment:
     - NOV: 5
     - NOV: 4
     - NOV: 0
-
-    allow_failures:
-      - NOV: 11
 
   NOV_LTS: 8
 
