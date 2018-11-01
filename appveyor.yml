@@ -5,8 +5,13 @@ cache:
 
 shallow_clone: true
 
+matrix:
+  allow_failures:
+    - NOV: 11
+
 environment:
   matrix:
+    - NOV: 11
     - NOV: 10
     - NOV: 9
     - NOV: 8

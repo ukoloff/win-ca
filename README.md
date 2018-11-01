@@ -148,6 +148,13 @@ For other Node.js versions
 speciall fallback utility is called
 in the background to fetch the list anyway.
 
+## Electron
+
+[Electron][] uses its own N-API,
+so if it is detected,
+the same fallback is used
+as for old Node.js.
+
 ## VSCode extension
 
 Special [extension](vscode) for [VSCode][]
@@ -196,3 +203,4 @@ and used to use [node-ffi-napi][] (ancestor of [node-ffi][]).
 [N-API-support]: https://github.com/nodejs/node-addon-api/blob/master/index.js#L17
 [VSCode]: https://code.visualstudio.com/
 [mac-ca]: https://github.com/jfromaniello/mac-ca
+[Electron]: https://electronjs.org/
