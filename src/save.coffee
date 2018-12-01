@@ -6,13 +6,22 @@ path = require 'path'
 
 all = require './all'
 hash = require './hash'
-mkdir = require './mkdir'
+mkdir = require 'make-dir'
 der2 = require './der2'
+paths = require './paths'
 
-exports.path =
-dst = path.join __dirname, '../pem'
+do create = ->
+  unless paths.length
+    # Cannot create folders
+    return
 
-mkdir dst, ->
+  mkdir dst = do do paths.shift
+  .then ->
+    ok dst
+  .catch create
+
+ok = (dst)->
+  exports.path = dst
   process.env.SSL_CERT_DIR = dst
 
   list = all der2.der
