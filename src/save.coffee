@@ -21,7 +21,8 @@ do create = ->
   .catch create
 
 ok = (dst)->
-  exports.path = dst
+  require '.'
+  .path = dst
   process.env.SSL_CERT_DIR = dst
 
   list = all der2.der

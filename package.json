@@ -1,6 +1,6 @@
 {
   "name": "win-ca",
-  "version": "2.3.0-beta",
+  "version": "2.3.1-beta",
   "description": "Get Windows System Root certificates",
   "main": "lib",
   "files": [
