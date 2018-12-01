@@ -1,7 +1,6 @@
 ###
 Possible candidates to save PEM files
 ###
-fs = require 'fs'
 path = require 'path'
 
 module.exports = [
