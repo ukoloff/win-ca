@@ -133,6 +133,20 @@ In particular, `OpenSSL` will take it into account if one say
 set SSL_CERT_FILE = %SSL_CERT_DIR%\roots.pem
 ```
 
+The folder is likely to be located
+inside `win-ca` module folder,
+but it is sometimes not writable
+to current process
+(see `UAC` etc.).
+In the latter case,
+`win-ca` will try
+to save PEM-files inside
+user profile
+and if this also fails,
+no files will be saved
+but root certificates will be
+still available programmatically.
+
 ## Availability
 
 Current version uses [N-API][],
