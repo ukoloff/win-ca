@@ -155,6 +155,8 @@ so if it is detected,
 the same fallback is used
 as for old Node.js.
 
+See [Minimal Electron application using win-ca](https://github.com/ukoloff/electron-win-ca).
+
 ## VSCode extension
 
 Special [extension](vscode) for [VSCode][]
