@@ -162,6 +162,13 @@ For other Node.js versions
 speciall fallback utility is called
 in the background to fetch the list anyway.
 
+If you wish to use this fallback engine
+(even for modern Node.js),
+you can
+```js
+require('win-ca/fallback')
+```
+
 ## Electron
 
 [Electron][] uses its own N-API,

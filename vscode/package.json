@@ -1,7 +1,7 @@
 {
   "name": "win-ca",
   "private": true,
-  "version": "2.3.1",
+  "version": "2.4.0",
   "description": "Make Trusted Root Certificates @Windows available to VSCode extensions",
   "icon": "win-ca.png",
   "main": "index.js",
@@ -30,6 +30,6 @@
   },
   "license": "ISC",
   "dependencies": {
-    "win-ca": "^2.3.1"
+    "win-ca": "^2.4.0"
   }
 }
