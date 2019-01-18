@@ -4,7 +4,8 @@
   "description": "Get Windows System Root certificates",
   "main": "lib",
   "files": [
-    "lib"
+    "lib",
+    "fallback"
   ],
   "scripts": {
     "nvm$": "n-api\\nvm$deploy",
