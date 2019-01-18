@@ -1,10 +1,11 @@
 {
   "name": "win-ca",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "description": "Get Windows System Root certificates",
   "main": "lib",
   "files": [
-    "lib"
+    "lib",
+    "fallback"
   ],
   "scripts": {
     "nvm$": "n-api\\nvm$deploy",

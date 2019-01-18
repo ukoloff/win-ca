@@ -1,4 +1,4 @@
-require('win-ca')
+require('win-ca/fallback')
 
 exports.activate = activate
 
