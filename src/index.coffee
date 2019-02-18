@@ -1,20 +1,18 @@
-if process.platform != 'win32'
-  return
+if process.platform == 'win32'
+  require './format.oids'
 
-require './format.oids'
+  @der2 = require './der2'
 
-@der2 = require './der2'
+  nApi = !!process.versions.napi
+  nApi &&= @ == require '../fallback'
+  nApi &&= not @electron = do require 'is-electron'
 
-nApi = !!process.versions.napi
-nApi &&= @ == require '../fallback'
-nApi &&= not @electron = do require 'is-electron'
+  @each = require if @nApi = nApi
+    './each'
+  else
+    './each.fallback'
 
-@each = require if @nApi = nApi
-  './each'
-else
-  './each.fallback'
+  @all = require './all'
 
-@all = require './all'
-
-require './inject'
-require './save'
+  require './inject'
+  require './save'
