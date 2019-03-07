@@ -1,18 +1,48 @@
 {
-  "name": "n-api",
-  "private": true,
-  "version": "1.2.3",
-  "description": "",
+  "name": "win-ca-lib",
+  "version": "2.4.1",
+  "description": "Get Windows System Root certificates",
   "os": [
     "win32"
   ],
   "gypfile": true,
-  "main": "index.js",
+  "main": "build/Release/crypt32",
+  "files": [
+    "binding.gyp",
+    "crypt32.cc",
+    "roots.c"
+  ],
   "scripts": {
     "test": "node test",
     "deploy": "node deploy"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://ukoloff@github.com/ukoloff/win-ca.git"
+  },
+  "keywords": [
+    "n-api",
+    "ssl",
+    "tls",
+    "ca",
+    "root",
+    "windows",
+    "vscode",
+    "electron"
+  ],
+  "author": {
+    "name": "Stas Ukolov",
+    "email": "ukoloff@gmail.com"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ukoloff/win-ca/issues"
+  },
+  "homepage": "https://github.com/ukoloff/win-ca",
+  "dependencies": {
+    "node-addon-api": "^1.3.0"
+  },
+  "devDependencies": {
+    "bindings": "^1.3.0"
+  }
 }
