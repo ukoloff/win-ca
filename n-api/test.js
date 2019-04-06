@@ -51,7 +51,7 @@ function nApi() {
   }
 
   console.log('Starting N-API connection...')
-  crypt = require('bindings')('crypt32')
+  var crypt = require('bindings')('crypt32')
   var a = crypt()
 
   var N = 0

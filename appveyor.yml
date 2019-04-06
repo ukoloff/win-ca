@@ -27,14 +27,14 @@ platform:
   - x86
 
 install:
-  - ps: Install-Product node $env:NOV_LTS x86
+  - ps: Install-Product node $env:NOV_LTS x64
   - npm install
   - npm run pretest
   - cd n-api
   - npm install
   - node test
   - node deploy
-  - ps: Install-Product node $env:NOV_LTS x64
+  - ps: Install-Product node $env:NOV_LTS x86
   - npm install
   - node test
   - node deploy
