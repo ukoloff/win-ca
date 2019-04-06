@@ -32,8 +32,11 @@ Napi::FunctionReference Crypt32::constructor;
 Crypt32::Crypt32(const Napi::CallbackInfo& info)
     : Napi::ObjectWrap<Crypt32>(info), hStore(openStore(info)) {}
 
-HCERTSTORE Crypt32::openStore(const Napi::CallbackInfo&) {
-  return CertOpenSystemStoreA(0, "ROOT");
+HCERTSTORE Crypt32::openStore(const Napi::CallbackInfo& info) {
+  return CertOpenSystemStoreA(
+      0, info.Length() > 0 && info[0].IsString()
+             ? info[0].As<Napi::String>().Utf8Value().c_str()
+             : "ROOT");
 }
 
 Napi::Value Crypt32::next(const Napi::CallbackInfo& info) {
