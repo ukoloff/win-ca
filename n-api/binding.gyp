@@ -9,7 +9,7 @@
         "-fno-exceptions"
       ],
       "sources": [
-        "crypt32.cc"
+        "crypt32.cpp"
       ],
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")"

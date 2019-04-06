@@ -21,7 +21,7 @@ class Crypt32 : public Napi::ObjectWrap<Crypt32> {
   char* begin() const { return (char*)pCtx->pbCertEncoded; }
   char* end() const { return begin() + pCtx->cbCertEncoded; }
 
-  friend Napi::Object crypt32nit(Napi::Env, Napi::Object);
+  friend Napi::Object crypt32init(Napi::Env, Napi::Object);
   friend Napi::Object crypt32exports(const Napi::CallbackInfo&);
 };
 
