@@ -1,7 +1,7 @@
 version: 1.0.{build}-{branch}
 
 cache:
-  - node_modules
+  - node_modules -> appveyor.yml
 
 shallow_clone: true
 
