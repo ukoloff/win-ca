@@ -11,7 +11,7 @@ shallow_clone: true
 
 environment:
   matrix:
-    - NOV: 11
+    # - NOV: 11
     - NOV: 10
     - NOV: 9
     - NOV: 8
@@ -32,6 +32,7 @@ install:
   - npm run pretest
   - cd n-api
   - npm install
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - node test
   - node deploy
   - ps: Install-Product node $env:NOV_LTS x86
