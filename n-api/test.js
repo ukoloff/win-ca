@@ -52,7 +52,7 @@ function nApi() {
 
   console.log('Starting N-API connection...')
   crypt = require('bindings')('crypt32')
-  var a = new crypt
+  var a = crypt()
 
   var N = 0
   console.log('Fetching...')
