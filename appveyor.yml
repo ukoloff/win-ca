@@ -1,7 +1,7 @@
 version: 1.0.{build}-{branch}
 
-cache:
-  - node_modules
+# cache:
+#   - node_modules
 
 shallow_clone: true
 
@@ -32,7 +32,7 @@ install:
   - npm run pretest
   - cd n-api
   - npm install
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - node test
   - node deploy
   - ps: Install-Product node $env:NOV_LTS x86
