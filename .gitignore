@@ -42,3 +42,4 @@ jspm_packages
 /pem
 
 .*
+package-lock.json
