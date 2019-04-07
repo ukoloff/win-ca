@@ -1,0 +1,4 @@
+test/**/*.{js,ls,coffee}
+--require appveyor-mocha
+--require coffee-script/register
+--require livescript

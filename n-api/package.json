@@ -9,7 +9,7 @@
   "gypfile": true,
   "main": "index.js",
   "scripts": {
-    "test": "node test",
+    "test": "mocha",
     "deploy": "node deploy"
   },
   "keywords": [],

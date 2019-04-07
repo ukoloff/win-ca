@@ -33,10 +33,12 @@ install:
   - cd n-api
   - npm install
   - node test
+  - npm test
   - node deploy
   - ps: Install-Product node $env:NOV_LTS x64
   - npm install
   - node test
+  - npm test
   - node deploy
   - cd ..
   - ps: Install-Product node $env:NOV $env:PLATFORM
