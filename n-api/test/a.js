@@ -1,6 +1,6 @@
-describe("JavaScript", ()=> {
+suite("JavaScript", ()=> {
 
-  it("is ok", ()=> {
+  test("is ok", ()=> {
 
   })
 

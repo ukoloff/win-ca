@@ -1,2 +1,2 @@
-describe "CoffeeScript", ->
-  it "is ok", ->
+suite "CoffeeScript", ->
+  test "is ok", ->

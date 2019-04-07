@@ -1,4 +1,6 @@
 test/**/*.{js,ls,coffee}
+--ui tdd
+--reporter dot
 --require appveyor-mocha
 --require coffee-script/register
 --require livescript
