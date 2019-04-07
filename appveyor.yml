@@ -32,13 +32,11 @@ install:
   - npm run pretest
   - cd n-api
   - npm install
-  - node test
-  - ..\node_modules\.bin\mocha
+  - npm test
   - node deploy
   - ps: Install-Product node $env:NOV_LTS x64
   - npm install
-  - node test
-  - ..\node_modules\.bin\mocha
+  - npm test
   - node deploy
   - cd ..
   - ps: Install-Product node $env:NOV $env:PLATFORM
