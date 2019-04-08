@@ -1,35 +1,44 @@
-require! <[ path child_process ./common]>
+require! <[ path child_process split ./common]>
 
 bin = path.join __dirname, \../build/Release/roots
 
 suite "Fallback @#{process.arch}" ->
 
-  suite "sync" ->
+  suite "sync" !->
     title = @title
 
     for name, args of common.samples
       let name, args
-        splitter = common.splitter title, name
         # Generate test
         <-! test name
-        splitter.end do
-          child_process.spawnSync bin, args .stdout
+        split do
+          common.assert509 title, name, unHex
+        .end do
+          child_process.spawnSync bin, args
+          .stdout
 
-  suite "async" ->
+  suite "async" !->
     title = @title
 
     for name, args of common.samples
       let name, args
-        splitter = common.splitter title, name
         # Generate test
         <- test name
         var callback
-        out = new Promise (resolve, reject) -> callback := resolve
+        out = new Promise (resolve, reject) ->
+          callback := resolve
 
         child_process.spawn bin, args
         .stdout
-        .pipe splitter
+        .pipe do
+          split common.assert509 title, name, unHex
         .on \end callback
 
         # Return promise to make test async
         out
+
+bufferFrom = Buffer.from || (data, encoding)->
+  new Buffer data, encoding
+
+function unHex
+  bufferFrom it, 'hex'

@@ -1,38 +1,19 @@
-require! <[ assert split node-forge ]>
+require! <[ assert node-forge ]>
 
-@samples =
+export samples =
   total:  <[]>
   root:   <[ root ]>
   ca:     <[ ca ]>
   both:   <[ root ca ]>
 
+# Final checks...
 suiteTeardown ~>
   check @sync
   check @async
+  # check @DLL
 
   equal @sync, @async
 
-@splitter = splitter
-
-bufferFrom = Buffer.from || (data, encoding)->
-  new Buffer data, encoding
-
-# Build Splitter for line count
-~function splitter(title, variable)
-  split !~>
-    return unless it.length
-
-    tree = bufferFrom it, 'hex'
-      .toString 'binary'
-      |> nodeForge.asn1.fromDer
-    assert tree.value.length, "Invalid certificate"
-
-    store = @[title] ||= {}
-    store[variable] ||= 0
-    value = ++store[variable]
-    assert value < 1000, "Too many certificates in store"
-
-# Final checks...
 function check
   return unless it
   for k, v of it
@@ -48,6 +29,25 @@ function equal(a, b)
   function eq(a, b)
     for k, v of a
       assert v == b[k]
+
+bufferFrom = Buffer.from || (data, encoding)->
+  new Buffer data, encoding
+
+# Build Checker if Buffer is valid X509 certificate (and count it)
+export ~function assert509(title, variable, preprocess = -> it)
+  store = @[title] ||= {}
+  store[variable] ||= 0
+
+  !~>
+    return unless it.length
+
+    tree = preprocess it
+      .toString 'binary'
+      |> nodeForge.asn1.fromDer
+    assert tree.value.length, "Invalid certificate"
+
+    value = ++store[variable]
+    assert value < 1000, "Too many certificates in store"
 
 <~ process.on \exit
 console.log \Total: @sync.total
