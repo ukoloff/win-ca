@@ -1,6 +1,5 @@
-test/**/*.{js,ls,coffee}
+test/*.ls
 --ui tdd
 --reporter dot
 --require appveyor-mocha
---require coffee-script/register
 --require livescript
