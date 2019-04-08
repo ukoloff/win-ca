@@ -1,4 +1,4 @@
-require! <[ assert node-forge ]>
+require! <[ assert split node-forge ]>
 
 @samples =
   total:  <[]>
@@ -12,14 +12,14 @@ suiteTeardown ~>
 
   equal @sync, @async
 
-@store = store
+@splitter = splitter
 
 bufferFrom = Buffer.from || (data, encoding)->
   new Buffer data, encoding
 
-# Build Incrementor for line count
-~function store(title, variable)
-  !~>
+# Build Splitter for line count
+~function splitter(title, variable)
+  split !~>
     return unless it.length
 
     tree = bufferFrom it, 'hex'
