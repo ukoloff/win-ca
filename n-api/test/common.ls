@@ -1,7 +1,7 @@
 require! <[ assert node-forge ]>
 
 export samples =
-  total:  <[]>
+  total:  <[ ]>
   root:   <[ root ]>
   ca:     <[ ca ]>
   both:   <[ root ca ]>
@@ -13,6 +13,7 @@ suiteTeardown ~>
   check @DLL
 
   equal @sync, @async
+  equal @sync, @DLL   if @DLL
 
 function check
   return unless it
@@ -46,8 +47,7 @@ export ~function assert509(title, variable, preprocess = -> it)
       |> nodeForge.asn1.fromDer
     assert tree.value.length, "Invalid certificate"
 
-    value = ++store[variable]
-    assert value < 1000, "Too many certificates in store"
+    assert ++store[variable] < 1000, "Too many certificates in store"
 
 <~! process.on \exit
 console.log \Total: @sync.total

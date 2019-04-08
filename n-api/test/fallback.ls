@@ -10,8 +10,7 @@ suite "Fallback @#{process.arch}" ->
     for let name, args of common.samples
       # Generate test
       <-! test name
-      split do
-        common.assert509 title, name, unHex
+      splitter title, name
       .end do
         child_process.spawnSync bin, args
         .stdout
@@ -28,8 +27,7 @@ suite "Fallback @#{process.arch}" ->
 
       child_process.spawn bin, args
       .stdout
-      .pipe do
-        split common.assert509 title, name, unHex
+      .pipe splitter title, name
       .on \end callback
 
       # Return promise to make test async
@@ -40,3 +38,6 @@ bufferFrom = Buffer.from || (data, encoding)->
 
 function unHex
   bufferFrom it, 'hex'
+
+function splitter(title, name)
+  split common.assert509 title, name, unHex
