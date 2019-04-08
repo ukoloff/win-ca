@@ -2,7 +2,11 @@
   "name": "n-api",
   "private": true,
   "version": "1.2.3",
-  "description": "",
+  "description": "Build win32 binaries",
+  "repository": {
+    "type": "git",
+    "url": "git+https://ukoloff@github.com/ukoloff/win-ca.git"
+  },
   "os": [
     "win32"
   ],
