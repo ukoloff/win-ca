@@ -10,7 +10,7 @@ export samples =
 suiteTeardown ~>
   check @sync
   check @async
-  # check @DLL
+  check @DLL
 
   equal @sync, @async
 
@@ -26,7 +26,7 @@ function equal(a, b)
   eq a, b
   eq b, a
 
-  function eq(a, b)
+  !function eq(a, b)
     for k, v of a
       assert v == b[k]
 
@@ -49,5 +49,5 @@ export ~function assert509(title, variable, preprocess = -> it)
     value = ++store[variable]
     assert value < 1000, "Too many certificates in store"
 
-<~ process.on \exit
+<~! process.on \exit
 console.log \Total: @sync.total
