@@ -23,10 +23,12 @@ function der
   it
 
 function pem
-  ['-----BEGIN CERTIFICATE-----'].concat do
-    it.toString \base64 .match /[^]{1,64}/g
-    '-----END CERTIFICATE-----'
-  .join "\r\n"
+  it .= toString \base64
+  lines = ['-----BEGIN CERTIFICATE-----']
+  for i til it.length by 64
+    lines.push it.substr i , 64
+  lines.push '-----END CERTIFICATE-----'
+  lines.join "\r\n"
 
 function txt
   self = require \../package
