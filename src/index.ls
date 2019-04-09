@@ -1,12 +1,10 @@
-require! <[ is-electron ]>
-
 module.exports = api
 
 api <<<
   disabled: disabled = process.platform != 'win32'
   n-api: n-api = !!process.versions.napi
     and api == require \../fallback
-    and not api.electron = isElectron!
+    and not api.electron = do require \is-electron
   der2: require \./der2
   all:  all
   each: each
@@ -32,9 +30,9 @@ function all
   result
 
 function upgradeParams(args, defaults = {})
-  format = args[0]
+  format = +args[0]
   defaults.format ?= if api.der2[format]?
-    api.der2[* - 1]
+    api.der2.forge
   else
     format
 
@@ -47,5 +45,22 @@ function upgradeParams(args, defaults = {})
   defaults
 
 # API v3
-function api
-  void
+!function api
+  member = if it.async then \async else \sync
+
+  engine = if disabled
+    require \./none
+  else if it.fallback ? !nApi
+    require \./fallback
+  else
+    require \./n-api
+  engine .= [member]
+
+  data = {}
+
+  if it.generator
+    data.$ = engine
+    return require \./generator .[member] <| data
+
+  engine data
+
