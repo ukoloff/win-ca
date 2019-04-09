@@ -15,26 +15,26 @@ if api == require \../api
 
 # API v[12]
 !function each
-  api upgradeParams &
+  upgradeAPI &
 
 !function async
-  api upgradeParams & do
+  upgradeAPI & do
     async: true
 
 function all
   result = []
-  api upgradeParams & do
+  upgradeAPI & do
     ondata: ->
       result.push it
     onend: ->
   result
 
-function upgradeParams(args, defaults = {})
-  format = +args[0]
+!function upgradeAPI(args, defaults = {})
+  format = args[0]
   defaults.format ?= if api.der2[format]?
-    api.der2.forge
-  else
     format
+  else
+    api.der2.forge
 
   cb = args[1] or format
   defaults.ondata ?= !->
@@ -42,7 +42,7 @@ function upgradeParams(args, defaults = {})
   defaults.onend ?= !->
     cb?!
 
-  defaults
+  api defaults
 
 # API v3
 !function api
@@ -56,11 +56,12 @@ function upgradeParams(args, defaults = {})
     require \./n-api
   engine .= [member]
 
-  data = {}
+  data =
+    onend: ->
 
   if it.generator
     data.$ = engine
-    return require \./generator .[member] <| data
+    return require \./generator .[member] data
 
   engine data
 
