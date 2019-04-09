@@ -1,0 +1,4 @@
+test/*.ls
+--reporter dot
+--require appveyor-mocha
+--require livescript

@@ -9,9 +9,9 @@
   ],
   "scripts": {
     "nvm$": "n-api\\nvm$deploy",
-    "pretest": "coffee build",
+    "pretest": "lsc -cbo lib src",
     "postinstall": "node -e \"try{require('.')}catch(e){}\"",
-    "test": "coffee test"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",

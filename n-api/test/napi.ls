@@ -1,6 +1,5 @@
 require! <[ ./common ]>
 
-
 suite "N-API @#{process.arch}" !->
 
   title = \DLL

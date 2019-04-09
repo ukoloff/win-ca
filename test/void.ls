@@ -1,0 +1,2 @@
+context \Mocha ->
+  specify \works ->
