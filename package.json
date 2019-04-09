@@ -5,6 +5,7 @@
   "main": "lib",
   "files": [
     "lib",
+    "api",
     "fallback"
   ],
   "scripts": {

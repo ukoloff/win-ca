@@ -1,10 +1,19 @@
+require! <[ is-electron ]>
+
 module.exports = api
 
 api <<<
+  disabled: disabled = process.platform != 'win32'
+  n-api: n-api = !!process.versions.napi
+    and api == require \../fallback
+    and not api.electron = isElectron!
   der2: require \./der2
   all:  all
   each: each
 each.async = async
+
+if api == require \../api
+  api {+inject, +save}
 
 # API v[12]
 !function each
