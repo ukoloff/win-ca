@@ -15,10 +15,15 @@ specify "work" !->
         "string"
 
 specify "are curried" !->
-  for k, v of me.der2
+  for , v of me.der2
     assertEq do
       me.der2 v, der
       me.der2 v <| der
+
+specify "do nothing by default" !->
+  fn = me.der2!
+  for i from -5 to 5
+    assert.equal i, fn i
 
 !function assertEq(a, b)
   assert.equal do
