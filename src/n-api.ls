@@ -1,6 +1,6 @@
 # Fetch certificates via N-API
 
-crypt32 = require "./crypt32-#{process.arch}"
+crypt32 = require "./mock/crypt32-#{process.arch}"
 
 export !function sync(args)
   var handle
@@ -10,7 +10,7 @@ export !function sync(args)
 
   !function next
     while current < args.length
-      handle ?= if current < 0
+      handle ?:= if current < 0
         crypt32!
       else
         crypt32 args[current]
@@ -29,8 +29,8 @@ export !function sync(args)
 
   !function run
     while next!
-      cb that
-    cb!
+      it that
+    it!
 
 export function async
   res = sync it
