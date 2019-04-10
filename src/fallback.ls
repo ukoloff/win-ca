@@ -5,10 +5,7 @@ require! <[ path child_process split ]>
 bin = path.join __dirname, 'roots'
 
 export !function sync(args)
-  return do
-    next: next
-    return: done
-    run: run
+  return {run, next, done}
 
   var queue, index
 
@@ -34,10 +31,7 @@ export !function sync(args)
       callback!
 
 export !function async(args)
-  return do
-    next: next
-    return: done
-    run: run
+  return {run, next, done}
 
   var queue, requests, finished
 
@@ -53,12 +47,8 @@ export !function async(args)
     if queue.length
       return Promise.resolve queue.shift!
 
-    var resolver
-    res =  new Promise !->
-      resolver := it
-
-    requests.push resolver
-    return res
+    return new Promise !->
+      requests.push it
 
     !function enqueue
       unless it
@@ -86,7 +76,7 @@ export !function async(args)
       callback!
 
 function splitter(callback)
-  return consumer !->
+  split !->
     if it.length
       callback buffer-from it, 'hex'
 

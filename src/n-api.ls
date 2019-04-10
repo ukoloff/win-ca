@@ -6,10 +6,7 @@ export !function sync(args)
   var handle
   current = if args.length then 0 else -1
 
-  return do
-    next: next
-    return: done
-    run: run
+  return {next, done, run}
 
   !function next
     while current < args.length
