@@ -2,33 +2,42 @@
 
 crypt32 = require "./crypt32-#{process.arch}"
 
-export function sync(args)
+export !function sync(args)
   var handle
   current = if args.length then 0 else -1
 
-  next: next
-  return: done
-  run: run
+  return do
+    next: next
+    return: done
+    run: run
 
-  function next
-    void
+  !function next
+    while current < args.length
+      handle ?= if current < 0
+        crypt32!
+      else
+        crypt32 args[current]
 
-  function done
-    void
+      if handle.next!
+        return that
 
-  function run
-    void
+      handle.done!
+      handle := void
+      current++
 
-export function async(args)
-  next: next
-  return: done
-  run: run
+  !function done
+    handle?.done!
+    handle := void
+    current := args.length
 
-  function next
-    void
+  !function run
+    while next!
+      cb that
+    cb!
 
-  function done
-    void
-
-  function run
-    void
+export function async
+  res = sync it
+  next = res.next
+  res.next = ->
+    Promise.resolve next!
+  res

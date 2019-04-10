@@ -1,29 +1,23 @@
 # No certificates (not @win32)
 
 export function sync
-  next: next
-  return: done
-  run: run
+  return do
+    next: next
+    return: done
+    run: run
 
   function next
     void
 
   function done
-    it
+    void
 
-  function run
+  !function run
     it!
 
 export function async
-  next: next
-  return: done
-  run: run
-
-  function next
-    void
-
-  function done
-    it
-
-  function run
-    it!
+  res = sync it
+  next = res.next
+  res.next = ->
+    Promise.resolve next!
+  res
