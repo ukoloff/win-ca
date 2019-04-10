@@ -41,7 +41,7 @@ HCERTSTORE Crypt32::openStore(const Napi::CallbackInfo& info) {
 
 Napi::Value Crypt32::next(const Napi::CallbackInfo& info) {
   pCtx = CertEnumCertificatesInStore(hStore, pCtx);
-  if (!pCtx) return info.Env().Undefined();
+  if (!pCtx) return done(info);
   auto pem = Napi::Buffer<uint8_t>::New(info.Env(), pCtx->cbCertEncoded);
   std::copy(begin(), end(), pem.Data());
   return pem;
@@ -49,6 +49,7 @@ Napi::Value Crypt32::next(const Napi::CallbackInfo& info) {
 
 Napi::Value Crypt32::done(const Napi::CallbackInfo& info) {
   CertCloseStore(hStore, 0);
+  hStore = 0;
   return info.Env().Undefined();
 }
 
