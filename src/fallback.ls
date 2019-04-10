@@ -24,11 +24,11 @@ export !function sync(args)
 
   !function run(callback)
     splitter callback
+    .on \end ->
+      callback!
     .end do
       child_process.spawnSync bin, args
       .stdout
-    .on \end ->
-      callback!
 
 export !function async(args)
   return {run, next, done}
