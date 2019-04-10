@@ -2,7 +2,7 @@
 
 require! <[ path child_process split ]>
 
-bin = path.join __dirname, 'roots'
+bin = path.join __dirname, 'mock/roots'
 
 export !function sync(args)
   return {run, next, done}
@@ -23,7 +23,7 @@ export !function sync(args)
     queue := []
 
   !function run(callback)
-    spliter callback
+    splitter callback
     .end do
       child_process.spawnSync bin, args
       .stdout
