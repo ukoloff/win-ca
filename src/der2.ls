@@ -4,12 +4,19 @@ module.exports = der2
 
 forge$ = require  \./forge
 
-formatters = {der, pem, txt, asn1, forge}
+formatters = {der, pem, txt, asn1, x509}
 
 list = []
 for k, v of formatters
   der2[k] = list.length
   list.push v
+
+der2.forge = der2.x509
+
+is-buffer = Buffer.is-buffer
+
+buffer-from = Buffer.from || (data, encoding)->
+  new Buffer data, encoding
 
 function der2(format, blob)
   converter = list[format] || list[0]
@@ -20,10 +27,13 @@ function der2(format, blob)
 
 # Individual converters below
 function der
-  it
+  if is-buffer it
+    it
+  else
+    buffer-from it, \binary
 
 function pem
-  it .= toString \base64
+  it = der it .toString \base64
   lines = ['-----BEGIN CERTIFICATE-----']
   for i til it.length by 64
     lines.push it.substr i , 64
@@ -45,8 +55,9 @@ function txt
 
 function asn1
   asn1parser = forge$!asn1
-  crt = asn1parser.fromDer it.toString 'binary' # Certificate
-    .value[0].value                             # TBSCertificate
+  it .= toString \binary
+  crt = asn1parser.fromDer it   # Certificate
+    .value[0].value             # TBSCertificate
   serial = crt[0]
   hasSerial =
     serial.tagClass == asn1parser.Class.CONTEXT_SPECIFIC and
@@ -58,7 +69,7 @@ function asn1
   valid:   crt[3]
   subject: crt[4]
 
-function forge
+function x509
   it.toString 'binary'
   |>  forge$!asn1.fromDer
   |>  forge$!pki.certificateFromAsn1
