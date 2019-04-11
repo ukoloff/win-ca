@@ -36,35 +36,36 @@ export !function async(args)
   var queue, requests, finished
 
   !function next
-    if finished
-      return Promise.resolve!
-
     unless queue
       queue := []
       requests := []
       run enqueue
 
-    if queue.length
-      return Promise.resolve queue.shift!
-
-    return new Promise !->
-      requests.push it
+    return if queue.length
+      Promise.resolve queue.shift!
+    else if finished
+      Promise.resolve!
+    else
+      new Promise !->
+        requests.push it
 
     !function enqueue
+      if finished
+        return
+
       unless it
-        done!
-        return
-
-      if requests.length
+        suspend!
+      else if requests.length
         requests.shift! it
-        return
-
-      unless finished
+      else
         queue.push it
 
   !function done
-    finished := true
     queue := []
+    suspend!
+
+  !function suspend
+    finished := true
     for resolver in requests
       resolver!
 
