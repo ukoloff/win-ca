@@ -21,17 +21,12 @@ suite "Fallback @#{process.arch}" ->
     for let name, args of common.samples
       # Generate test
       <- test name
-      var callback
-      out = new Promise (resolve, reject) ->
-        callback := resolve
-
-      child_process.spawn bin, args
-      .stdout
-      .pipe splitter title, name
-      .on \end callback
-
       # Return promise to make test async
-      out
+      new Promise !->
+        child_process.spawn bin, args
+        .stdout
+        .pipe splitter title, name
+        .on \end it
 
 bufferFrom = Buffer.from || (data, encoding)->
   new Buffer data, encoding
