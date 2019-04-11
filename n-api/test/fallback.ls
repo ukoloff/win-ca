@@ -4,6 +4,7 @@ bin = path.join __dirname, \../build/Release/roots
 
 suite "Fallback @#{process.arch}" ->
 
+
   suite "sync" !->
     title = @title
 
@@ -22,11 +23,11 @@ suite "Fallback @#{process.arch}" ->
       # Generate test
       <- test name
       # Return promise to make test async
-      new Promise !->
-        child_process.spawn bin, args
-        .stdout
-        .pipe splitter title, name
-        .on \end it
+      <-! new Promise!
+      child_process.spawn bin, args
+      .stdout
+      .pipe splitter title, name
+      .on \end it
 
 bufferFrom = Buffer.from || (data, encoding)->
   new Buffer data, encoding
