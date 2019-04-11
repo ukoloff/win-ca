@@ -19,8 +19,8 @@ class Crypt32 : public Napi::ObjectWrap<Crypt32> {
   Napi::Value done(const Napi::CallbackInfo&);
   Napi::Value none(const Napi::CallbackInfo&);
 
-  char* begin() const { return (char*)pCtx->pbCertEncoded; }
-  char* end() const { return begin() + pCtx->cbCertEncoded; }
+  const char* begin() const { return (char*)pCtx->pbCertEncoded; }
+  const char* end() const { return begin() + pCtx->cbCertEncoded; }
 
   friend Napi::Object crypt32init(Napi::Env, Napi::Object);
   friend Napi::Object crypt32exports(const Napi::CallbackInfo&);
@@ -42,11 +42,10 @@ HCERTSTORE Crypt32::openStore(const Napi::CallbackInfo& info) {
 
 Napi::Value Crypt32::next(const Napi::CallbackInfo& info) {
   if (!hStore) return done(info);
-  pCtx = CertEnumCertificatesInStore(hStore, pCtx);
-  if (!pCtx) return done(info);
-  auto pem = Napi::Buffer<uint8_t>::New(info.Env(), pCtx->cbCertEncoded);
-  std::copy(begin(), end(), pem.Data());
-  return pem;
+  return (pCtx = CertEnumCertificatesInStore(hStore, pCtx))
+             ? Napi::Buffer<uint8_t>::Copy(info.Env(), (const uint8_t*)begin(),
+                                           pCtx->cbCertEncoded)
+             : done(info);
 }
 
 Napi::Value Crypt32::done(const Napi::CallbackInfo& info) {
