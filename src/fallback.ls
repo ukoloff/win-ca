@@ -24,7 +24,7 @@ export !function sync(args)
 
   !function run(callback)
     splitter callback
-    .on \end ->
+    .on \end !->
       callback!
     .end do
       child_process.spawnSync bin, args
@@ -49,16 +49,16 @@ export !function async(args)
       new Promise !->
         requests.push it
 
-    !function enqueue
-      if finished
-        return
+  !function enqueue
+    if finished
+      return
 
-      unless it
-        suspend!
-      else if requests.length
-        requests.shift! it
-      else
-        queue.push it
+    unless it
+      suspend!
+    else if requests.length
+      requests.shift! it
+    else
+      queue.push it
 
   !function done
     queue := []
@@ -73,13 +73,12 @@ export !function async(args)
     child_process.spawn bin, args
     .stdout
     .pipe splitter callback
-    .on \end ->
+    .on \end !->
       callback!
 
 function splitter(callback)
-  split !->
-    if it.length
-      callback buffer-from it, 'hex'
+  line <-! split
+  callback buffer-from line, \hex if line.length
 
 buffer-from = Buffer.from || (data, encoding)->
   new Buffer data, encoding
