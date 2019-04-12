@@ -3,14 +3,19 @@ require! {
   \appveyor-mocha
 }
 
-module.exports = new Promise testRun
+module.exports = binary = new Promise testRun
+
+after !->
+  <-! binary.then
+  appveyorMocha.log "Found: #{if it then it.version else 'No OpenSSL'}"
 
 function testRun(success)
   run 'version', (error, ver)->
-    success if error then run
+    success unless error then run
+
+    run.version = ver
 
     <- process.on \exit
-    appveyorMocha.log "Found: #{if error then 'No OpenSSL' else ver}"
 
 function run(args, cb)
   if "string" == typeof args

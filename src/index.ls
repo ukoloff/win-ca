@@ -10,10 +10,8 @@ api <<<
   each: each
 each.async = async
 
-/*****************************************************************************************
 if api == require \../api
   api {+inject, +save}
-*****************************************************************************************/
 
 # API v[12]
 !function each
@@ -48,75 +46,76 @@ function all
 
 # API v3
 !function api(params)
-  member = if async = params.async then \async else \sync
-
   engine = if disabled
     require \./none
   else if params.fallback ? !nApi
     require \./fallback
   else
     require \./n-api
-  engine .= [member]
-
-  if false != params.unique
-    unique = do require \./unique
 
   unless store = params.store
     store = []
   else unless Array.isArray store
     store = [store]
 
-  engine = engine store
+  engine .= [if async = params.async then \async else \sync] store
+
+  Process = if async then asyncProcess else syncProcess
+
+  if false != params.unique
+    unique = do require \./unique
 
   if params.generator
     return do if async then asyncGenerator else syncGenerator
 
-  engine.run Process
+  engine.run !->
+    if !it or !unique or unique it
+      Process it
 
-  !function Process
-    if async
-      if it
-        params.ondata? it
-      else
-        params.onend?!
+  !function syncProcess
+    if it
+      params.ondata? it
     else
-      if it
-        later -> params.ondata? it
-      else
-        later -> params.onend?!
+      params.onend?!
+
+  !function asyncProcess
+    Promise.resolve it
+    .next syncProcess
+
+  function syncGenerator
+    (Symbol.iterator): myself
+    return: Return
+    next:   syncNext
+
+  function asyncGenerator
+    (Symbol.asyncIterator ? '@') : myself
+    return: Return
+    next:   asyncNext
+
+  function genProcess
+    Process it
+    done: !it
+    value: it
 
   function Return
     engine.done!
     done: true
     value: it
 
-  function syncGenerator
-    (Symbol.iterator): myself
-    return: Return
-    next: ->
-      while der = engine.next! and unique and not unique der
-        void
-      Process der
-      done: !der
-      value: der
+  function syncNext
+    while (der = engine.next!) and unique and not unique der
+      void
+    genProcess der
 
-  function asyncGenerator
-    (Symbol.asyncIterator ? '@') : myself
-    return: Return
-    next: ->
-      do function fire
-        Promise.resolve!
-        .next engine.next
-        .next ->
-          if it and unique and !unique it
-            fire!
-          else
-            Process it
-            done: !it
-            value: it
+  function asyncNext
+    do function fire
+      Promise.resolve!
+      .next engine.next
+      .next ->
+        if it and unique and !unique it
+          fire!
+        else
+          genProcess it
 
 function myself
   @
-
-function later
-  Promise.resolve!then later
