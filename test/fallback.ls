@@ -45,3 +45,14 @@ context "Fallback" !->
           fallback: true
           generator: true
           async: true
+
+      context "slow" !->
+
+        for let k, v of common.samples
+          <- specify k
+          common.assert509 @
+          me do
+            store: v
+            fallback: true
+            generator: true
+            async: true

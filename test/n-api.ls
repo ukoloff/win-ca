@@ -48,3 +48,14 @@ context "N-API" !->
           fallback: false
           generator: true
           async: true
+
+      context "slow" !->
+
+        for let k, v of common.samples
+          <- specify k
+          common.assert509 @
+          me do
+            store: v
+            fallback: false
+            generator: true
+            async: true
