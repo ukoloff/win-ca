@@ -5,7 +5,4 @@ export function sync
   done: ->
   run: -> it!
 
-export function async
-  next: -> Promise.resolve!
-  done: ->
-  run: -> it!
+export async = sync

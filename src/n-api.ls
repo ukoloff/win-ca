@@ -32,9 +32,18 @@ export !function sync(args)
       it that
     it!
 
-export function async
+export !function async
   res = sync it
   next = res.next
-  res.next = ->
-    Promise.resolve next!
-  res
+  res.run = run
+  return res
+
+  !function run(callback)
+    do function fire
+      Promise.resolve!
+      .next next
+      .next !->
+        if it
+          callback it
+          return fire!
+        callback!

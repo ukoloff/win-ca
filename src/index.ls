@@ -10,8 +10,10 @@ api <<<
   each: each
 each.async = async
 
+/*****************************************************************************************
 if api == require \../api
   api {+inject, +save}
+*****************************************************************************************/
 
 # API v[12]
 !function each
@@ -45,23 +47,76 @@ function all
   api defaults
 
 # API v3
-!function api
-  member = if it.async then \async else \sync
+!function api(params)
+  member = if async = params.async then \async else \sync
 
   engine = if disabled
     require \./none
-  else if it.fallback ? !nApi
+  else if params.fallback ? !nApi
     require \./fallback
   else
     require \./n-api
   engine .= [member]
 
-  data =
-    onend: ->
+  if false != params.unique
+    unique = do require \./unique
 
-  if it.generator
-    data.$ = engine
-    return require \./generator .[member] data
+  unless store = params.store
+    store = []
+  else unless Array.isArray store
+    store = [store]
 
-  engine data
+  engine = engine store
 
+  if params.generator
+    return do if async then asyncGenerator else syncGenerator
+
+  engine.run Process
+
+  !function Process
+    if async
+      if it
+        params.ondata? it
+      else
+        params.onend?!
+    else
+      if it
+        later -> params.ondata? it
+      else
+        later -> params.onend?!
+
+  function Return
+    engine.done!
+    done: true
+    value: it
+
+  function syncGenerator
+    (Symbol.iterator): myself
+    return: Return
+    next: ->
+      while der = engine.next! and unique and not unique der
+        void
+      Process der
+      done: !der
+      value: der
+
+  function asyncGenerator
+    (Symbol.asyncIterator ? '@') : myself
+    return: Return
+    next: ->
+      do function fire
+        Promise.resolve!
+        .next engine.next
+        .next ->
+          if it and unique and !unique it
+            fire!
+          else
+            Process it
+            done: !it
+            value: it
+
+function myself
+  @
+
+function later
+  Promise.resolve!then later
