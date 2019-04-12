@@ -19,8 +19,8 @@ class Crypt32 : public Napi::ObjectWrap<Crypt32> {
   Napi::Value done(const Napi::CallbackInfo&);
   Napi::Value none(const Napi::CallbackInfo&);
 
-  const char* begin() const { return (char*)pCtx->pbCertEncoded; }
-  const char* end() const { return begin() + pCtx->cbCertEncoded; }
+  const uint8_t* begin() const { return pCtx->pbCertEncoded; }
+  const uint8_t* end() const { return begin() + pCtx->cbCertEncoded; }
 
   friend Napi::Object crypt32init(Napi::Env, Napi::Object);
   friend Napi::Object crypt32exports(const Napi::CallbackInfo&);
@@ -43,7 +43,7 @@ HCERTSTORE Crypt32::openStore(const Napi::CallbackInfo& info) {
 Napi::Value Crypt32::next(const Napi::CallbackInfo& info) {
   if (!hStore) return done(info);
   return (pCtx = CertEnumCertificatesInStore(hStore, pCtx))
-             ? Napi::Buffer<uint8_t>::Copy(info.Env(), (const uint8_t*)begin(),
+             ? Napi::Buffer<uint8_t>::Copy(info.Env(), begin(),
                                            pCtx->cbCertEncoded)
              : done(info);
 }
@@ -71,13 +71,13 @@ Napi::Object crypt32exports(const Napi::CallbackInfo& info) {
 Napi::Object crypt32init(Napi::Env env, Napi::Object) {
   Napi::HandleScope scope(env);
 
-  Crypt32::constructor = Napi::Persistent(
-      Crypt32::DefineClass(env, "Crypt32",
-                           {
-                               Crypt32::InstanceMethod("done", &Crypt32::done),
-                               Crypt32::InstanceMethod("next", &Crypt32::next),
-                               Crypt32::InstanceMethod("none", &Crypt32::none),
-                           }));
+  Crypt32::constructor = Napi::Persistent(Crypt32::DefineClass(
+      env, "Crypt32",
+      {
+          Crypt32::InstanceMethod("done", &Crypt32::done),
+          Crypt32::InstanceMethod("next", &Crypt32::next),
+          //  Crypt32::InstanceMethod("none", &Crypt32::none),
+      }));
   Crypt32::constructor.SuppressDestruct();
   return Napi::Function::New(env, crypt32exports, "Crypt32");
 }
