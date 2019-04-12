@@ -1,4 +1,4 @@
-require! <[ ./common ]>
+require! <[ ./common ./me ]>
 
 context "Fallback" !->
 
@@ -9,12 +9,19 @@ context "Fallback" !->
       for let k, v of common.samples
         <- specify k
         common.assert509 @
+        me do
+          store: v
+          fallback: true
 
     context "generators" !->
 
       for let k, v of common.samples
         <- specify k
         common.assert509 @
+        me do
+          store: v
+          fallback: true
+          generator: true
 
   context "async" !->
 
@@ -23,9 +30,18 @@ context "Fallback" !->
       for let k, v of common.samples
         <- specify k
         common.assert509 @
+        me do
+          store: v
+          fallback: true
+          async: true
 
     context "generators" !->
 
       for let k, v of common.samples
         <- specify k
         common.assert509 @
+        me do
+          store: v
+          fallback: true
+          generator: true
+          async: true

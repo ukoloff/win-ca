@@ -10,10 +10,8 @@ api <<<
   each: each
 each.async = async
 
-/**********************************************************************************
 if api == require \../api
   api {+inject, +save}
-**********************************************************************************/
 
 # API v[12]
 !function each
@@ -48,7 +46,7 @@ function all
 
 # API v3
 !function api(params)
-  engine = if disabled
+  engine = if disabled or params.disabled
     require \./none
   else if params.fallback ? !nApi
     require \./fallback
@@ -82,7 +80,7 @@ function all
 
   !function asyncProcess
     Promise.resolve it
-    .next syncProcess
+    .then syncProcess
 
   function syncGenerator
     (Symbol.iterator): myself
@@ -112,8 +110,8 @@ function all
   function asyncNext
     do function fire
       Promise.resolve!
-      .next engine.next
-      .next ->
+      .then engine.next
+      .then ->
         if it and unique and !unique it
           fire!
         else

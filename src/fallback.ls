@@ -2,7 +2,7 @@
 
 require! <[ path child_process split ]>
 
-bin = path.join __dirname, 'mock/roots'
+bin = path.join __dirname, 'roots'
 
 export !function sync(args)
   return {run, next, done}

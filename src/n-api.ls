@@ -1,6 +1,6 @@
 # Fetch certificates via N-API
 
-crypt32 = require "./mock/crypt32-#{process.arch}"
+crypt32 = require "./crypt32-#{process.arch}"
 
 export !function sync(args)
   var handle
@@ -41,8 +41,8 @@ export !function async
   !function run(callback)
     do function fire
       Promise.resolve!
-      .next next
-      .next !->
+      .then next
+      .then !->
         if it
           callback it
           return fire!

@@ -12,12 +12,19 @@ context "N-API" !->
       for let k, v of common.samples
         <- specify k
         common.assert509 @
+        me do
+          store: v
+          fallback: false
 
     context "generators" !->
 
       for let k, v of common.samples
         <- specify k
         common.assert509 @
+        me do
+          store: v
+          fallback: false
+          generator: true
 
   context "async" !->
 
@@ -26,9 +33,18 @@ context "N-API" !->
       for let k, v of common.samples
         <- specify k
         common.assert509 @
+        me do
+          store: v
+          fallback: false
+          async: true
 
     context "generators" !->
 
       for let k, v of common.samples
         <- specify k
         common.assert509 @
+        me do
+          store: v
+          fallback: false
+          generator: true
+          async: true
