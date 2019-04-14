@@ -20,7 +20,7 @@ export function assert509(mocha-test)
   suite = mocha-test .= test
   suite = while suite .= parent
     suite.title.slice 0 1
-  suite .= join '' .toLowerCase!
+  suite .= reverse!join '' .toLowerCase!
   store = counts[suite] ||= {}
   store[variable = mocha-test.title] ||= 0
 

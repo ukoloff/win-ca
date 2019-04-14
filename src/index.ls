@@ -31,6 +31,9 @@ function all
 
 !function upgradeAPI(args, defaults = {})
   format = args[0]
+
+  defaults.unique = false
+
   defaults.format ?= if api.der2[format]?
     format
   else
