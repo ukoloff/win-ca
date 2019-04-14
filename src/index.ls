@@ -48,7 +48,7 @@ function all
   api defaults
 
 # API v3
-!function api(params)
+!function api(params = {})
   engine = if disabled or params.disabled
     require \./none
   else if params.fallback ? !nApi
