@@ -10,9 +10,13 @@ counts = {}
 
 # Final check
 after !~>
+  var first
   for k, v of counts
     checkCounts v
-
+    if first
+      assert.deepEqual v, first
+    else
+      first = v
 
 # Build Checker if Buffer is valid X509 certificate (and count it)
 export function assert509(mocha-test)
@@ -33,12 +37,11 @@ export function assert509(mocha-test)
     assert ++store[variable] < 1000, "Too many certificates in store"
 
 !function checkCounts
-  # for k, v of it
-  #   assert v > 5, "Five certificates in store required"
+  for k, v of it
+    assert v > 5, "Five certificates in store required"
 
   assert it.total == it.root
   assert it.root + it.ca == it.both
 
 <-! process.on \exit
-console.log \Counts:
-console.log counts
+console.log \Total: counts.fsc.total

@@ -38,6 +38,7 @@ context "N-API" !->
             if finished++ > 3
               break
           else
+            assert !finished
             checker item.value
 
   context "async" !->
@@ -75,11 +76,27 @@ context "N-API" !->
 
       context "slow" !->
 
+        @timeout 0
+
         for let k, v of common.samples
           <- specify k
-          common.assert509 @
-          me do
+          checker = common.assert509 @
+          iterator = me do
             store: v
             fallback: false
             generator: true
             async: true
+          do function fire
+            Promise.resolve!
+            .then iterator.next
+            .then delay
+            .then ->
+              assert.deepEqual Object.keys(it), <[ done value ]>
+              unless it.done
+                checker it.value
+                fire!
+
+function delay(value)
+  resolve <-! new Promise _
+  <-! setTimeout _, 12
+  resolve value
