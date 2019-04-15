@@ -5,7 +5,7 @@ api <<<
   n-api: n-api = !!process.versions.napi
     and api == require \../fallback
     and not api.electron = do require \is-electron
-  der2: require \./der2
+  der2: der2 = require \./der2
   all:  all
   each: each
 each.async = async
@@ -68,6 +68,8 @@ function all
   if false != params.unique
     unique = do require \./unique
 
+  mapper = der2 params.format
+
   if params.generator
     return do if async then asyncGenerator else syncGenerator
 
@@ -77,7 +79,7 @@ function all
 
   !function syncProcess
     if it
-      params.ondata? it
+      params.ondata? mapper it
     else
       params.onend?!
 
@@ -98,7 +100,7 @@ function all
   function genProcess
     Process it
     done: !it
-    value: it
+    value: if it? then mapper it else it
 
   function Return
     engine.done!

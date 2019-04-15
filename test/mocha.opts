@@ -1,4 +1,4 @@
-test/*.ls
+test/*.{js,ls}
 --reporter dot
 --require choma
 --require appveyor-mocha
