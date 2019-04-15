@@ -55,12 +55,20 @@ context "Fallback" !->
 
       for let k, v of common.samples
         <- specify k
-        common.assert509 @
-        me do
+        checker = common.assert509 @
+        iterator = me do
           store: v
           fallback: true
           generator: true
           async: true
+        do function fire
+          Promise.resolve!
+          .then iterator.next
+          .then ->
+            assert.deepEqual Object.keys(it), <[ done value ]>
+            unless it.done
+              checker it.value
+              fire!
 
       context "slow" !->
 
