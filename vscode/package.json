@@ -16,6 +16,19 @@
   "activationEvents": [
     "*"
   ],
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "win-ca",
+      "properties": {
+        "win-ca.save": {
+          "type": "boolean",
+          "default": true,
+          "description": "Save fetched root certificates to disk"
+        }
+      }
+    }
+  },
   "scripts": {},
   "keywords": [
     "vscode",
