@@ -43,11 +43,13 @@ context "Fallback" !->
 
       for let k, v of common.samples
         <- specify k
-        common.assert509 @
+        resolve <~! new Promise _
         me do
           store: v
           fallback: true
           async: true
+          ondata: common.assert509 @
+          onend: resolve
 
     context "generators" !->
 
