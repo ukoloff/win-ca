@@ -23,12 +23,22 @@ context "N-API" !->
     context "generators" !->
 
       for let k, v of common.samples
-        <- specify k
-        common.assert509 @
-        me do
+        <-! specify k
+        checker = common.assert509 @
+        iterator = me do
           store: v
           fallback: false
           generator: true
+
+        finished = 0
+        loop
+          item = iterator.next!
+          assert.deepEqual Object.keys(item), <[ done value ]>
+          if item.done
+            if finished++ > 3
+              break
+          else
+            checker item.value
 
   context "async" !->
 
