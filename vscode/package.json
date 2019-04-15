@@ -25,6 +25,16 @@
           "type": "boolean",
           "default": true,
           "description": "Save fetched root certificates to disk"
+        },
+        "win-ca.inject": {
+          "type": "string",
+          "enum": [
+            "none",
+            "replace",
+            "append"
+          ],
+          "default": "replace",
+          "description": "Method to push fetched root certificates into extensions"
         }
       }
     }
