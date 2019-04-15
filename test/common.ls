@@ -26,9 +26,9 @@ export function assert509(mocha-test)
 
   !~>
     assert Buffer.is-buffer it
-    # tree = preprocess it
-    #   .toString 'binary'
-    #   |> nodeForge.asn1.fromDer
-    # assert tree.value.length, "Invalid certificate"
+    tree = it
+      .toString 'binary'
+      |> nodeForge.asn1.fromDer
+    assert tree.value.length, "Invalid certificate"
 
     assert ++store[variable] < 1000, "Too many certificates in store"

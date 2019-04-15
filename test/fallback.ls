@@ -1,4 +1,4 @@
-require! <[ ./common ./me ]>
+require! <[ assert ./common ./me ]>
 
 context "Fallback" !->
 
@@ -7,11 +7,15 @@ context "Fallback" !->
     context "callbacks" !->
 
       for let k, v of common.samples
-        <- specify k
-        common.assert509 @
+        <-! specify k
+        finished = 0
         me do
           store: v
           fallback: true
+          ondata: common.assert509 @
+          onend: !-> finished++
+
+        assert.equal finished, 1
 
     context "generators" !->
 
