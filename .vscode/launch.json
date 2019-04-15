@@ -5,14 +5,25 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "extensionHost",
+      "request": "launch",
+      "name": "Launch Extension",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/vscode"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/out/**/*.js"
+      ],
+      //"preLaunchTask": "npm"
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Mocha Tests",
       "stopOnEntry": true,
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "args": [
-        "-u",
-        "tdd",
         "--timeout",
         "999999",
         "--colors",
