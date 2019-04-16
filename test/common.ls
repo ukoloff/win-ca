@@ -44,4 +44,6 @@ export function assert509(mocha-test)
   assert it.root + it.ca == it.both
 
 <-! process.on \exit
-console.log \Total: counts.fsc?.total
+for , v of counts
+  console.log \Total: v.total
+  return
