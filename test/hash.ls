@@ -35,16 +35,16 @@ beforeEach ->
 
 <- specify "with OpenSSL"
 resolve, reject <-! new Promise _
-chain = Promise.resolve!
+list = []
 me do
   async: true
   onend: !->
-    chain.then resolve, reject
+    Promise.all list
+      .then resolve, reject
   ondata: more
 
 !function more(der)
-  chain .= then -> der
-    .then opensslHashes
+  list.push <| randomDelay der .then opensslHashes
 
 function opensslHashes(der)
   resolve, reject <-! new Promise _
@@ -61,3 +61,7 @@ function opensslHashes(der)
         ourHashes der
       resolve value
 
+function randomDelay(value)
+  resolve <-! new Promise _
+  <-! setTimeout _, 27 * Math.random!
+  resolve value
