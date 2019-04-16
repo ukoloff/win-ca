@@ -57,6 +57,7 @@ function derCheck
 
 function pemCheck
   assert.equal \string typeof it
+  assert /\n$/.test it
   pem = nodeForge.pem.decode it
   assert.equal 1 pem.length
 

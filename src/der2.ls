@@ -37,7 +37,7 @@ function pem
   lines = ['-----BEGIN CERTIFICATE-----']
   for i til it.length by 64
     lines.push it.substr i , 64
-  lines.push '-----END CERTIFICATE-----'
+  lines.push '-----END CERTIFICATE-----' ''
   lines.join "\r\n"
 
 function txt
