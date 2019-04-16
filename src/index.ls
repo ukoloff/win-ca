@@ -39,7 +39,7 @@ function all
 
   defaults.unique = false
 
-  defaults.format ?= format ? api.der2.forge
+  defaults.format ?= format ? api.der2.x509
 
   cb = args[1] or format
   defaults.ondata ?= !->
