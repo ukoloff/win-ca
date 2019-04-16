@@ -29,7 +29,7 @@ function hash
 function all
   result = []
   upgradeAPI & do
-    ondata: ->
+    ondata: !->
       result.push it
     onend: ->
   result
@@ -39,10 +39,7 @@ function all
 
   defaults.unique = false
 
-  defaults.format ?= if api.der2[format]?
-    format
-  else
-    api.der2.forge
+  defaults.format ?= format ? api.der2.forge
 
   cb = args[1] or format
   defaults.ondata ?= !->
