@@ -26,24 +26,29 @@ unlink = promisify fs.unlink
       chain .= then -> der
         .then single
     else
-      chain?.then cleanUp
+      chain?
+      .then cleanUp
+      .catch !->
+        folder := void
+      .then !->
+        PEM?.end!
+        params.onsave? folder
 
   !function startPEM
-    PEM := fs.createWriteStream path.join do
-      folder := it
-      name \roots.pem
+    folder := it
+    PEM := fs.createWriteStream name \roots.pem
 
   !function single(der)
     pem = toPEM der
     PEM.write pem
     hashes[hash = to$ der] ||= 0
     writeFile do
-      path.join folder, name "#{hash}.#{hashes[hash]++}"
+      name "#{hash}.#{hashes[hash]++}"
       pem
 
   function name
     names.add it
-    it
+    path.join folder, it
 
   !function cleanUp
     readdir folder
@@ -51,12 +56,8 @@ unlink = promisify fs.unlink
       Promise.all do
         it.filter -> !names.has it
         .map -> path.join folder, it
-        .map -> unlink it .catch ->
-    .catch !->
-      folder := void
-    .then !->
-      PEM?.end!
-      params.onsave? folder
+        .map -> unlink it .catch ignore
+    .then ignore
 
 function defaults
   return
@@ -91,3 +92,6 @@ function promisify(fn)
         reject error
       else
         resolve value
+
+function ignore
+  void
