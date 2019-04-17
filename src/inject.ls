@@ -1,8 +1,15 @@
-require! <[ ./der2 ]>
+require! <[ https ./der2 ]>
 
 module.exports = inject
 
 toPEM = der2 der2.pem
 
-!function inject(params)
-  void
+roots = []
+
+!function inject(mode)
+  https.globalAgent.options.ca = roots
+
+  return injector
+
+  function injector
+    roots.push toPEM it

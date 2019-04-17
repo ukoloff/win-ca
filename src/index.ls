@@ -79,7 +79,7 @@ function all
     saver = require \./save <| params
 
   if params.inject
-    injector = require \./inject <| params
+    injector = require \./inject <| params.inject
 
   if params.generator
     return do if async then asyncGenerator else syncGenerator
@@ -91,10 +91,10 @@ function all
   !function syncProcess
     if saver
       saver it
-    if injector
-      injector it
 
     if it
+      if injector
+        injector it
       params.ondata? mapper it
     else
       params.onend?!
