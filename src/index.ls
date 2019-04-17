@@ -73,7 +73,10 @@ function all
   mapper = der2 params.format
 
   if params.save
-    saver = require \./save <| params.save
+    saver = require \./save <| params
+
+  if params.inject
+    injector = require \./inject <| params
 
   if params.generator
     return do if async then asyncGenerator else syncGenerator
@@ -85,6 +88,8 @@ function all
   !function syncProcess
     if saver
       saver it
+    if injector
+      injector it
 
     if it
       params.ondata? mapper it

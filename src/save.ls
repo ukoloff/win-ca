@@ -8,7 +8,7 @@ writeFile = promisify fs.writeFile
 readdir = promisify fs.readdir
 unlink = promisify fs.unlink
 
-!function save(dst)
+!function save(params)
   var folder, chain, PEM
   hashes = {}
   names = new Set
@@ -21,7 +21,7 @@ unlink = promisify fs.unlink
 
   !function saver(der)
     if der
-      chain ||:= mkdir dst
+      chain ||:= mkdir params.save
         .then startPEM
       chain .= then -> der
         .then single
@@ -56,7 +56,9 @@ unlink = promisify fs.unlink
         .map -> path.join folder, it
         .map -> unlink it .catch ->
     .catch ->
-    .then -> PEM?.end!
+    .then !->
+      PEM?.end!
+      params.onsave?!
 
 function defaults
   return
