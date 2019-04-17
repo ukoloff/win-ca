@@ -12,7 +12,7 @@ api <<<
 each.async = async
 
 if api == require \../api
-  api {+inject, +save}
+  api {+inject, +save, +async}
 
 function hash
   (api.hash = require \./hash).apply @, &
@@ -72,6 +72,9 @@ function all
 
   mapper = der2 params.format
 
+  if params.save
+    saver = require \./save <| params.save
+
   if params.generator
     return do if async then asyncGenerator else syncGenerator
 
@@ -80,6 +83,9 @@ function all
       Process it
 
   !function syncProcess
+    if saver
+      saver it
+
     if it
       params.ondata? mapper it
     else

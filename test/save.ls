@@ -1,6 +1,6 @@
 require! <[ ./samples \../lib/save ]>
 
-<-! context \Save
+<-! context.skip \Save
 
 specify \mkdir ->
   # save.mkdir!then console.log
