@@ -29,9 +29,8 @@ unlink = promisify fs.unlink
       chain?.then cleanUp
 
   !function startPEM
-    api = require \.
     PEM := fs.createWriteStream path.join do
-      api.path = folder := it
+      folder := it
       name \roots.pem
 
   !function single(der)
@@ -47,18 +46,17 @@ unlink = promisify fs.unlink
     it
 
   !function cleanUp
-    process.env.SSL_CERT_DIR = folder
-
     readdir folder
     .then ->
       Promise.all do
         it.filter -> !names.has it
         .map -> path.join folder, it
         .map -> unlink it .catch ->
-    .catch ->
+    .catch !->
+      folder := void
     .then !->
       PEM?.end!
-      params.onsave?!
+      params.onsave? folder
 
 function defaults
   return

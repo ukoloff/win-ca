@@ -12,11 +12,10 @@ api <<<
 each.async = async
 
 if api == require \../api
-  api {+inject, +save, +async}
+  api {+inject, +save, +async, onsave}
 
 function hash
   (api.hash = require \./hash).apply @, &
-
 
 # API v[12]
 !function each
@@ -48,6 +47,10 @@ function all
     cb?!
 
   api defaults
+
+!function onsave(folder)
+  if folder
+    process.env.SSL_CERT_DIR = api.path = folder
 
 # API v3
 !function api(params = {})
