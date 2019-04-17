@@ -56,6 +56,7 @@ unlink = promisify fs.unlink
         .map -> path.join folder, it
         .map -> unlink it .catch ->
     .catch ->
+    .then -> PEM?.end!
 
 function defaults
   return
