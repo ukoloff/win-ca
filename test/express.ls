@@ -23,8 +23,7 @@ after "Stop Web-server" ->
 
 specify 'fails w/o certificate' ->
   resolve, reject <-! new Promise _
-  options = {}
-  options <<< new url.URL 'https://localhost'
+  options = URL 'https://localhost'
   options <<<
     port: Port
   https.get options, !->
@@ -37,8 +36,7 @@ specify 'fails w/o certificate' ->
 
 specify 'requires certificate' ->
   resolve, reject <-! new Promise _
-  options = {}
-  options <<< new url.URL 'https://localhost'
+  options = URL 'https://localhost'
   options <<<
     port: Port
     ca: [CA.crt-pem]
@@ -54,6 +52,13 @@ function https-get(req, res)
 
 function reverse(str)
   str.split '' .reverse!.join ''
+
+function URL(uri)
+  res = {}
+  res <<< if url.URL
+    new url.URL uri
+  else
+    url.parse uri
 
 function newX509(signer)
   rsa = pki.rsa.generate-key-pair 1024
