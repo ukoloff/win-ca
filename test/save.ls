@@ -18,8 +18,32 @@ after !->
 
 for let N to 3
   <- specify "##{N}"
-  sb = path.join sandbox, tmp-file!
+  sb = path.join sandbox, "#{N}s"
   fs.mkdirp sb
+
+  bitmask = 0
+  # Run 2^N jobs in parallel
+  Promise.all <| until bitmask .>>. N, ++bitmask
+    resolve, reject <-! new Promise _
+    # Create N folders / files according to bitmask
+    mask = bitmask .<<. 1
+    batch = Promise.all <| for til N
+      dst = path.join sb, tmp-file!
+      mask .>>.= 1
+      unless mask .&. 1
+        fs.writeFile dst, new Date
+        .then -> dst
+      else
+        dst
+    batch.then !->
+      me do
+        save: it
+        async: true
+        onsave: evaluate
+
+    function evaluate(folder)
+      resolve!
+
 
 function tmp-file
   digest = crypto.createHash \md5
