@@ -1,4 +1,4 @@
-require! <[ path fs node-forge ]>
+require! <[ path ./fs node-forge ]>
 
 buffer-from = Buffer.from || (data, encoding)->
   new Buffer data, encoding

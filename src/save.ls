@@ -83,7 +83,7 @@ function defaults
 function promisify(fn)
   ->
     args = [].slice.call &
-    resolve, reject <-! new Promise _
+    resolve, reject <~! new Promise _
     args.push callback
     fn.apply @, args
 

@@ -1,4 +1,4 @@
-require! <[ path fs assert node-forge ./me ./samples ]>
+require! <[ path assert node-forge ./me ./samples ]>
 
 uxm = samples.uxm
 
