@@ -48,7 +48,7 @@ var save-create-secure-context
 # https://github.com/capriza/syswide-cas/blob/e0a214f23a072866abf6af540a5b4b88b892a109/index.js#L93
 function create-secure-context(options)
   ctx = save-create-secure-context options
-  if 2 == patch-mode
+  if 2 == patch-mode and !options?.ca
     for crt in roots
       ctx.context.addCACert crt
   ctx
