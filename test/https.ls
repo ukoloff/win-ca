@@ -2,7 +2,7 @@ require! <[ crypto https url split node-forge ]>
 
 pki = node-forge.pki
 
-<-! context \Web-server
+<-! context \HTTPS
 
 CA = newX509!
 Crt = newX509 CA
@@ -21,30 +21,25 @@ before "Start Web-server" ->
 after "Stop Web-server" ->
   Server.close!
 
-specify 'fails w/o certificate' ->
-  resolve, reject <-! new Promise _
-  options = URL 'https://localhost'
-  options <<<
-    port: Port
-  https.get options, !->
-    reject Error 'Connected w/o certificate'
-  .on \error ->
-    if it.code == "UNABLE_TO_VERIFY_LEAF_SIGNATURE"
-      resolve!
-    else
-      reject it
+context \self-signed ->
+  specify 'fails w/o certificate' ->
+    revert fetch!
 
-specify 'requires certificate' ->
-  resolve, reject <-! new Promise _
-  options = URL 'https://localhost'
-  options <<<
-    port: Port
-    ca: [CA.crt-pem]
-  https.get options, handle
-  .on \error reject
+  specify 'requires certificate' ->
+    fetch do
+      ca: CA.crt-pem
 
-  function handle(resp)
-    resolve!
+context \well-known ->
+  Yandex = \https://ya.ru
+
+  specify 'fails w/o certificate' ->
+    revert fetch do
+      url: Yandex
+      ca: '-'
+
+  specify 'requires certificate' ->
+    fetch do
+      url: Yandex
 
 function https-get(req, res)
   req.pipe split reverse
@@ -53,12 +48,31 @@ function https-get(req, res)
 function reverse(str)
   str.split '' .reverse!.join ''
 
-function URL(uri)
-  res = {}
-  res <<< if url.URL
+function fetch(options = {})
+  uri = options.url || \https://localhost
+  opts = {}
+  opts <<<< if url.URL
     new url.URL uri
   else
     url.parse uri
+  opts <<<< options
+  delete opts.url
+  unless options.url
+    opts <<<
+      port: Port
+
+  resolve, reject <-! new Promise _
+  https.get opts, !-> resolve @
+  .on \error reject
+
+function revert(fetch-promise)
+  fetch-promise
+  .then do
+    ->
+      Promise.reject Error 'Connected w/o certificate'
+    ->
+      unless it.code in <[ UNABLE_TO_VERIFY_LEAF_SIGNATURE UNABLE_TO_GET_ISSUER_CERT_LOCALLY ]>
+        Promise.reject it
 
 function newX509(signer)
   rsa = pki.rsa.generate-key-pair 1024
