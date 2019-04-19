@@ -44,6 +44,17 @@ for let N to 3
     function evaluate(folder)
       resolve!
 
+specify \none ->
+  resolve, reject <-! new Promise _
+  me do
+    disabled: true
+    save: true
+    async: true
+    onsave: !->
+      if it
+        reject Error "Saves nothing"
+      else
+        resolve it
 
 function tmp-file
   digest = crypto.createHash \md5

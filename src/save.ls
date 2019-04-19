@@ -25,14 +25,16 @@ unlink = promisify fs.unlink
         .then startPEM
       chain .= then -> der
         .then single
-    else
-      chain?
+    else if chain
+      chain
       .then cleanUp
       .catch !->
         folder := void
       .then !->
         PEM?.end!
         params.onsave? folder
+    else
+      params.onsave?!
 
   !function startPEM
     folder := it
