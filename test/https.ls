@@ -112,7 +112,7 @@ function newX509(signer)
   result
 
 function random(n = 0)
-  digest = crypto.createHash \md5
-  digest.update "#{Math.random!}/#{+new Date}"
-  digest.digest \hex
+  crypto.createHash \md5
+    .update "#{Math.random!}/#{+new Date}"
+    .digest \hex
     .slice -n

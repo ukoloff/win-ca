@@ -72,8 +72,9 @@ specify \none ->
         resolve it
 
 function tmp-file
-  digest = crypto.createHash \md5
-  # digest.update "#{+new Date!}:#{Math.random!}"
-  digest.update "#{Math.random!}"
-  "#{digest.digest \base64
-    .replace /\W+/g ''}.tmp"
+  "#{
+  crypto.createHash \md5
+    .update "#{Math.random!}"
+    .digest \base64
+    .replace /\W+/g ''
+  }.tmp"
