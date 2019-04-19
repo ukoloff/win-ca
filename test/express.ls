@@ -29,7 +29,7 @@ specify 'fails w/o certificate' ->
   https.get options, !->
     reject Error 'Connected w/o certificate'
   .on \error ->
-    if it.message.match /unable\s+to\s+verify/
+    if it.code == "UNABLE_TO_VERIFY_LEAF_SIGNATURE"
       resolve!
     else
       reject it
