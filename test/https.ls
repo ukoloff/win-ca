@@ -27,7 +27,7 @@ context \self-signed ->
 
   specify 'requires certificate' ->
     fetch do
-      ca: CA.crt-pem
+      ca: [CA.crt-pem]
 
 context \well-known ->
   Yandex = \https://ya.ru
@@ -35,7 +35,7 @@ context \well-known ->
   specify 'fails w/o certificate' ->
     revert fetch do
       url: Yandex
-      ca: '-'
+      agent: new https.Agent ca: []
 
   specify 'requires certificate' ->
     fetch do
@@ -113,6 +113,6 @@ function newX509(signer)
 
 function random(n = 0)
   digest = crypto.createHash \md5
-  digest.update "#{Math.random! + new Date}"
+  digest.update "#{Math.random!}/#{+new Date}"
   digest.digest \hex
     .slice -n
