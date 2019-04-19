@@ -1,4 +1,4 @@
-require! <[ ./fs path crypto ./me ]>
+require! <[ assert ./fs path crypto ./me ]>
 
 <-! context \Saving
 
@@ -18,31 +18,46 @@ after !->
 
 for let N to 3
   <- specify "##{N}"
-  sb = path.join sandbox, "#{N}s"
-  fs.mkdirp sb
+  return fs.mkdirp playground = path.join sandbox, "#{N}s"
+  .then ->
+    # Run 2^N jobs in parallel
+    for bitmask til 1 .<<. N
+      run-save-bitmask bitmask
+  .then -> Promise.all it
 
-  bitmask = 0
-  # Run 2^N jobs in parallel
-  Promise.all <| until bitmask .>>. N, ++bitmask
-    resolve, reject <-! new Promise _
-    # Create N folders / files according to bitmask
-    mask = bitmask .<<. 1
-    batch = Promise.all <| for til N
-      dst = path.join sb, tmp-file!
-      mask .>>.= 1
-      unless mask .&. 1
+  function run-save-bitmask(bitmask)
+    var winner
+    # Prepare N destinations to save to
+    return Promise.resolve!then ->
+      for i til N
+        candidate2save bitmask .>>. i .&. 1
+    .then -> Promise.all it
+    .then run-saver
+    .then evaluate
+
+    function candidate2save(allowed)
+      dst = path.join playground, tmp-file!
+      if allowed
+        winner ?:= dst
+        dst
+      else
         fs.writeFile dst, new Date
         .then -> dst
-      else
-        dst
-    batch.then !->
+
+    function run-saver(folders)
+      resolve <-! new Promise _
       me do
-        save: it
+        save: folders
         async: true
-        onsave: evaluate
+        onsave: resolve
 
     function evaluate(folder)
-      resolve!
+      assert.equal winner, folder, "Wrong save destination"
+      unless folder
+        return
+      fs.readdir folder
+      .then ->
+        assert.equal count, it.length
 
 specify \none ->
   resolve, reject <-! new Promise _
@@ -58,6 +73,7 @@ specify \none ->
 
 function tmp-file
   digest = crypto.createHash \md5
-  digest.update "#{Math.random! + new Date}"
+  # digest.update "#{+new Date!}:#{Math.random!}"
+  digest.update "#{Math.random!}"
   "#{digest.digest \base64
     .replace /\W+/g ''}.tmp"
