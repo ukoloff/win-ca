@@ -1,6 +1,8 @@
 require! <[ https tls ./der2 ]>
 
-module.exports = inject
+module.exports = i-factory
+
+i-factory.inject = inject
 
 toPEM = der2 der2.pem
 
@@ -8,17 +10,23 @@ agent-options = https.global-agent.options
 
 roots = []
 
-!function inject(mode)
-  patch mode
+function i-factory(mode)
+  inject mode, []
+  add
 
-  return injector
-
-  function injector
-    roots.push toPEM it
+!function add(der)
+  der
+  |> toPEM
+  |> roots.push
 
 patch-mode = 0  # No patch yet
+var save-create-secure-context
 
-!function patch(mode)
+!function inject(mode, array)
+  if array
+    roots.length = 0
+    roots.push ...array
+
   mode = if '+' == mode => 2
   else if mode => 1
   else => 0
@@ -33,21 +41,19 @@ patch-mode = 0  # No patch yet
     | 2 =>
       if tls.create-secure-context == create-secure-context
         tls.create-secure-context = save-create-secure-context
-        save-create-secure-context = void
+        save-create-secure-context := void
 
-  switch patch-mode = mode
+  switch patch-mode := mode
     | 1 =>
-        agent-options.ca == roots
+        agent-options.ca = roots
     | 2 =>
       unless save-create-secure-context
-        save-create-secure-context = tls.create-secure-context
+        save-create-secure-context := tls.create-secure-context
         tls.create-secure-context = create-secure-context
-
-var save-create-secure-context
 
 # https://github.com/capriza/syswide-cas/blob/e0a214f23a072866abf6af540a5b4b88b892a109/index.js#L93
 function create-secure-context(options)
-  ctx = save-create-secure-context options
+  ctx = save-create-secure-context ...
   if 2 == patch-mode and !options?.ca
     for crt in roots
       ctx.context.addCACert crt

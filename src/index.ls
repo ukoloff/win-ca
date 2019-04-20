@@ -7,6 +7,7 @@ api <<<
     and not api.electron = do require \is-electron
   der2: der2 = require \./der2
   hash: hash
+  inject: inject
   all:  all
   each: each
 each.async = async
@@ -15,7 +16,10 @@ if api == require \../api
   api {+inject, +save, +async, onsave}
 
 function hash
-  (api.hash = require \./hash).apply @, &
+  (api.hash = require \./hash) ...
+
+function inject
+  (api.inject = require \./inject .inject) ...
 
 # API v[12]
 !function each

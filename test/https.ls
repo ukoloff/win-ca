@@ -1,4 +1,4 @@
-require! <[ crypto https url split node-forge ]>
+require! <[ crypto https url split node-forge ./me ]>
 
 pki = node-forge.pki
 
@@ -7,6 +7,9 @@ pki = node-forge.pki
 CA = newX509!
 Crt = newX509 CA
 var Server, Port
+
+before "Un-inject" !->
+  me.inject!
 
 before "Start Web-server" ->
   resolve <-! new Promise _
