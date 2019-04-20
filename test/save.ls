@@ -75,6 +75,7 @@ specify \none ->
 
 specify "cleans stale" ->
   @skip!  if me.disabled
+  @timeout 5000
 
   return Promise.all do
     for til 7

@@ -49,4 +49,4 @@ before_script:
 
 after_success:
   - npm pack
-  - 7z a root.zip .\pem\* -xr!*.pem
+  - 7z a root.zip ".\pem\*" "-xr!*.pem"
