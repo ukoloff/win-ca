@@ -33,15 +33,7 @@ context \self-signed ->
       ca: [CA.crt-pem]
 
 context \well-known !->
-  @timeout 7000
-  Yandex = \https://ya.ru
-
-  before \Warmup ->
-    fetch do
-      url: Yandex
-    .catch ->
-    resolve <-! new Promise _
-    setTimeout resolve, 500
+  Yandex = \https://www.google.com/
 
   specify 'fails w/o certificate' ->
     revert fetch do

@@ -1,4 +1,4 @@
-require! <[ assert node-forge ./me ]>
+require! <[ assert node-forge appveyor-mocha ./me ]>
 
 export samples =
   total:  <[ ]>
@@ -17,6 +17,11 @@ after !~>
       assert.deepEqual v, first
     else
       first = v
+
+  Promise.resolve!then !->
+    for , v of counts
+      appveyor-mocha.log "Total: #{v.total}"
+      break
 
 # Build Checker if Buffer is valid X509 certificate (and count it)
 export function assert509(mocha-test)
@@ -42,8 +47,3 @@ export function assert509(mocha-test)
 
   assert it.total == it.root
   assert it.root + it.ca == it.both
-
-<-! process.on \exit
-for , v of counts
-  console.log \Total: v.total
-  return
