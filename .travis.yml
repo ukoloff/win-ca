@@ -1,0 +1,20 @@
+os: windows
+
+language: node_js
+node_js:
+  - 11
+  - 10
+  - 9
+  - 8
+  - 7
+  - 6
+  - 5
+  - 4
+
+git:
+  depth: false
+
+script:
+  - node -v
+  - npm -v
+  - openssl version
