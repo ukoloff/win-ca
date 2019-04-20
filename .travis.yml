@@ -20,7 +20,8 @@ git:
   depth: false
 
 before_install:
-  - export NOV = `node -v`
+  - set NOV = `node -v`
+  - echo %NOV%/%PLTFRM%
   - nvs add $NOV/$PLTFRM
   - nvs use $NOV/$PLTFRM
 
