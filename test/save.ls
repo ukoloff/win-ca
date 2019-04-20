@@ -76,7 +76,7 @@ specify "cleans stale" ->
   @skip!  if me.disabled
 
   return Promise.all do
-    for til 3
+    for til 7
       check-cleanup!
 
 function check-cleanup
@@ -94,7 +94,7 @@ function check-cleanup
 
 function write-stales(folder)
   Promise.all do
-    for to 10 * Math.random!
+    for to 27 * Math.random!
       fs.writeFile do
         path.join folder, tmp-file!
         '# ' + tmp-file!
