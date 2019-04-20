@@ -1,4 +1,4 @@
-require! <[ assert node-forge ]>
+require! <[ assert node-forge ./me ]>
 
 export samples =
   total:  <[ ]>
@@ -37,7 +37,7 @@ export function assert509(mocha-test)
     assert ++store[variable] < 1000, "Too many certificates in store"
 
 !function checkCounts
-  for k, v of it
+  for k, v of it when !me.disabled
     assert v > 5, "Five certificates in store required"
 
   assert it.total == it.root
