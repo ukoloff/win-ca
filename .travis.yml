@@ -19,6 +19,11 @@ env:
 git:
   depth: false
 
+before_install:
+  - export NOV = `node -v`
+  - nvs add $NOV/$PLTFRM
+  - nvs use $NOV/$PLTFRM
+
 cache: npm
 
 script:
@@ -27,7 +32,6 @@ script:
   - openssl version
 
 after_success:
-  - set NOV = `node -v`
   - nvs add 8/x86
   - nvs use 8/x86
   - node -v
