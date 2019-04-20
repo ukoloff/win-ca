@@ -26,7 +26,11 @@ script:
   - openssl version
 
 after_success:
-  - nvs add 8
+  - nvs add 8/x86
+  - nvs use 8
+  - node -v
+  - npm -v
+  - nvs add 8/x64
   - nvs use 8
   - node -v
   - npm -v
