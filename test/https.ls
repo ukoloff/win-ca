@@ -21,7 +21,7 @@ before "Start Web-server" ->
     Port := @address!port
     resolve!
 
-after "Stop Web-server" ->
+after "Stop Web-server" !->
   Server.close!
 
 context \self-signed ->
@@ -32,9 +32,16 @@ context \self-signed ->
     fetch do
       ca: [CA.crt-pem]
 
-context \well-known ->
+context \well-known !->
   @timeout 7000
   Yandex = \https://ya.ru
+
+  before \Warmup ->
+    fetch do
+      url: Yandex
+    .catch ->
+    resolve <-! new Promise _
+    setTimeout resolve, 500
 
   specify 'fails w/o certificate' ->
     revert fetch do
