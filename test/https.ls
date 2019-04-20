@@ -33,6 +33,7 @@ context \self-signed ->
       ca: [CA.crt-pem]
 
 context \well-known ->
+  @timeout 7000
   Yandex = \https://ya.ru
 
   specify 'fails w/o certificate' ->

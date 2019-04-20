@@ -34,6 +34,7 @@ for let N to 3
       for i til N
         candidate2save bitmask .>>. i .&. 1
     .then run-saver
+    .then delay
     .then evaluate
 
     function candidate2save(allowed)
@@ -76,7 +77,7 @@ specify "cleans stale" ->
   @skip!  if me.disabled
 
   return Promise.all do
-    for til 3
+    for til 7
       check-cleanup!
 
 function check-cleanup
@@ -94,7 +95,7 @@ function check-cleanup
 
 function write-stales(folder)
   Promise.all do
-    for to 10 * Math.random!
+    for to 27 * Math.random!
       fs.writeFile do
         path.join folder, tmp-file!
         '# ' + tmp-file!
@@ -119,4 +120,4 @@ function promise-all
 
 function delay(value)
   resolve <-! new Promise _
-  setTimeout resolve, 300, value
+  setTimeout resolve, 100, value
