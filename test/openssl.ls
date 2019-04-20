@@ -7,7 +7,7 @@ module.exports = binary = new Promise testRun
 
 after !->
   <-! binary.then
-  appveyorMocha.log "Found: #{if it then it.version else 'No OpenSSL'}"
+  appveyor-mocha.log "Found: #{if it then it.version else 'No OpenSSL'}"
 
 function testRun(success)
   run 'version', (error, ver)->

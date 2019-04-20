@@ -22,44 +22,42 @@ unlink = promisify fs.unlink
   !function saver(der)
     if der
       chain ||:= mkdir params.save
-        .then startPEM
-      chain .= then -> der
-        .then single
+        .then -> folder := it
+      chain .= then ->
+        if folder
+          single der
     else if chain
       chain
       .then cleanUp
-      .catch !->
-        folder := void
       .then !->
-        PEM?.end!
+        if PEM
+          PEM.end!
         params.onsave? folder
     else
       params.onsave?!
 
-  !function startPEM
-    folder := it
-    PEM := fs.createWriteStream name \roots.pem
-
-  !function single(der)
-    pem = toPEM der
-    PEM.write pem
+  function single(der)
+    (PEM ||= fs.createWriteStream name \roots.pem)
+      .write pem = toPEM der
     hashes[hash = to$ der] ||= 0
     writeFile do
       name "#{hash}.#{hashes[hash]++}"
       pem
+    .catch ignore # or: -> folder := void ???
 
   function name
     names.add it
     path.join folder, it
 
   !function cleanUp
-    readdir folder
-    .then ->
-      Promise.all do
-        it.filter -> !names.has it
-        .map -> path.join folder, it
-        .map -> unlink it .catch ignore
-    .then ignore
+    if folder
+      readdir folder
+      .then ->
+        Promise.all do
+          it.filter -> !names.has it
+          .map -> path.join folder, it
+          .map -> unlink it .catch ignore
+      .catch ignore
 
 function defaults
   return
@@ -74,13 +72,13 @@ function defaults
     dst = defaults!
 
   idx = 0
-  return wrap Promise.reject Error 'No folders to save to'
-
-  function wrap(promise)
-    if idx >= dst.length
-      promise
+  return next-dir!
+  function next-dir
+    if idx < dst.length
+      make-dir dst[idx++]
+      .catch next-dir
     else
-      promise.catch -> wrap make-dir dst[idx++]
+      Promise.resolve!
 
 function promisify(fn)
   ->
