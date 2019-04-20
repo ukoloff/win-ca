@@ -120,4 +120,4 @@ function promise-all
 
 function delay(value)
   resolve <-! new Promise _
-  setTimeout resolve, 100, value
+  setTimeout resolve, 300, value

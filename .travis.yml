@@ -47,16 +47,6 @@ before_script:
   - nvs add $NOV/$PLTFRM
   - nvs use $NOV/$PLTFRM
 
-# script:
-#   - node -v
-#   - npm -v
-#   - openssl version
-
-# after_success:
-#   - node -v
-#   - npm -v
-#   - nvs add 8/x64
-#   - nvs use 8/x64
-#   - node -v
-#   - npm -v
-#   - nvs use $NOV/$PLTFRM
+after_success:
+  - npm pack
+  - 7z a root.zip .\pem\* -xr!*.pem
