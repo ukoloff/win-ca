@@ -1,3 +1,4 @@
+sudo: false
 os: windows
 
 language: node_js
@@ -11,10 +12,21 @@ node_js:
   - 5
   - 4
 
+env:
+  win32: ca
+
 git:
   depth: false
+
+cache: npm
 
 script:
   - node -v
   - npm -v
   - openssl version
+
+after_success:
+  - nvs add 8
+  - nvs use 8
+  - node -v
+  - npm -v
