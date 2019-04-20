@@ -2,28 +2,28 @@ sudo: false
 os: windows
 
 language: node_js
-node_js: 8
+node_js:
+  - 11
+  - 10
+  - 9
+  - 8
+  - 7
+  - 6
+  - 5
+  - 4
 
 env:
   - PLTFRM=x64
   - PLTFRM=x86
-  - NOV=11
-  - NOV=10
-  - NOV=9
-  - NOV=8
-  - NOV=7
-  - NOV=6
-  - NOV=5
-  - NOV=4
 
 git:
   depth: false
 
 before_install:
-  # - set NOV = `node -v`
+  - NOV=`node -v`
   - echo $NOV/$PLTFRM
-  # - nvs add $NOV/$PLTFRM
-  # - nvs use $NOV/$PLTFRM
+  - nvs add $NOV/$PLTFRM
+  - nvs use $NOV/$PLTFRM
 
 cache: npm
 
