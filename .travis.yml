@@ -21,9 +21,9 @@ git:
 
 before_install:
   - set NOV = `node -v`
-  - echo %NOV%/%PLTFRM%
-  - nvs add $NOV/$PLTFRM
-  - nvs use $NOV/$PLTFRM
+  - echo $NOV/$PLTFRM
+  # - nvs add $NOV/$PLTFRM
+  # - nvs use $NOV/$PLTFRM
 
 cache: npm
 
