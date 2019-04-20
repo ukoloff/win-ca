@@ -34,6 +34,7 @@ for let N to 3
       for i til N
         candidate2save bitmask .>>. i .&. 1
     .then run-saver
+    .then delay
     .then evaluate
 
     function candidate2save(allowed)
@@ -119,4 +120,4 @@ function promise-all
 
 function delay(value)
   resolve <-! new Promise _
-  setTimeout resolve, 300, value
+  setTimeout resolve, 100, value
