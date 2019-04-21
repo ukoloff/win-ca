@@ -43,7 +43,7 @@ export function assert509(mocha-test)
 
 !function checkCounts
   for k, v of it when !me.disabled
-    assert v > 5, "Five certificates in store required"
+    assert v > 3, "Four certificates in store required"
 
   assert it.total == it.root
   assert it.root + it.ca == it.both

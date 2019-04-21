@@ -1,4 +1,4 @@
-require! <[ assert ./fs path crypto ./me ]>
+require! <[ assert ./fs path crypto node-forge ./me ]>
 
 <-! context \Saving
 
@@ -60,6 +60,13 @@ for let N to 3
       fs.readdir folder
       .then ->
         assert.equal count, it.length
+        pems = it.filter -> /[.]pem$/i.test it
+        assert.equal 1 pems.length
+        fs.readFile path.join folder, pems[0]
+      .then !->
+        assert.equal do
+          count - 1
+          node-forge.pem.decode it .length
 
 specify \none ->
   resolve, reject <-! new Promise _
@@ -81,7 +88,7 @@ specify "cleans stale" ->
     for til 7
       check-cleanup!
 
-function check-cleanup
+!function check-cleanup
   return fs.mkdirp winner = path.join sandbox, tmp-file!
   .then write-stales
   .then run-saver
