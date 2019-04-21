@@ -1,6 +1,6 @@
 require! <[ assert ./fs path crypto ./me ]>
 
-<-! context.skip \Saving
+<-! context \Saving
 
 sandbox = path.join __dirname, \../tmp  tmp-file!
 
@@ -15,6 +15,8 @@ before ->
 after !->
   fs.remove sandbox
   .catch !->
+  .then ->
+    console.log '@@@ Sandbox removed!'
 
 for let N to 3
   <- specify "##{N}"
