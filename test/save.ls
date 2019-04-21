@@ -1,6 +1,6 @@
 require! <[ assert ./fs path crypto ./me ]>
 
-<-! context \Saving
+<-! context.skip \Saving
 
 sandbox = path.join __dirname, \../tmp  tmp-file!
 
