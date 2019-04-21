@@ -27,11 +27,10 @@ unlink = promisify fs.unlink
         if folder
           single der
     else if chain
+      PEM?.end!
       chain
       .then cleanUp
       .then !->
-        if PEM
-          PEM.end!
         params.onsave? folder
     else
       params.onsave?!
