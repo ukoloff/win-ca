@@ -37,7 +37,7 @@ unlink = promisify fs.unlink
       params.onsave?!
 
   function single(der)
-    (PEM ||= fs.createWriteStream name \roots.pem)
+    (PEM ||:= fs.createWriteStream name \roots.pem)
       .write pem = toPEM der
     hashes[hash = to$ der] ||= 0
     writeFile do
