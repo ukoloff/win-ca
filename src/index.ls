@@ -12,7 +12,7 @@ api <<<
   each: each
 each.async = async
 
-if api == require \../api
+if !disabled and api == require \../api
   api {+inject, +save, +async, onsave}
 
 function hash
