@@ -15,8 +15,6 @@ before ->
 after !->
   fs.remove sandbox
   .catch !->
-  .then ->
-    console.log '@@@ Sandbox removed!'
 
 for let N to 3
   <- specify "##{N}"
