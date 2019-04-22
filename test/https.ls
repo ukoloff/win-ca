@@ -26,7 +26,7 @@ after "Stop Web-server" !->
 
 context \built-in !->
 
-  beforeEach "Un-inject" !->
+  before-each "Un-inject" !->
     me.inject!
 
   regular-case!
@@ -38,6 +38,7 @@ context \:= !->
   context '[1]' !->
 
   context '[roots]' !->
+    regular-usage true
 
 context \+= !->
 
@@ -46,6 +47,7 @@ context \+= !->
   context '[1]' !->
 
   context '[roots]' !->
+    regular-usage '+'
 
 !function self-fail
   context \self-signed ->
@@ -54,7 +56,7 @@ context \+= !->
 
     specify 'requires certificate' ->
       fetch do
-        ca: [CA.crt-pem]
+        agent: new https.Agent ca: [CA.crt-pem]
 
 !function self-ok
   context \self-signed ->
@@ -85,6 +87,14 @@ context \+= !->
 !function regular-case
   yandex-ok!
   self-fail!
+
+!function regular-usage(inject)
+  before-each !->
+    count  = 0
+    me {inject, ondata: -> count++}
+    @skip unless count
+
+  regular-case!
 
 !function https-get(req, res)
   req.pipe split reverse
