@@ -2,6 +2,8 @@ require! <[ crypto https url split node-forge ./me ]>
 
 pki = node-forge.pki
 
+https.globalAgent.maxCachedSessions = 0
+
 <-! context \HTTPS
 @timeout 10000
 
@@ -31,7 +33,7 @@ context \built-in !->
 
   regular-case!
 
-context.only \:= !->
+context \:= !->
 
   context '[]' !->
     before-each !->
