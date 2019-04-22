@@ -26,6 +26,9 @@ before "Start Web-server" ->
 after "Stop Web-server" !->
   Server.close!
 
+after-each !->
+  https.global-agent.destroy!
+
 context \built-in !->
 
   before-each "Un-inject" !->
