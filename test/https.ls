@@ -116,7 +116,7 @@ context \+= !->
   before-each !->
     count  = 0
     me {inject, ondata: -> count++}
-    @skip unless count
+    @skip! unless count
 
   regular-case!
 
