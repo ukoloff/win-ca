@@ -13,6 +13,11 @@ CA = newX509!
 Crt = newX509 CA
 var Server, Port
 
+major = Number (process.version.match /\d+/g or [])[0] or 0
+if ver45 = major <= 5
+  # Cache is poisoned in Node.js v5 (and in v4 a little)
+  skip-append = Math.random! < 0.5
+
 before "Start Web-server" ->
   resolve <-! new Promise _
   Server := https.create-server do
@@ -32,12 +37,18 @@ after-each !->
 
 context \built-in !->
 
+  before-each !->
+    @skip!  if ver45
+
   before-each "Un-inject" !->
     me.inject!
 
   regular-case!
 
 context \:= !->
+
+  before-each !->
+    @skip!  if ver45 and !skip-append
 
   context '[]' !->
     before-each !->
@@ -58,11 +69,8 @@ context \:= !->
 
 context \+= !->
 
-  major = Number (process.version.match /\d+/g or [])[0] or 0
-
-  before-each ->
-    # Cache is poisoned in Node.js v5 (and in v4 a little)
-    @skip!  if major <= 5
+  before-each !->
+    @skip!  if ver45 and skip-append
 
   context '[]' !->
     before-each !->
