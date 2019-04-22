@@ -2,15 +2,14 @@ require! <[ crypto https url split node-forge ./me ]>
 
 pki = node-forge.pki
 
-<-! context \HTTPS
+<-! context.only \HTTPS
 @timeout 10000
+
+Yandex = \https://www.google.com/
 
 CA = newX509!
 Crt = newX509 CA
 var Server, Port
-
-before "Un-inject" !->
-  me.inject!
 
 before "Start Web-server" ->
   resolve <-! new Promise _
@@ -25,27 +24,69 @@ before "Start Web-server" ->
 after "Stop Web-server" !->
   Server.close!
 
-context \self-signed ->
-  specify 'fails w/o certificate' ->
-    revert fetch!
+context \built-in !->
 
-  specify 'requires certificate' ->
-    fetch do
-      ca: [CA.crt-pem]
+  beforeEach "Un-inject" !->
+    me.inject!
 
-context \well-known !->
-  Yandex = \https://www.google.com/
+  regular-case!
 
-  specify 'fails w/o certificate' ->
-    revert fetch do
-      url: Yandex
-      agent: new https.Agent ca: []
+context \:= !->
 
-  specify 'requires certificate' ->
-    fetch do
-      url: Yandex
+  context '[]' !->
 
-function https-get(req, res)
+  context '[1]' !->
+
+  context '[roots]' !->
+
+context \+= !->
+
+  context '[]' !->
+
+  context '[1]' !->
+
+  context '[roots]' !->
+
+!function self-fail
+  context \self-signed ->
+    specify 'fails w/o certificate' ->
+      revert fetch!
+
+    specify 'requires certificate' ->
+      fetch do
+        ca: [CA.crt-pem]
+
+!function self-ok
+  context \self-signed ->
+    specify 'fails w/o certificate' ->
+      revert fetch do
+        agent: new https.Agent ca: []
+
+    specify 'connects' ->
+      fetch!
+
+!function yandex-ok
+  context \well-known !->
+    specify 'fails w/o certificate' ->
+      revert fetch do
+        url: Yandex
+        agent: new https.Agent ca: []
+
+    specify 'connects' ->
+      fetch do
+        url: Yandex
+
+!function yandex-fail
+  context \well-known !->
+    specify 'fails' ->
+      revert fetch do
+        url: Yandex
+
+!function regular-case
+  yandex-ok!
+  self-fail!
+
+!function https-get(req, res)
   req.pipe split reverse
   .pipe res
 
