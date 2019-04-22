@@ -2,7 +2,7 @@ require! <[ crypto https url split node-forge ./me ]>
 
 pki = node-forge.pki
 
-<-! context.only \HTTPS
+<-! context \HTTPS
 @timeout 10000
 
 Yandex = \https://www.google.com/
@@ -31,11 +31,21 @@ context \built-in !->
 
   regular-case!
 
-context \:= !->
+context.only \:= !->
 
   context '[]' !->
+    before-each !->
+      me.inject true []
+
+    yandex-fail!
+    self-fail!
 
   context '[1]' !->
+    before-each !->
+      me.inject true [CA.crt-pem]
+
+    yandex-fail!
+    self-ok!
 
   context '[roots]' !->
     regular-usage true
@@ -43,11 +53,20 @@ context \:= !->
 context \+= !->
 
   context '[]' !->
+    before-each !->
+      me.inject \+ []
+
+    regular-case!
 
   context '[1]' !->
+    before-each !->
+      me.inject \+ [CA.crt-pem]
+
+    yandex-ok!
+    self-ok!
 
   context '[roots]' !->
-    regular-usage '+'
+    regular-usage \+
 
 !function self-fail
   context \self-signed ->
@@ -59,7 +78,7 @@ context \+= !->
         agent: new https.Agent ca: [CA.crt-pem]
 
 !function self-ok
-  context \self-signed ->
+  context \self-signed !->
     specify 'fails w/o certificate' ->
       revert fetch do
         agent: new https.Agent ca: []
