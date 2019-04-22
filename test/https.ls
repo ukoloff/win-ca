@@ -1,4 +1,4 @@
-require! <[ crypto https url split node-forge ./me ]>
+require! <[ crypto https url split node-forge appveyor-mocha ./me ]>
 
 pki = node-forge.pki
 
@@ -16,7 +16,8 @@ var Server, Port
 major = Number (process.version.match /\d+/g or [])[0] or 0
 if ver45 = major <= 5
   # Cache is poisoned in Node.js v5 (and in v4 a little)
-  skip-append = Math.random! < 0.5
+  skip-replace = Math.random! < 0.5
+  appveyor-mocha.log "2 of 3 injection tests skipped due to Node.js v#{major}. Consider replay testing..."
 
 before "Start Web-server" ->
   resolve <-! new Promise _
@@ -38,7 +39,7 @@ after-each !->
 context \built-in !->
 
   before-each !->
-    @skip!  if ver45
+    @skip!  if ver45 and !skip-replace
 
   before-each "Un-inject" !->
     me.inject!
@@ -48,7 +49,7 @@ context \built-in !->
 context \:= !->
 
   before-each !->
-    @skip!  if ver45 and !skip-append
+    @skip!  if ver45 and skip-replace
 
   context '[]' !->
     before-each !->
@@ -70,7 +71,7 @@ context \:= !->
 context \+= !->
 
   before-each !->
-    @skip!  if ver45 and skip-append
+    @skip!  if ver45
 
   context '[]' !->
     before-each !->
