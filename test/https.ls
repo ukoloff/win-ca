@@ -3,6 +3,7 @@ require! <[ crypto https url split node-forge ./me ]>
 pki = node-forge.pki
 
 <-! context \HTTPS
+@timeout 10000
 
 CA = newX509!
 Crt = newX509 CA
