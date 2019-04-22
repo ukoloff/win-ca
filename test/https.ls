@@ -27,6 +27,7 @@ after "Stop Web-server" !->
   Server.close!
 
 after-each !->
+  # For Node.js v[4-5]
   https.global-agent.destroy!
 
 context \built-in !->
@@ -56,6 +57,12 @@ context \:= !->
     regular-usage true
 
 context \+= !->
+
+  major = Number (process.version.match /\d+/g or [])[0] or 0
+
+  before-each ->
+    # Cache is poisoned in Node.js v5 (and in v4 a little)
+    @skip!  if major <= 5
 
   context '[]' !->
     before-each !->
