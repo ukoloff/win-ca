@@ -121,14 +121,21 @@ It consists of three functions:
 * Asynchronous:
   + `ca.each.async()`
 
-Note,
-that all three yield
+Note:
+
+1. All three yield
 certificates
 in [node-forge][]'s format
 by default
 (unlike modern API,
 that returns DER
 if unspecified by user).
+
+2. Certificates may be duplicated
+(`unique: false` applied)
+
+3. `Root` store always used
+(no way for `store:` option)
 
 ```js
 let ca = require('win-ca')
@@ -157,7 +164,7 @@ Available values for `format` are:
 |---|---:|---
 der2.der | 0 | DER-format (binary, Node's [Buffer][])
 |der2.pem | 1 | PEM-format (text, Base64-encoded)
-|der2.txt| 2 | PEM-format plus some info as text
+|der2.txt| 2 | PEM-format plus some <abbr title="This is SPARTA!!!">laconic</abbr> header
 |der2.asn1| 3 | ASN.1-parsed certificate
 | * | * | Certificate in `node-forge` format (RSA only)
 
