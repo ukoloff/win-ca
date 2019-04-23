@@ -38,22 +38,97 @@ and make them available to
 
 ## Usage
 
-Just say `npm install --save win-ca`
-and then call `require('win-ca')`.
+For 95% of users:
 
-It is safe to use it under other OSes (not M$ Windows).
+1. Just say `npm install --save win-ca`
+2. Then call `require('win-ca')`.
+3. That's it!
+
+If you need more -
+proceed to [API](#api) section below.
+
+By the way,
+`win-ca` is safe to be used
+under other OSes (not M$ Windows).
+It does nothing there.
+
+### Electron
+`win-ca` was adapted to run inside Electron applications
+with no additional configuration.
+
+### VSCode extension
+
+Special [extension](vscode) for [VSCode][]
+was created to import `win-ca`
+in context of VSCode's Extension Host.
+
+Since all VSCode extensions share the same process,
+root certificates imported by one of them
+are immediately available to others.
+This can allow VSCode extensions to connect to
+(properly configured)
+intranet sites from Windows machines.
 
 ## API
 
-After `require('win-ca')` Windows' Root CAs
-are found, deduplicated
-and installed to `https.globalAgent.options.ca`
+First versions of `win-ca`
+opened Windows' *Trusted Root Certificate Store*,
+fetched certificates,
+deduplicated them and installed to
+`https.globalAgent.options.ca`,
 so they are automatically used for all
-requests with Node.js' https module.
+requests with Node.js' `https` module.
 
-For use in other places, these certificates
-are also available via `.all()` method
-(in [node-forge][]'s format).
+But sometimes one need to
+get these certificates to
+do something else.
+In that case,
+full featured API was devised.
+It is the only function
+with numerous parameters
+and operation modes, eg:
+
+```js
+const ca = require('win-ca')
+
+rootCAs = []
+// Fetch all certificates in PEM format
+ca({
+  format: ca.der2.pem,
+  ondata: crt => rootCAs.push(crt)
+})
+```
+
+### Entry points
+
+`win-ca` offers three ways of importing:
+
+1. Regular `require('win-ca')`
+2. Fallback `require('win-ca/fallback')`
+3. Pure API `require('win-ca/api')`
+
+
+## Legacy API
+
+`win-ca` v2 had another API,
+which is preserved for compatibility
+(but discouraged to use).
+It consists of three functions:
+
+* Synchronous:
+  + `ca.all()`
+  + `ca.each()`
+* Asynchronous:
+  + `ca.each.async()`
+
+Note,
+that all three yield
+certificates
+in [node-forge][]'s format
+by default
+(unlike modern API,
+that returns DER
+if unspecified by user).
 
 ```js
 let ca = require('win-ca')
@@ -178,19 +253,6 @@ the same fallback is used
 as for old Node.js.
 
 See [Minimal Electron application using win-ca](https://github.com/ukoloff/electron-win-ca).
-
-## VSCode extension
-
-Special [extension](vscode) for [VSCode][]
-was created to import `win-ca`
-in context of VSCode's Extension Host.
-
-Since all VSCode extensions share the same process,
-root certificates imported by one of them
-are immediately available to others.
-This can allow VSCode to connect to
-(properly configured)
-intranet sites from Windows machines.
 
 ## Building
 
