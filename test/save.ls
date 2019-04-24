@@ -57,6 +57,8 @@ for let N to 3
       assert.equal winner, folder, "Wrong save destination"
       unless folder
         return
+      if N > 2
+        return
       fs.readdir folder
       .then ->
         assert.equal count, it.length
