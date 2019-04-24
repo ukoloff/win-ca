@@ -17,7 +17,10 @@ major = Number (process.version.match /\d+/g or [])[0] or 0
 if ver45 = major <= 5
   # Cache is poisoned in Node.js v5 (and in v4 a little)
   skip-replace = Math.random! < 0.5
-  appveyor-mocha.log "2 of 3 injection tests skipped due to Node.js v#{major}. Consider replay testing..."
+  appveyor-mocha.log """
+    Skipped 2 of 3 injection tests due to Node.js v#{major}.
+    Consider replay testing...
+    """
 
 before "Start Web-server" ->
   resolve <-! new Promise _
