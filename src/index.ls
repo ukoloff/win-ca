@@ -43,6 +43,9 @@ function inject
 
   mapper = der2 params.format
 
+  if Array.is-array params.ondata
+    params.ondata .= push.bind params.ondata
+
   if params.save or params.$ave
     saver = require \./save <| params
 

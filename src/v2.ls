@@ -13,9 +13,8 @@ each.async = async
     onend:  !-> params.v2cb?!
 
 function all
-  result = []
   upgradeAPI & do
-    ondata: !-> result.push it
+    ondata: result = []
   result
 
 !function upgradeAPI(args, defaults)
