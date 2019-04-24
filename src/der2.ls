@@ -46,10 +46,15 @@ function txt
   crt = asn1 it
   d = new Date
   """
-  Subject\t#{crt.subject.value.map((.value[0].value[1].value)).join '/'}
-  Valid\t#{crt.valid.value.map((.value)).join ' - '}
-  Saved\t#{d.toLocaleDateString!} #{
-    d.toTimeString!replace /\s*\(.*\)\s*/, ''} by #{self.name}@#{self.version}
+  Subject\t#{
+    crt.subject.value.map (.value[0].value[1].value) .join '/'}
+  Valid\t#{
+    crt.valid.value.map (.value) .join ' - '}
+  Saved\t#{
+    d.toLocaleDateString!} #{
+    d.toTimeString!replace /\s*\(.*\)\s*/ ''} by #{
+    self.name}@#{
+    self.version}
   #{pem it}
   """
 
