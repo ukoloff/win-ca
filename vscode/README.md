@@ -43,9 +43,9 @@ search for `win-ca` and press `Install`.
 ## Parameters
 
 Since v3.0.0 this extension has got some parameters,
-namely:
+available at File / Preferences / Settings / Extensions / win-ca:
 
-- Save or not ceritificates to disk
+- Save or not certificates to disk
 
 - Method of injection
   + `None` (do not inject; there is no point in this option)

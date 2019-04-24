@@ -1,5 +1,4 @@
-var vscode = require('vscode')
-var cfg = getConfiguration('win-ca')
+var cfg = require('vscode').workspace.getConfiguration('win-ca')
 
 require('win-ca/api')({
   async: true,
