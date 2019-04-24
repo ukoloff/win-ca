@@ -8,9 +8,8 @@ api <<<
   der2: der2 = require \./der2
   hash: hash
   inject: inject
-  all:  all
-  each: each
-each.async = async
+
+api <<<< require \./v2
 
 if !disabled and api == require \../api
   api {+inject, +$ave, +async}
@@ -20,37 +19,6 @@ function hash
 
 function inject
   (api.inject = require \./inject .inject) ...
-
-# API v[12]
-!function each
-  upgradeAPI &
-
-!function async
-  upgradeAPI & do
-    async: true
-
-function all
-  result = []
-  upgradeAPI & do
-    ondata: !->
-      result.push it
-    onend: ->
-  result
-
-!function upgradeAPI(args, defaults = {})
-  format = args[0]
-
-  defaults.unique = false
-
-  defaults.format ?= format ? api.der2.x509
-
-  cb = args[1] or format
-  defaults.ondata ?= !->
-    cb? void, it
-  defaults.onend ?= !->
-    cb?!
-
-  api defaults
 
 # API v3
 !function api(params = {})
