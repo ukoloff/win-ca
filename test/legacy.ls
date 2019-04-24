@@ -22,15 +22,9 @@ context "Legacy API" !->
       finished = 0
       me.each do
         me.der2[k]
-        callback
-      assert.equal 1, finished
-
-      !function callback(err, value)
-        assert !err
-        if value
-          v value
-        else
-          finished++
+        !->
+          assert it
+          v it
 
     context "async" ->
 

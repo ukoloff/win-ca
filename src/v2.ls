@@ -3,31 +3,27 @@ exports <<< {all, each}
 each.async = async
 
 !function each
-  upgradeAPI &
+  upgradeAPI & params =
+    ondata: !-> params.v2cb? it
 
 !function async
-  upgradeAPI & do
+  upgradeAPI & params =
     async: true
+    ondata: !-> params.v2cb? void it
+    onend:  !-> params.v2cb?!
 
 function all
   result = []
   upgradeAPI & do
-    ondata: !->
-      result.push it
-    onend: ->
+    ondata: !-> result.push it
   result
 
-!function upgradeAPI(args, defaults = {})
+!function upgradeAPI(args, defaults)
   format = args[0]
 
-  defaults.unique = false
-
-  defaults.format ?= format ? api.der2.x509
-
-  cb = args[1] or format
-  defaults.ondata ?= !->
-    cb? void, it
-  defaults.onend ?= !->
-    cb?!
+  defaults <<<
+    unique: false
+    format: format ? api.der2.x509
+    v2cb:   args[1] or format
 
   defaults |> require \.
