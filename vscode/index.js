@@ -1,7 +1,12 @@
 var vscode = require('vscode')
-console.log('CFG', vscode.workspace.getConfiguration('win-ca'))
+var cfg = getConfiguration('win-ca')
 
-require('win-ca/fallback')
+require('win-ca/api')({
+  async: true,
+  fallback: true,
+  $ave: cfg.save,
+  inject: 'append' == cfg.inject ? '+' : 'none' != cfg.inject
+})
 
 exports.activate = activate
 

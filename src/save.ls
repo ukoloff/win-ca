@@ -21,7 +21,7 @@ unlink = promisify fs.unlink
 
   !function saver(der)
     if der
-      chain ||:= mkdir params.save
+      chain ||:= mkdir params.save || params.$ave
         .then -> folder := it
       chain .= then ->
         if folder
@@ -31,6 +31,8 @@ unlink = promisify fs.unlink
       .then cleanUp
       .then !->
         PEM?.end!
+        if folder and params.$ave
+          process.env.SSL_CERT_DIR = require \. .path = folder
         params.onsave? folder
     else
       params.onsave?!

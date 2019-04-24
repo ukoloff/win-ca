@@ -128,4 +128,4 @@ function promise-all
 
 function delay(value)
   resolve <-! new Promise _
-  setTimeout resolve, 200, value
+  setTimeout resolve, 42 + 12 * Math.random!, value

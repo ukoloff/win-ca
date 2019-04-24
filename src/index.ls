@@ -13,7 +13,7 @@ api <<<
 each.async = async
 
 if !disabled and api == require \../api
-  api {+inject, +save, +async, onsave}
+  api {+inject, +$ave, +async}
 
 function hash
   (api.hash = require \./hash) ...
@@ -52,10 +52,6 @@ function all
 
   api defaults
 
-!function onsave(folder)
-  if folder
-    process.env.SSL_CERT_DIR = api.path = folder
-
 # API v3
 !function api(params = {})
   engine = if disabled or params.disabled
@@ -79,7 +75,7 @@ function all
 
   mapper = der2 params.format
 
-  if params.save
+  if params.save or params.$ave
     saver = require \./save <| params
 
   if params.inject
