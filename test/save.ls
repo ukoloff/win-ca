@@ -34,7 +34,7 @@ for let N to 3
       for i til N
         candidate2save bitmask .>>. i .&. 1
     .then run-saver
-    # .then delay
+    .then delay
     .then evaluate
 
     function candidate2save(allowed)
