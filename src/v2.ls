@@ -18,6 +18,7 @@ function all
   result
 
 !function upgradeAPI(args, defaults)
+  api = require \.
   format = args[0]
 
   defaults <<<
@@ -25,4 +26,4 @@ function all
     format: format ? api.der2.x509
     $cb:   args[1] or format
 
-  defaults |> require \.
+  api defaults
