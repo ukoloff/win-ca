@@ -4,13 +4,13 @@ each.async = async
 
 !function each
   upgradeAPI & params =
-    ondata: !-> params.v2cb? it
+    ondata: !-> params.$cb? it
 
 !function async
   upgradeAPI & params =
     async: true
-    ondata: !-> params.v2cb? void it
-    onend:  !-> params.v2cb?!
+    ondata: !-> params.$cb? void it
+    onend:  !-> params.$cb?!
 
 function all
   upgradeAPI & do
@@ -23,6 +23,6 @@ function all
   defaults <<<
     unique: false
     format: format ? api.der2.x509
-    v2cb:   args[1] or format
+    $cb:   args[1] or format
 
   defaults |> require \.
