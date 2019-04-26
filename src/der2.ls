@@ -51,8 +51,8 @@ function txt
   Valid\t#{
     crt.valid.value.map (.value) .join ' - '}
   Saved\t#{
-    d.toLocaleDateString!} #{
-    d.toTimeString!replace /\s*\(.*\)\s*/ ''} by #{
+    format-date d} #{
+    d.toTimeString!replace /\s*\(.*?\)\s*/ ''} by #{
     self.name}@#{
     self.version}
   #{pem it}
@@ -78,3 +78,12 @@ function x509
   it.toString 'binary'
   |>  forge$!asn1.fromDer
   |>  forge$!pki.certificateFromAsn1
+
+function format-date(date)
+  "#{date.getFullYear!}-#{f02 date.getMonth! + 1}-#{f02 date.getDate!}"
+
+function f02(num)
+  num = "#{num}"
+  while num.length < 2
+    num = "0#{num}"
+  num
