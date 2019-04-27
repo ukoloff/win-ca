@@ -1,30 +1,72 @@
 require! <[ path assert node-forge ./me ./samples ]>
 
-uxm = samples.uxm
+checkers =
+  der: der-check
+  pem: pem-check
+  txt: txt-check
+  asn1: asn1-check
+  x509: x509-check
 
-<-! context "DER converters"
+exports <<< checkers
+delete exports.x509
 
-specify "work" !->
-  assert Buffer.isBuffer    me.der2 me.der2.der, uxm
-  assert "string" == typeof me.der2 me.der2.pem, uxm
-  assert "string" == typeof me.der2 me.der2.txt, uxm
-  assert "object" == typeof me.der2 me.der2.asn1, uxm
-  assert "object" == typeof me.der2 me.der2.x509, uxm
+context "DER converters" !->
+  specify "work" !->
+    for _, pem of samples
+      for k, v of checkers
+        v me.der2 me.der2[k], pem
 
-specify "are curried" !->
-  for , v of me.der2
-    assertEq do
-      me.der2 v, uxm
-      me.der2 v <| uxm
+  specify "are curried" !->
+    for k, _ of checkers
+      fn = me.der2 format = me.der2[k]
+      for _, pem of samples
+        assert-eq do
+          me.der2 format, pem
+          fn pem
 
-specify "do nothing by default" !->
-  fn = me.der2!
-  for k of me.der2
-    assert.equal do
-      k
-      fn k .toString \binary
+  specify "do nothing by default" !->
+    fn = me.der2!
+    for k of me.der2
+      assert.equal do
+        k
+        fn k .toString \binary
+    for _, v of samples
+      assert-eq do
+        v
+        fn v
 
-!function assertEq(a, b)
+!function assert-eq(a, b)
   assert.equal do
     JSON.stringify a
     JSON.stringify b
+
+function der-check
+  assert Buffer.is-buffer it
+
+function pem-check
+  assert.equal \string typeof it
+  assert /\n$/.test it
+  pem = node-forge.pem.decode it
+  assert.equal 1 pem.length
+
+txtFields =
+  /\bSubject\s+/i
+  /\bValid\s+/i
+  /\bSaved\s+/i
+
+function txt-check
+  pemCheck it
+  for re in txtFields
+    assert re.test it
+
+function asn1-check
+  assert.equal \object typeof it
+  assert.deep-equal do
+    Object.keys it
+    <[ serial valid issuer subject ]>
+
+function x509-check
+  assert.equal \object typeof it
+  assert it.validity
+  assert it.subject
+  assert it.issuer

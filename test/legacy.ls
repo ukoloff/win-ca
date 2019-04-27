@@ -1,23 +1,17 @@
-require! <[ assert node-forge ./me ]>
-
-checkers =
-  der: derCheck
-  pem: pemCheck
-  txt: txtCheck
-  asn1: asn1check
+require! <[ assert node-forge ./me ./der2 ]>
 
 context "Legacy API" !->
 
   context \all, !->
 
-    for let k, v of checkers
+    for let k, v of der2
       <-! specify k
       me.all me.der2[k]
         .forEach v
 
   context "each" !->
 
-    for let k, v of checkers
+    for let k, v of der2
       <-! specify k
       finished = 0
       me.each do
@@ -28,7 +22,7 @@ context "Legacy API" !->
 
     context "async" ->
 
-      for let k, v of checkers
+      for let k, v of der2
         <-! specify k
         finished = 0
         resolve, reject <-! new Promise _
@@ -45,25 +39,3 @@ context "Legacy API" !->
             reject Error 'Multiple ends'
           else
             resolve!
-
-function derCheck
-  assert Buffer.is-buffer it
-
-function pemCheck
-  assert.equal \string typeof it
-  assert /\n$/.test it
-  pem = nodeForge.pem.decode it
-  assert.equal 1 pem.length
-
-txtFields =
-  /\bSubject\s+/i
-  /\bValid\s+/i
-  /\bSaved\s+/i
-
-function txtCheck
-  pemCheck it
-  for re in txtFields
-    assert re.test it
-
-function asn1check
-  assert.equal \object typeof it

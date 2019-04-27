@@ -1,4 +1,4 @@
-require! <[ assert node-forge appveyor-mocha ./me ]>
+require! <[ assert node-forge ./me ]>
 
 export samples =
   total:  <[ ]>
@@ -9,19 +9,14 @@ export samples =
 counts = {}
 
 # Final check
-after !~>
+after !->
   var first
   for k, v of counts
-    checkCounts v
+    check-counts v
     if first
       assert.deepEqual v, first
     else
       first = v
-
-  Promise.resolve!then !->
-    for , v of counts
-      appveyor-mocha.log "Total: #{v.total}"
-      break
 
 # Build Checker if Buffer is valid X509 certificate (and count it)
 export function assert509(mocha-test)
@@ -32,7 +27,7 @@ export function assert509(mocha-test)
   store = counts[suite] ||= {}
   store[variable = mocha-test.title] ||= 0
 
-  !~>
+  !->
     assert Buffer.is-buffer it
     tree = it
       .toString 'binary'
@@ -41,9 +36,9 @@ export function assert509(mocha-test)
 
     assert ++store[variable] < 1000, "Too many certificates in store"
 
-!function checkCounts
+!function check-counts
   for k, v of it when !me.disabled
     assert v > 3, "Four certificates in store required"
 
-  assert it.total == it.root
-  assert it.root + it.ca == it.both
+  assert.equal it.total, it.root
+  assert.equal it.root + it.ca, it.both

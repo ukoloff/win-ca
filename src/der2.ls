@@ -70,8 +70,8 @@ function asn1
     serial.constructed
   crt = crt.slice hasSerial
   serial:  crt[0]
-  issuer:  crt[2]
   valid:   crt[3]
+  issuer:  crt[2]
   subject: crt[4]
 
 function x509

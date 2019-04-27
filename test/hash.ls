@@ -3,8 +3,9 @@ require! <[ assert ./me ./samples ./openssl ]>
 toPEM = me.der2 me.der2.pem
 
 predefined =
-  uxm: <[ 3aa90a40 09926f58 ]>
-  omz: <[ 4b12afa3 fa6b551d ]>
+  uxm:    <[ 3aa90a40 09926f58 ]>
+  omz:    <[ 4b12afa3 fa6b551d ]>
+  certum: <[ 95aff9e3 48bec511 ]>
 
 <-! context \X509_NAME_hash
 
@@ -17,10 +18,10 @@ function ourHashes(der)
   it der
 
 specify "match for known certificates" !->
-  for k, v in samples
+  for k, v of samples
     assert.deepEqual do
       predefined[k]
-      ourHashes samples.uxm
+      ourHashes v
 
 <-! context "match"
 
