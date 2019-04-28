@@ -11,7 +11,7 @@ matrix:
 
 environment:
   matrix:
-    - NOV: 12
+    # - NOV: 12
     - NOV: 11
     - NOV: 10
     - NOV: 9
