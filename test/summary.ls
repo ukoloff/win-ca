@@ -14,4 +14,5 @@ appveyor-mocha.log """
   Total:\t#{dups.length}
   Unique:\t#{dedups.length}
   Took:\t#{stop - start} ms
+  Saved:\t#{me.path ? "-"}
 """

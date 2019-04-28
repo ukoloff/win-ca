@@ -210,7 +210,7 @@ One should pass it object with some fields, ie:
   Default value depends on Node.js version
   (4, 5 and 7 `{fallback: true}`;
   modern versions `{fallback: false}`).
-  It is also false if Electron is detected.
+  It is also `true` if Electron is detected.
 
   Finally, if `win-ca` has been required as
   `win-ca/fallback`,
@@ -219,7 +219,7 @@ One should pass it object with some fields, ie:
 
   Note, that one can force N-API by setting
   `{fallback: false}`,
-  but if your Node.js cannot proceed,
+  but if Node.js cannot proceed,
   exception will be thrown.
   It can be catched,
   but nevertheless Node.js
@@ -260,9 +260,76 @@ One should pass it object with some fields, ie:
   }
   ```
 
-- `inject`
+  Note, that if callbacks are set along
+  with `generator` flag,
+  they will be *also* fired.
 
-- `save`
+- `inject` - how to install certificates
+  (default: `false`, ie just yield, do not install)
+
+  If set to `true`,
+  certificated fetched
+  will be also added to
+  `https.globalAgent.options.ca`
+  (in PEM format, regardless of `format` parameter),
+  so all subsequent calls
+  to `https` client methods
+  (https.request, https.get etc.)
+  will silently use them
+  *instead* of built-in ones.
+
+  If set to `'+'`,
+  new *experimental*
+  method is used instead:
+  `tls.createSecureContext()`
+  is patched and
+  fetched certificates
+  are used *in addition* to
+  built-in ones
+  (and not only for `https`,
+  but for all secure connections).
+
+  Injection mode can be later
+  changed (or disabled)
+  with [.inject()](#inject)
+  helper function.
+
+- `save` - how to save certificates to disk
+  (default: `false`, ie use *no* I/O at all)
+
+  If set to string, or array of strings,
+  they will be treated as
+  list of candidate folders to save certificates to.
+  First one that exists or can be
+  (recursively) created will be used.
+
+  If no valid folder path found,
+  saving will be silently discarded.
+
+  If `{save: true}` used,
+  predefined list of folders will be tried:
+    + `pem` folder inside `win-ca` module itself
+    + `.local/win-ca/pem` folder inside user's profile
+
+  Certificates will be stored to the folder in two formats:
+    + Each certificate as text file with special file name
+      (mimics behavour of [OpenSSL]'s `c_rehash` utility) -
+      suitable for `SSL_CERT_DIR`
+    + All certificates in single `roots.pem` file -
+      suitable for `SSL_CERT_FILE`
+
+  If `win-ca` is required not via `win-ca/api`,
+  it calls itself with `{inject: true, save: true}`
+  and additionaly sets `ca.path` field
+  and `SSL_CERT_DIR` environment variable
+  to the folder with certificates saved.
+
+- `onsave` - callback called at the end of saving
+  (if `save` is truthy).
+
+  Path to a folder is passed to callback,
+  or no parameters (`undefined`)
+  if it was impossible to save certificates to disk.
 
 ## Helper functions
 
@@ -414,12 +481,12 @@ so it can be used in [Node.js versions with N-API support][N-API-support],
 i.e. v6 and all versions starting from v8.
 
 Thanks to N-API, it is possible to precompile
-Windows DLL and save it to package,
+[Windows DLL](n-api/crypt32.cpp) and save it to package,
 so no compilation is needed at installation time.
 
 For other Node.js versions
 (v4, 5 or 7)
-speciall fallback utility is called
+special [fallback utility](n-api/roots.c) is called
 in the background to fetch the list anyway.
 
 If you wish to use this fallback engine
@@ -428,15 +495,6 @@ you can
 ```js
 require('win-ca/fallback')
 ```
-
-## Electron
-
-[Electron][] uses its own N-API,
-so if it is detected,
-the same fallback is used
-as for old Node.js.
-
-See [Minimal Electron application using win-ca](https://github.com/ukoloff/electron-win-ca).
 
 ## Building
 
