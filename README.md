@@ -112,7 +112,7 @@ ca({
 3. Pure API `require('win-ca/api')`
 
 They all export the same API,
-but differs in initialization:
+but differ in initialization:
 
 1. `win-ca` *does* fetch certificates from
 `Root` store,
@@ -144,11 +144,11 @@ One should pass it object with some fields, ie:
 
   | Constant | Value | Meaning
   |---|---:|---
-  der2.der | 0 | DER-format (binary, Node's [Buffer][])
+  |der2.der | 0 | DER-format (binary, Node's [Buffer][])
   |der2.pem | 1 | PEM-format (text, Base64-encoded)
-  |der2.txt| 2 | PEM-format plus some <abbr title="This is SPARTA!!!">laconic</abbr> header
+  |der2.txt | 2 | PEM-format plus some <abbr title="This is SPARTA!!!">laconic</abbr> header
   |der2.asn1| 3 | ASN.1-parsed certificate
-  | * | * | Certificate in `node-forge` format (RSA only)
+  |der2.x509| 4 | Certificate in `node-forge` format (RSA only!)
 
   Default value is `der`
   (except [legacy API](#legacy-api)).
@@ -176,7 +176,7 @@ One should pass it object with some fields, ie:
   })
   ```
 
-  - `unique`
+- `unique`
   whether certificates list
   should be deduplicated.
   Default is `true`
@@ -191,17 +191,37 @@ One should pass it object with some fields, ie:
   (see [below](#legacy-api))
   runs with `{unique: false}`.
 
-  - `ondata`
+- `ondata`
 
-  - `onend`
+- `onend`
 
-  - `async`
+- `fallback`
 
-  - `generator`
+- `async`
 
-  - `inject`
+- `generator`
 
-  - `save`
+- `inject`
+
+- `save`
+
+## Helper functions
+
+### der2
+
+Used for converting according to
+[format](#api-parameters) parameter.
+
+### hash
+
+Gives certificate hash
+(aka X509_NAME_hash).
+
+### inject
+
+Manages the way
+certificates are
+passed to other Node.js modules.
 
 ## Legacy API
 
@@ -211,10 +231,10 @@ which is preserved for compatibility
 It consists of three functions:
 
 * Synchronous:
-  + `ca.all()`
-  + `ca.each()`
+  + `.all()`
+  + `.each()`
 * Asynchronous:
-  + `ca.each.async()`
+  + `.each.async()`
 
 Note:
 
@@ -226,9 +246,9 @@ by default
 that returns DER
 if unspecified by user).
 
-2. Only `all()` deduplicates
+2. Only `.all()` deduplicates
 certificates,
-while both `each` call
+while both `.each` calls
 may return duplicates
 (`{unique: false}` applied)
 
