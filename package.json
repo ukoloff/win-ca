@@ -47,7 +47,6 @@
     "appveyor-mocha": "^1.1.2",
     "bindings": "^1.5.0",
     "choma": "^1.2.1",
-    "coffee-script": "^1.12.7",
     "fs-extra": "^5.0.0",
     "livescript": "^1.6.0",
     "mocha": "^5.2.0",

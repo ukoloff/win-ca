@@ -4,6 +4,7 @@ each.async = async
 
 !function each
   upgradeAPI & params =
+    unique: true
     ondata: !-> params.$cb? it
 
 !function async
@@ -21,8 +22,8 @@ function all
   api = require \.
   format = args[0]
 
+  defaults.unique ?= false
   defaults <<<
-    unique: false
     format: format ? api.der2.x509
     $cb:   args[1] or format
 

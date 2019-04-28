@@ -7,7 +7,7 @@ context "Legacy API" !->
     for let k, v of der2
       <-! specify k
       me.all me.der2[k]
-        .forEach v
+        .for-each v
 
   context "each" !->
 
