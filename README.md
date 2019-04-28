@@ -45,7 +45,8 @@ For 95% of users:
 3. That's it!
 
 If you need more -
-proceed to [API](#api) section below.
+proceed to [API](#api)
+section below.
 
 By the way,
 `win-ca` is safe to be used
@@ -168,12 +169,8 @@ One should pass it object with some fields, ie:
   (using array for `store` parameter).
 
   ```js
-  let list = []
-  require('win-ca/api')({
-    store: ['root', 'ca'],
-    format: ca.der2.txt,
-    ondata: list
-  })
+  var list = []
+  require('win-ca/api')({store: ['root', 'ca'], ondata: list})
   ```
 
 - `unique`
@@ -191,15 +188,77 @@ One should pass it object with some fields, ie:
   (see [below](#legacy-api))
   runs with `{unique: false}`.
 
-- `ondata`
+- `ondata` - callback fired for each certificate found.
 
-- `onend`
+  Every certificate will be converted to `format`
+  and passed as the first (and the only parameter).
 
-- `fallback`
+  As a syntactic sugar,
+  array can be passed instead of function,
+  it will be populated with certificates.
 
-- `async`
+- `onend` - callback fired (with no parameters) at the end of retrieval
 
-- `generator`
+  Useful for asynchronous invocations,
+  but works in any case.
+
+- `fallback` - boolean flag,
+  indicating [N-API](#n-api)
+  shouldn't be used
+  even if it is available.
+
+  Default value depends on Node.js version
+  (4, 5 and 7 `{fallback: true}`;
+  modern versions `{fallback: false}`).
+  It is also false if Electron is detected.
+
+  Finally, if `win-ca` has been required as
+  `win-ca/fallback`,
+  default value for this flag is also
+  set to `true`.
+
+  Note, that one can force N-API by setting
+  `{fallback: false}`,
+  but if your Node.js cannot proceed,
+  exception will be thrown.
+  It can be catched,
+  but nevertheless Node.js
+  will remain in unstable state,
+  so beware.
+
+- `async` - boolean flag to make retrieval process asynchronous
+  (`false` by default)
+
+  If `true` API call returns immediately,
+  certificates will be
+  fetched later and feed to `ondata` callback.
+  Finally `onend` callback will be called.
+
+- `generator` - boolean flag to emulate ES6 generator
+  (default: `false`)
+
+  If called with this flag,
+  ES6 iterator object is immediately
+  returned
+  (regular or asynchronous -
+  according to `async` flag).
+
+  ```js
+  const ca = require('win-ca/api')
+
+  // Iterate
+  for (let der of ca({generator: true})) {
+    // Process(der)
+  }
+
+  // Or thus (Node.js v>=6)
+  let list = [...ca({generator: true})]
+
+  // Or even (Node.js v>=10)
+  for await(let der of ca({generator: true, async: true})) {
+    // await Process(der)
+  }
+  ```
 
 - `inject`
 
@@ -348,7 +407,7 @@ no files will be saved
 but root certificates will be
 still available programmatically.
 
-## Availability
+## N-API
 
 Current version uses [N-API][],
 so it can be used in [Node.js versions with N-API support][N-API-support],
