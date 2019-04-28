@@ -31,12 +31,12 @@ function inject
 
   unless store = params.store
     store = []
-  else unless Array.isArray store
+  else unless Array.is-array store
     store = [store]
 
   engine .= [if async = params.async then \async else \sync] store
 
-  Process = if async then asyncProcess else syncProcess
+  Process = if async then async-process else sync-process
 
   if false != params.unique
     unique = do require \./unique
@@ -53,13 +53,13 @@ function inject
     injector = require \./inject <| params.inject
 
   if params.generator
-    return do if async then asyncGenerator else syncGenerator
+    return do if async then async-generator else sync-generator
 
   engine.run !->
     if !it or !unique or unique it
       Process it
 
-  !function syncProcess
+  !function sync-process
     if saver
       saver it
 
@@ -70,21 +70,21 @@ function inject
     else
       params.onend?!
 
-  !function asyncProcess
+  !function async-process
     Promise.resolve it
-    .then syncProcess
+    .then sync-process
 
-  function syncGenerator
+  function sync-generator
     (Symbol.iterator): myself
     return: Return
-    next:   syncNext
+    next:   sync-next
 
-  function asyncGenerator
-    (Symbol.asyncIterator ? '@') : myself
+  function async-generator
+    (Symbol.async-iterator ? '@') : myself
     return: Return
-    next:   asyncNext
+    next:   async-next
 
-  function genProcess
+  function gen-process
     Process it
     done: !it
     value: if it? then mapper it else it
@@ -94,20 +94,21 @@ function inject
     done: true
     value: it
 
-  function syncNext
+  function sync-next
     while (der = engine.next!) and unique and not unique der
       void
     genProcess der
 
-  function asyncNext
-    do function fire
+  function async-next
+    function fire
       Promise.resolve!
       .then engine.next
       .then ->
         if it and unique and !unique it
           fire!
         else
-          genProcess it
+          gen-process it
+    fire!
 
 function myself
   @

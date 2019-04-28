@@ -52,7 +52,7 @@ function txt
     crt.valid.value.map (.value) .join ' - '}
   Saved\t#{
     format-date d} #{
-    d.toTimeString!replace /\s*\(.*?\)\s*/ ''} by #{
+    d.to-time-string!replace /\s*\(.*?\)\s*/ ''} by #{
     self.name}@#{
     self.version}
   #{pem it}
@@ -60,27 +60,27 @@ function txt
 
 function asn1
   asn1parser = forge$!asn1
-  it .= toString \binary
-  crt = asn1parser.fromDer it   # Certificate
+  it .= to-string \binary
+  crt = asn1parser.from-der it   # Certificate
     .value[0].value             # TBSCertificate
   serial = crt[0]
-  hasSerial =
-    serial.tagClass == asn1parser.Class.CONTEXT_SPECIFIC and
+  has-serial =
+    serial.tag-class == asn1parser.Class.CONTEXT_SPECIFIC and
     serial.type == 0 and
     serial.constructed
-  crt = crt.slice hasSerial
+  crt = crt.slice has-serial
   serial:  crt[0]
   valid:   crt[3]
   issuer:  crt[2]
   subject: crt[4]
 
 function x509
-  it.toString 'binary'
-  |>  forge$!asn1.fromDer
-  |>  forge$!pki.certificateFromAsn1
+  it.to-string \binary
+  |>  forge$!asn1.from-der
+  |>  forge$!pki.certificate-from-asn1
 
 function format-date(date)
-  "#{date.getFullYear!}-#{f02 date.getMonth! + 1}-#{f02 date.getDate!}"
+  "#{date.get-full-year!}-#{f02 date.get-month! + 1}-#{f02 date.get-date!}"
 
 function f02(num)
   num = "#{num}"

@@ -4,7 +4,7 @@ module.exports = save
 
 toPEM = der2 der2.txt
 to$ = hash!
-writeFile = promisify fs.writeFile
+write-file = promisify fs.write-file
 readdir = promisify fs.readdir
 unlink = promisify fs.unlink
 
@@ -38,10 +38,10 @@ unlink = promisify fs.unlink
       params.onsave?!
 
   function single(der)
-    (PEM ||:= fs.createWriteStream name \roots.pem)
+    (PEM ||:= fs.create-write-stream name \roots.pem)
       .write pem = toPEM der
     hashes[hash = to$ der] ||= 0
-    writeFile do
+    write-file do
       name "#{hash}.#{hashes[hash]++}"
       pem
     .catch ignore # or: -> folder := void ???

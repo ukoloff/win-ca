@@ -14,31 +14,31 @@ module.exports = dispatch
 # SEQUENCE header removed.
 # In future we could also normalize the UTF8 too.
 function hash
-  sha1 = crypto.createHash \sha1
+  sha1 = crypto.create-hash \sha1
 
-  toASN1 it .subject.value.forEach !->
+  toASN1 it .subject.value.for-each !->
     it = asn1.copy it
 
     pair = it.value[0].value[1]
     pair.type = asn1.Type.UTF8
     unless pair.value
       return
-    pair.value .= trim!toLowerCase!.replace /\s+/g ' '
+    pair.value .= trim!to-lower-case!.replace /\s+/g ' '
     sha1.update do
-      asn1.toDer it
-        .getBytes!
+      asn1.to-der it
+        .get-bytes!
       \binary
 
   hex sha1
 
 # As in OpenSSL v0.*
 function hash0
-  md5 = crypto.createHash \md5
+  md5 = crypto.create-hash \md5
   subj = toASN1 it
     .subject
   md5.update do
-    asn1.toDer subj
-      .getBytes!
+    asn1.to-der subj
+      .get-bytes!
     \binary
   hex md5
 
@@ -46,7 +46,7 @@ function hex
   it .= digest!slice 0 4
   # Buffer::swap32()
   it.writeUInt32LE it.readUInt32BE(0), 0
-  it.toString \hex
+  it.to-string \hex
 
 function dispatch(ver, blob)
   fn = if 0 == ver
