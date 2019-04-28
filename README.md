@@ -362,117 +362,72 @@ It consists of three functions:
 * Asynchronous:
   + `.each.async()`
 
+```
+var ca = require('win-ca')
+
+do.something.with(ca.all(ca.der2.pem))
+```
+
 Note:
-
 1. All three yield
-certificates
-in [node-forge][]'s format
-by default
-(unlike modern API,
-that returns DER
-if unspecified by user).
+    certificates
+    in [node-forge][]'s format
+    by default
+    (unlike [modern API](#api),
+    that returns DER
+    if unspecified by user).
 
-2. Only `.all()` deduplicates
-certificates,
-while both `.each` calls
-may return duplicates
-(`{unique: false}` applied)
+    Unfortunately, `node-forge` at the time of writing is unable to
+    parse non-RSA certificates
+    (namely, ECC certificates becoming more popular).
+    If your *Trusted Root Certification Authorities* store
+    contains modern certificates,
+    legacy API calls
+    will throw exception.
+    To tackle the problem -
+    pass them [format](#api-parameters)
+    as the first parameter.
+
+2. `.all()` deduplicates
+  certificates (like [regular API](#api)),
+  while both `.each` calls
+  may return duplicates
+  (`{unique: false}` applied)
 
 3. `Root` store always used
-(no way for `store:` option)
+  (no way for `store:` option)
 
-```js
-let ca = require('win-ca')
-let forge = require('node-forge')
+4. Both `.each` calls require callback
+    (with optional `format`)
 
-for (let crt of ca.all())
-  console.log(forge.pki.certificateToPem(crt))
-```
-Unfortunately, `node-forge` at the time of writing is unable to
-parse non-RSA certificates
-(namely, ECC certificates becoming more popular).
-If your *Trusted Root Certification Authorities* store
-contains modern certificates,
-`.all()` method will throw exception.
+    Synchronous `.each()` gets single
+    argument - certificate
+    (in specified format)
 
-To fix this, one can pass `format` parameter to `.all` method:
-```js
-let ca = require('win-ca')
+    ```js
+      var ca = require('win-ca')
+      ca.each(ca.der2.x509, crt=>
+        console.log(crt.serialNumber)
+      )
+    ```
 
-for (let crt of ca.all(ca.der2.pem))
-  console.log(crt)
-```
-Available values for `format` are:
+    Asynchronous `.each.async()`
+    gets two parameters:
+      + `error` (which is always `undefined` in this version)
+      + `result` - certificate in requested `format`
+        or `undefined` to signal end of retrieval
 
-| Constant | Value | Meaning
-|---|---:|---
-der2.der | 0 | DER-format (binary, Node's [Buffer][])
-|der2.pem | 1 | PEM-format (text, Base64-encoded)
-|der2.txt| 2 | PEM-format plus some <abbr title="This is SPARTA!!!">laconic</abbr> header
-|der2.asn1| 3 | ASN.1-parsed certificate
-| * | * | Certificate in `node-forge` format (RSA only)
+    ```js
+    let ca = require('win-ca')
 
-One can enumerate Root CAs himself using `.each()` method:
-
-```js
-let ca = require('win-ca')
-
-ca.each(crt=>
-  console.log(forge.pki.certificateToPem(crt)))
-```
-
-But this list may contain duplicates.
-
-Asynchronous enumeration is provided via `.async()` method:
-
-```js
-let ca = require('win-ca')
-
-ca.each.async((error, crt)=> {
-  if (error) throw error;
-  if(crt)
-    console.log(forge.pki.certificateToPem(crt))
-  else
-    console.log("That's all folks!")
-})
-```
-
-Both `.each` and `.each.async` methods
-accept `format` as the first parameter.
-
-Finally, `win-ca` saves fetched ceritificates to disk
-for use by other software.
-Path to folder containing all the certificates
-is available as `require('win-ca').path`.
-Environment variable `SSL_CERT_DIR`
-is set to point at it,
-so [OpenSSL][]-based software will use it automatically.
-The layout of that folder mimics
-that of [OpenSSL][]'s `c_rehash` utility.
-
-In addition, file `roots.pem` is placed
-in the said folder.
-It contains all root certificates in PEM format
-concatenated together.
-It can also be used by most cryptographic software.
-In particular, `OpenSSL` will take it into account if one say
-```cmd
-set SSL_CERT_FILE = %SSL_CERT_DIR%\roots.pem
-```
-
-The folder is likely to be located
-inside `win-ca` module folder,
-but it is sometimes not writable
-to current process
-(see `UAC` etc.).
-In the latter case,
-`win-ca` will try
-to save PEM-files inside
-user profile
-and if this also fails,
-no files will be saved
-but root certificates will be
-still available programmatically.
+    ca.each.async((error, crt)=> {
+      if (error) throw error;
+      if(crt)
+        console.log(forge.pki.certificateToPem(crt))
+      else
+        console.log("That's all folks!")
+    })
+    ```
 
 ## N-API
 
