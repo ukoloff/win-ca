@@ -56,16 +56,20 @@ It does nothing there.
 `win-ca` was adapted to run inside Electron applications
 with no additional configuration.
 
-### VSCode extension
+See
+[Minimal Electron application using win-ca](https://github.com/ukoloff/electron-win-ca)
+for usage example.
 
-Special [extension](vscode) for [VSCode][]
+### VS Code extension
+
+Special [extension](vscode) for [VS Code]
 was created to import `win-ca`
-in context of VSCode's Extension Host.
+in context of VS Code's Extension Host.
 
-Since all VSCode extensions share the same process,
+Since all VS Code extensions share the same process,
 root certificates imported by one of them
 are immediately available to others.
-This can allow VSCode extensions to connect to
+This can allow VS Code extensions to connect to
 (properly configured)
 intranet sites from Windows machines.
 
@@ -79,10 +83,10 @@ deduplicated them and installed to
 so they are automatically used for all
 requests with Node.js' `https` module.
 
-But sometimes one need to
+But sometimes one needs to
 get these certificates to
 do something else.
-In that case,
+For that case,
 full featured API was devised.
 It is the only function
 with numerous parameters
@@ -107,6 +111,97 @@ ca({
 2. Fallback `require('win-ca/fallback')`
 3. Pure API `require('win-ca/api')`
 
+They all export the same API,
+but differs in initialization:
+
+1. `win-ca` *does* fetch certificates from
+`Root` store,
+saves them to disk
+and makes them available to
+`https` module with no effort.
+
+2. `win-ca/fallback` does the same,
+but it never uses N-API
+for fetching certificates,
+so it should work
+in all versions of Node.js
+as well as inside Electron application.
+
+3. `win-ca/api` does *nothing*,
+just exports API,
+so you decide yourself
+what to do.
+
+## API Parameters
+
+API function may be called with no parameters,
+but that makes little sense.
+One should pass it object with some fields, ie:
+
+- `format`
+  defines representation of certificates to fetch.
+  Available values are:
+
+  | Constant | Value | Meaning
+  |---|---:|---
+  der2.der | 0 | DER-format (binary, Node's [Buffer][])
+  |der2.pem | 1 | PEM-format (text, Base64-encoded)
+  |der2.txt| 2 | PEM-format plus some <abbr title="This is SPARTA!!!">laconic</abbr> header
+  |der2.asn1| 3 | ASN.1-parsed certificate
+  | * | * | Certificate in `node-forge` format (RSA only)
+
+  Default value is `der`
+  (except [legacy API](#legacy-api)).
+
+  See [der2](#der2) function below.
+
+- `store`
+  says which Windows' store to use.
+  Default is `Root`.
+
+  Windows has a whole lot of Certificate
+  stores (eg `Root`, `CA` etc.)
+  One can list certificates from
+  any of them
+  (knowing its name)
+  or several stores at once
+  (using array for `store` parameter).
+
+  ```js
+  let list = []
+  require('win-ca/api')({
+    store: ['root', 'ca'],
+    format: ca.der2.txt,
+    ondata: list
+  })
+  ```
+
+  - `unique`
+  whether certificates list
+  should be deduplicated.
+  Default is `true`
+  (no duplicates returned).
+
+  Use `{unique: false}`
+  to see all certificates
+  in store.
+
+  Note,
+  that legacy API `each`
+  (see [below](#legacy-api))
+  runs with `{unique: false}`.
+
+  - `ondata`
+
+  - `onend`
+
+  - `async`
+
+  - `generator`
+
+  - `inject`
+
+  - `save`
 
 ## Legacy API
 
@@ -131,8 +226,11 @@ by default
 that returns DER
 if unspecified by user).
 
-2. Certificates may be duplicated
-(`unique: false` applied)
+2. Only `all()` deduplicates
+certificates,
+while both `each` call
+may return duplicates
+(`{unique: false}` applied)
 
 3. `Root` store always used
 (no way for `store:` option)
@@ -294,6 +392,6 @@ and used to use [node-ffi-napi][] (ancestor of [node-ffi][]).
 [nvm$]: https://github.com/ukoloff/nvms
 [N-API]: https://nodejs.org/api/n-api.html
 [N-API-support]: https://github.com/nodejs/node-addon-api/blob/master/index.js#L17
-[VSCode]: https://code.visualstudio.com/
+[VS Code]: https://code.visualstudio.com/
 [mac-ca]: https://github.com/jfromaniello/mac-ca
 [Electron]: https://electronjs.org/
