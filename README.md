@@ -122,7 +122,7 @@ and makes them available to
 `https` module with no effort.
 
 2. `win-ca/fallback` does the same,
-but it never uses N-API
+but it never uses [N-API](#n-api)
 for fetching certificates,
 so it should work
 in all versions of Node.js
@@ -217,7 +217,7 @@ One should pass it object with some fields, ie:
   default value for this flag is also
   set to `true`.
 
-  Note, that one can force N-API by setting
+  Note, that one can force [N-API](#n-api) by setting
   `{fallback: false}`,
   but if Node.js cannot proceed,
   exception will be thrown.
@@ -364,9 +364,9 @@ derived from certificate subject.
 
 If version is 0,
 an old algorithm is used
-(aka X509_NAME_hash_old, used in OpenSSL v0.*),
+(aka X509_NAME_hash_old, used in OpenSSL v0.\*),
 else - the new one
-(X509_NAME_hash of OpenSSL v1.*).
+(X509_NAME_hash of OpenSSL v1.\*).
 
 Function `.hash()` is also curried:
 ```js
@@ -476,7 +476,7 @@ Note:
 4. Both `.each` calls require callback
     (with optional `format`)
 
-    Synchronous `.each()` gets single
+    Synchronous `.each()` callback gets single
     argument - certificate
     (in specified format)
 
@@ -487,7 +487,7 @@ Note:
       )
     ```
 
-    Asynchronous `.each.async()`
+    Asynchronous `.each.async()` callback
     gets two parameters:
       + `error` (which is always `undefined` in this version)
       + `result` - certificate in requested `format`
@@ -534,7 +534,7 @@ require('win-ca/fallback')
 - npm run [nvm$][]
 - npm publish
 
-This builds both `x86` and `x64` versions with [N-API][] support.
+This builds both `x86` and `x64` versions with [N-API](#n-api) support.
 For older Node.js versions standalone binary utility is built.
 
 ## See also
