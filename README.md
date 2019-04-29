@@ -333,21 +333,97 @@ One should pass it object with some fields, ie:
 
 ## Helper functions
 
+Some internal functions are exposed:
+
 ### der2
 
-Used for converting according to
+```js
+var certificate = ca.der2(format, certificate_in_der_format)
+```
+
+Used for converting certificates
+according to
 [format](#api-parameters) parameter.
 
-### hash
 
+Function `.der2()` is curried:
+```js
+var toPEM = ca.der2(ca.der2.pem)
+
+var pem = toPEM(der)
+```
+
+### hash
+```js
+var hash = ca.hash(version, certificate_in_der_format)
+```
 Gives certificate hash
-(aka X509_NAME_hash).
+(aka X509_NAME_hash),
+ie 8-character string,
+derived from certificate subject.
+
+If version is 0,
+an old algorithm is used
+(aka X509_NAME_hash_old, used in OpenSSL v0.*),
+else - the new one
+(X509_NAME_hash of OpenSSL v1.*).
+
+Function `.hash()` is also curried:
+```js
+var hasher = ca.hash()
+console.log(hasher(der))
+```
 
 ### inject
+```js
+ca.inject(mode, array_of_certificates)
+```
 
 Manages the way
 certificates are
 passed to other Node.js modules.
+
+This function is internally called by API
+when `{inject:}` parameter used.
+
+First argument (`mode`) is injection mode:
+
+- `false`: no injection, built-in certificates are used
+
+- `true`: put certificates to `https.globalAgent.options.ca`
+  and use them *instead* of built-in ones for `https` module
+
+- `'+'`: new *experimental* mode:
+  `tls.createSecureContext()` is patched
+  and certificates are used
+  *along with* built-in ones.
+  This mode should apply to all secure connections,
+  not just `https` module.
+
+Second parameter (`array_of_certificates`)
+is list of certificates to inject.
+If it is omitted,
+previous list is used
+(only inject mode is changed).
+
+For example,
+simplest way to test new
+injection mode is:
+```js
+const ca = require('win-ca') // Fetch certificates and start injecting (old way)
+
+ca.inject('+') // Switch to new injection mode
+```
+
+Note,
+that this function should be called
+before first secure connection is established,
+since every secure connection populates
+different caches,
+that are extremely hard to invalidate.
+Changing injection mode in the
+middle of secure communication
+can lead to unpredictable results.
 
 ## Legacy API
 
@@ -431,7 +507,7 @@ Note:
 
 ## N-API
 
-Current version uses [N-API][],
+Current version uses [N-API],
 so it can be used in [Node.js versions with N-API support][N-API-support],
 i.e. v6 and all versions starting from v8.
 
