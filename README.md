@@ -525,6 +525,33 @@ you can
 require('win-ca/fallback')
 ```
 
+## Caveats
+Windows 10 tends to
+have only a few certificates in
+its *Trusted Root Certification Authorities* store
+and [lazily add them to it on first use][win.lazy].
+
+If your OS does so,
+`win-ca` will still help to
+connect to your own sites
+(protected by self-signed certificates,
+or by the ones, distributed with GPO),
+but will make connection to
+well-known sites
+(like Google or Twitter) impossible!
+
+The simplest remedy is to
+*once* open desired site in
+Internet Explorer / Google Chrome
+(certificate will be *silently* added
+to Root store).
+
+Another option is to switch to new
+*experimental [injection](#inject) method:
+```js
+require('win-ca').inject('+')
+```
+
 ## Building
 
 - npm install
@@ -562,3 +589,4 @@ and used to use [node-ffi-napi][] (ancestor of [node-ffi][]).
 [mac-ca]: https://github.com/jfromaniello/mac-ca
 [Electron]: https://electronjs.org/
 [electron-win-ca]: https://github.com/ukoloff/electron-win-ca
+[win.lazy]: https://social.technet.microsoft.com/wiki/contents/articles/3147.pki-certificate-chaining-engine-cce.aspx
