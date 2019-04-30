@@ -18,7 +18,7 @@ But it is implemented in a rather bizzare way:
 > rather than relying on the system's trust store...
 > [Read more][node/4175]
 
-It's very strange behavour under any OS,
+It's somewhat non-intuitive under any OS,
 but Windows differs from most of them
 by having its own trust store,
 fully incompatible with [OpenSSL].
@@ -58,7 +58,7 @@ It does nothing there.
 with no additional configuration.
 
 See
-[Minimal Electron application using win-ca](https://github.com/ukoloff/electron-win-ca)
+[Minimal Electron application using win-ca][electron-win-ca]
 for usage example.
 
 ### VS Code extension
@@ -151,17 +151,17 @@ One should pass it object with some fields, ie:
   |der2.asn1| 3 | ASN.1-parsed certificate
   |der2.x509| 4 | Certificate in `node-forge` format (RSA only!)
 
-  Default value is `der`
-  (except [legacy API](#legacy-api)).
+  Default value is `der`.
 
-  See [der2](#der2) function below.
+  See also [der2](#der2) function below.
 
-- `store`
-  says which Windows' store to use.
-  Default is `Root`.
+- `store` -
+  which Windows' store to use.
+  Default is `Root`
+  (ie *Trusted Root Certification Authorities*).
 
   Windows has a whole lot of Certificate
-  stores (eg `Root`, `CA` etc.)
+  stores (eg `Root`, `CA`, `My`, `TrustedPublisher` etc.)
   One can list certificates from
   any of them
   (knowing its name)
@@ -183,15 +183,10 @@ One should pass it object with some fields, ie:
   to see all certificates
   in store.
 
-  Note,
-  that legacy API `each`
-  (see [below](#legacy-api))
-  runs with `{unique: false}`.
-
 - `ondata` - callback fired for each certificate found.
 
   Every certificate will be converted to `format`
-  and passed as the first (and the only parameter).
+  and passed as the first (the only) parameter.
 
   As a syntactic sugar,
   array can be passed instead of function,
@@ -222,14 +217,13 @@ One should pass it object with some fields, ie:
   but if Node.js cannot proceed,
   exception will be thrown.
   It can be catched,
-  but nevertheless Node.js
-  will remain in unstable state,
+  but Node.js will nevertheless remain in unstable state,
   so beware.
 
 - `async` - boolean flag to make retrieval process asynchronous
   (`false` by default)
 
-  If `true` API call returns immediately,
+  If `true`, API call returns immediately,
   certificates will be
   fetched later and feed to `ondata` callback.
   Finally `onend` callback will be called.
@@ -265,7 +259,7 @@ One should pass it object with some fields, ie:
   they will be *also* fired.
 
 - `inject` - how to install certificates
-  (default: `false`, ie just yield, do not install)
+  (default: `false`, ie just fetch from store, do not install)
 
   If set to `true`,
   certificated fetched
@@ -311,8 +305,8 @@ One should pass it object with some fields, ie:
     + `pem` folder inside `win-ca` module itself
     + `.local/win-ca/pem` folder inside user's profile
 
-  Certificates will be stored to the folder in two formats:
-    + Each certificate as text file with special file name
+  Certificates will be stored into the folder in two formats:
+    + Each certificate as separate text file with special file name
       (mimics behavour of [OpenSSL]'s `c_rehash` utility) -
       suitable for `SSL_CERT_DIR`
     + All certificates in single `roots.pem` file -
@@ -329,7 +323,7 @@ One should pass it object with some fields, ie:
 
   Path to a folder is passed to callback,
   or no parameters (`undefined`)
-  if it was impossible to save certificates to disk.
+  if it has been impossible to save certificates to disk.
 
 ## Helper functions
 
@@ -341,12 +335,13 @@ Some internal functions are exposed:
 var certificate = ca.der2(format, certificate_in_der_format)
 ```
 
-Used for converting certificates
-according to
-[format](#api-parameters) parameter.
-
+Converts certificate from DER
+to
+[format](#api-parameters)
+specified in first parameter.
 
 Function `.der2()` is curried:
+
 ```js
 var toPEM = ca.der2(ca.der2.pem)
 
@@ -359,16 +354,17 @@ var hash = ca.hash(version, certificate_in_der_format)
 ```
 Gives certificate hash
 (aka X509_NAME_hash),
-ie 8-character string,
+ie 8-character hexadecimal string,
 derived from certificate subject.
 
-If version is 0,
+If version (first parameter) is 0,
 an old algorithm is used
 (aka X509_NAME_hash_old, used in OpenSSL v0.\*),
 else - the new one
 (X509_NAME_hash of OpenSSL v1.\*).
 
 Function `.hash()` is also curried:
+
 ```js
 var hasher = ca.hash()
 console.log(hasher(der))
@@ -376,12 +372,14 @@ console.log(hasher(der))
 
 ### inject
 ```js
+ca.inject(mode)
+// or:
 ca.inject(mode, array_of_certificates)
 ```
 
 Manages the way
 certificates are
-passed to other Node.js modules.
+passed to other modules.
 
 This function is internally called by API
 when `{inject:}` parameter used.
@@ -397,7 +395,7 @@ First argument (`mode`) is injection mode:
   `tls.createSecureContext()` is patched
   and certificates are used
   *along with* built-in ones.
-  This mode should apply to all secure connections,
+  This mode should affect all secure connections,
   not just `https` module.
 
 Second parameter (`array_of_certificates`)
@@ -428,8 +426,8 @@ can lead to unpredictable results.
 ## Legacy API
 
 `win-ca` v2 had another API,
-which is preserved for compatibility
-(but discouraged to use).
+which is preserved for compatibility,
+but discouraged to use.
 It consists of three functions:
 
 * Synchronous:
@@ -531,7 +529,7 @@ require('win-ca/fallback')
 
 - npm install
 - npm run pretest
-- npm run [nvm$][]
+- npm run [nvm$]
 - npm publish
 
 This builds both `x86` and `x64` versions with [N-API](#n-api) support.
@@ -563,3 +561,4 @@ and used to use [node-ffi-napi][] (ancestor of [node-ffi][]).
 [VS Code]: https://code.visualstudio.com/
 [mac-ca]: https://github.com/jfromaniello/mac-ca
 [Electron]: https://electronjs.org/
+[electron-win-ca]: https://github.com/ukoloff/electron-win-ca
