@@ -547,7 +547,7 @@ Internet Explorer / Google Chrome
 to Root store).
 
 Another option is to switch to new
-*experimental [injection](#inject) method:
+*experimental* [injection](#inject) method:
 ```js
 require('win-ca').inject('+')
 ```

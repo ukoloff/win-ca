@@ -1,18 +1,34 @@
 {
   "name": "win-ca",
   "private": true,
-  "version": "3.0.0-beta",
+  "version": "3.0.4",
   "description": "Make Trusted Root Certificates @Windows available to VSCode extensions",
   "icon": "win-ca.png",
-  "main": "index.js",
   "engines": {
     "vscode": "^1.0.0"
   },
   "publisher": "ukoloff",
+  "author": {
+    "name": "Stas Ukolov",
+    "email": "ukoloff@gmail.com"
+  },
+  "license": "ISC",
+  "keywords": [
+    "vscode",
+    "ssl",
+    "ca",
+    "root",
+    "windows"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://ukoloff@github.com/ukoloff/win-ca.git"
+    "url": "git+https://github.com/ukoloff/win-ca.git"
   },
+  "bugs": {
+    "url": "https://github.com/ukoloff/win-ca/issues"
+  },
+  "scripts": {},
+  "main": "index.js",
   "activationEvents": [
     "*"
   ],
@@ -39,19 +55,6 @@
       }
     }
   },
-  "scripts": {},
-  "keywords": [
-    "vscode",
-    "ssl",
-    "ca",
-    "root",
-    "windows"
-  ],
-  "author": {
-    "name": "Stas Ukolov",
-    "email": "ukoloff@gmail.com"
-  },
-  "license": "ISC",
   "dependencies": {
     "win-ca": "^3.0.0-beta"
   }
