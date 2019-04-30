@@ -56,6 +56,6 @@
     }
   },
   "dependencies": {
-    "win-ca": "^3.0.0-beta"
+    "win-ca": "^3.0.4"
   }
 }
