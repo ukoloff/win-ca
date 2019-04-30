@@ -1,0 +1,6 @@
+test/*.ls
+--ui tdd
+--reporter dot
+--require choma
+--require appveyor-mocha
+--require livescript

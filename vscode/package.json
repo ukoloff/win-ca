@@ -1,22 +1,18 @@
 {
   "name": "win-ca",
   "private": true,
-  "version": "2.4.0",
+  "version": "3.0.4",
   "description": "Make Trusted Root Certificates @Windows available to VSCode extensions",
   "icon": "win-ca.png",
-  "main": "index.js",
   "engines": {
     "vscode": "^1.0.0"
   },
   "publisher": "ukoloff",
-  "repository": {
-    "type": "git",
-    "url": "git+https://ukoloff@github.com/ukoloff/win-ca.git"
+  "author": {
+    "name": "Stas Ukolov",
+    "email": "ukoloff@gmail.com"
   },
-  "activationEvents": [
-    "*"
-  ],
-  "scripts": {},
+  "license": "ISC",
   "keywords": [
     "vscode",
     "ssl",
@@ -24,12 +20,42 @@
     "root",
     "windows"
   ],
-  "author": {
-    "name": "Stas Ukolov",
-    "email": "ukoloff@gmail.com"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ukoloff/win-ca.git"
   },
-  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ukoloff/win-ca/issues"
+  },
+  "scripts": {},
+  "main": "index.js",
+  "activationEvents": [
+    "*"
+  ],
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "win-ca",
+      "properties": {
+        "win-ca.save": {
+          "type": "boolean",
+          "default": true,
+          "description": "Save fetched root certificates to disk"
+        },
+        "win-ca.inject": {
+          "type": "string",
+          "enum": [
+            "none",
+            "replace",
+            "append"
+          ],
+          "default": "replace",
+          "description": "Method to provide fetched root certificates to other extensions"
+        }
+      }
+    }
+  },
   "dependencies": {
-    "win-ca": "^2.4.0"
+    "win-ca": "^3.0.4"
   }
 }

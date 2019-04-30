@@ -3,8 +3,21 @@
 
 #include <Wincrypt.h>
 
-int main() {
-  HCERTSTORE hStore = CertOpenSystemStoreA(0, "ROOT");
+static void dumpStore(const char*);
+
+int main(int argc, char* argv[]) {
+  if (argc > 1) {
+    for (int i = 1; i < argc; ++i) {
+      dumpStore(argv[i]);
+    }
+  } else {
+    dumpStore("ROOT");
+  }
+  return 0;
+}
+
+static void dumpStore(const char* title) {
+  HCERTSTORE hStore = CertOpenSystemStoreA(0, title);
   for (PCCERT_CONTEXT pCtx = 0;
        pCtx = CertEnumCertificatesInStore(hStore, pCtx);) {
     DWORD i;
@@ -19,5 +32,4 @@ int main() {
     puts("");
   }
   CertCloseStore(hStore, 0);
-  return 0;
 }

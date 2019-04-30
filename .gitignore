@@ -40,3 +40,6 @@ jspm_packages
 /top
 /lib
 /pem
+
+.*
+package-lock.json

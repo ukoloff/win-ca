@@ -1,16 +1,17 @@
 version: 1.0.{build}-{branch}
 
 cache:
-  - node_modules
+  - node_modules -> appveyor.yml
 
 shallow_clone: true
 
-# matrix:
-#   allow_failures:
-#     - NOV: 11
+matrix:
+  allow_failures:
+    - NOV: 12
 
 environment:
   matrix:
+    - NOV: 12
     - NOV: 11
     - NOV: 10
     - NOV: 9
@@ -32,11 +33,11 @@ install:
   - npm run pretest
   - cd n-api
   - npm install
-  - node test
+  - npm test
   - node deploy
   - ps: Install-Product node $env:NOV_LTS x64
   - npm install
-  - node test
+  - npm test
   - node deploy
   - cd ..
   - ps: Install-Product node $env:NOV $env:PLATFORM
