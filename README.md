@@ -526,6 +526,7 @@ require('win-ca/fallback')
 ```
 
 ## Caveats
+
 Windows 10 tends to
 have only a few certificates in
 its *Trusted Root Certification Authorities* store
@@ -551,6 +552,18 @@ Another option is to switch to new
 ```js
 require('win-ca').inject('+')
 ```
+
+### Clear `pem` folder on publish
+
+If you use `win-ca` in some Electron app or VS Code extension,
+be warned that
+`node_modules/win-ca/pem` folder
+is likely to be packed into your bundle
+with all root certificates on development machine.
+
+You had better remove said folder
+before publishing
+(eg. in `prepack` npm script if it applies).
 
 ## Building
 
