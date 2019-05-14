@@ -1,4 +1,4 @@
-require! <[ fs path make-dir ./der2 ./hash ]>
+require! <[ fs os path make-dir ./der2 ./hash ]>
 
 module.exports = save
 
@@ -63,7 +63,7 @@ unlink = promisify fs.unlink
 function defaults
   return
     path.join __dirname, \../pem
-    path.join process.env.USERPROFILE || process.env.HOME, \.local/win-ca/pem
+    path.join os.homedir!, \.local/win-ca/pem
     ...
 
 !function mkdir(dst)
