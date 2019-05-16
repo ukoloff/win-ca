@@ -28,19 +28,27 @@ platform:
   - x86
 
 install:
-  - ps: Install-Product node $env:NOV_LTS x86
+  # Install NVS.
+  - git clone --depth 1 https://github.com/jasongin/nvs %LOCALAPPDATA%\nvs
+  - set PATH=%LOCALAPPDATA%\nvs;%PATH%
+  - nvs --version
+  # Build N-API
+  - nvs add %NOV_LTS%/x86
+  - nvs use %NOV_LTS%/x86
   - npm install
   - npm run pretest
   - cd n-api
   - npm install
   - npm test
   - node deploy
-  - ps: Install-Product node $env:NOV_LTS x64
+  - nvs add %NOV_LTS%/x64
+  - nvs use %NOV_LTS%/x64
   - npm install
   - npm test
   - node deploy
   - cd ..
-  - ps: Install-Product node $env:NOV $env:PLATFORM
+  - nvs add %NOV%/%PLATFORM%
+  - nvs use %NOV%/%PLATFORM%
 
 build: off
 
