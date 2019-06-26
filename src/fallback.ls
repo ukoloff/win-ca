@@ -27,8 +27,7 @@ export !function sync(args)
     .on \end !->
       callback!
     .end do
-      child_process.spawnSync bin, args
-      .stdout
+      child_process.exec-file-sync bin, args
 
 export !function async(args)
   return {run, next, done}
@@ -70,7 +69,7 @@ export !function async(args)
       resolver!
 
   !function run(callback)
-    child_process.spawn bin, args
+    child_process.exec-file bin, args
     .stdout
     .pipe splitter callback
     .on \end !->

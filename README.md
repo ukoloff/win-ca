@@ -55,7 +55,8 @@ It does nothing there.
 
 ### Electron
 `win-ca` was adapted to run inside Electron applications
-with no additional configuration.
+with no additional configuration
+([asar] supported).
 
 See
 [Minimal Electron application using win-ca][electron-win-ca]
@@ -603,3 +604,4 @@ and used to use [node-ffi-napi][] (ancestor of [node-ffi][]).
 [Electron]: https://electronjs.org/
 [electron-win-ca]: https://github.com/ukoloff/electron-win-ca
 [win.lazy]: https://social.technet.microsoft.com/wiki/contents/articles/3147.pki-certificate-chaining-engine-cce.aspx
+[asar]: https://github.com/electron/asar
