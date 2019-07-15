@@ -2,7 +2,9 @@
 
 require! <[ path child_process split ]>
 
-bin = path.join __dirname, 'roots'
+bin = path.join do
+  __dirname.replace /\b\w+[.]asar\b/ \$&.unpacked
+  \roots
 
 export !function sync(args)
   return {run, next, done}
@@ -81,5 +83,3 @@ function splitter(callback)
 
 buffer-from = Buffer.from || (data, encoding)->
   new Buffer data, encoding
-
-
