@@ -37,18 +37,13 @@ jobs:
       - name: Fetch CAs
         run:  node .
 
-      - name: Upload CAs as artifacts
-        uses: actions/upload-artifact@v1
-        with:
-          name: root
-          path: pem
-
       - name: Store Root CAs
         working-directory: roots
         shell: bash
         run: |
           rm -rf *
           cp ../pem/* .
+          rm *.pem
           git add --all
           git config user.email "none"
           git config user.name "GitHub Actions"
