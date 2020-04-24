@@ -25,7 +25,10 @@ jobs:
       - name: Install packages
         run:  npm install
 
-      - name: Compile
+      - name: Compile LiveScript
+        run:  npm run pretest
+
+      - name: Compile C/C++
         working-directory: n-api
         run: |
           npm install
