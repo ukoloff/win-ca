@@ -1,0 +1,47 @@
+name: Store Roots
+
+on:
+  push:
+    branches: pure
+
+jobs:
+  store:
+    runs-on: windows-latest
+
+    steps:
+
+      - name: Check out
+        uses: actions/checkout@v2
+
+      - name: Check out roots
+        uses: actions/checkout@v2
+        with:
+          ref: roots
+          path: roots
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+
+      - name: Install packages
+        run:  npm install
+
+      - name: Compile
+        working-directory: n-api
+        run: |
+          npm install
+          npm test
+          node deploy
+
+      - name: Run tests
+        run:  npm test
+
+      - name: Store Root CAs
+        working-directory: roots
+        run: |
+          rm -rf *
+          cp ../pem/* .
+          git add --all
+          git config user.email "none"
+          git config user.name "GitHub Actions"
+          git diff-index --quiet HEAD || git commit -m "`date`"
+          git push
