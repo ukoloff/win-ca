@@ -37,23 +37,23 @@ for let N to 3
     .then delay
     .then evaluate
 
-    function candidate2save(allowed)
+    function candidate2save allowed
       dst = path.join playground, tmp-file!
       if allowed
         winner ?:= dst
         dst
       else
-        fs.writeFile dst, new Date
+        fs.writeFile dst, "#{new Date}"
         .then -> dst
 
-    function run-saver(folders)
+    function run-saver folders
       resolve <-! new Promise _
       me do
         save: folders
         async: true
         onsave: resolve
 
-    function evaluate(folder)
+    function evaluate folder
       assert.equal winner, folder, "Wrong save destination"
       unless folder
         return
