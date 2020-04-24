@@ -1,0 +1,54 @@
+name: Store Roots
+
+on:
+  schedule:
+    - cron: 27 12 * * *
+
+jobs:
+  store:
+    runs-on: windows-latest
+
+    steps:
+
+      - name: Check out
+        uses: actions/checkout@v2
+
+      - name: Check out roots
+        uses: actions/checkout@v2
+        with:
+          ref: roots
+          path: roots
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+
+      - name: Install packages
+        run:  npm install
+
+      - name: Transpile LiveScript
+        run:  npm run pretest
+
+      - name: Compile C/C++
+        working-directory: n-api
+        run: |
+          npm install
+          node deploy
+
+      - name: Fetch CAs
+        run:  node .
+
+      - name: Store Root CAs
+        working-directory: roots
+        shell: bash
+        run: |
+          rm -rf *
+          cp ../pem/* .
+          rm *.pem
+          git config core.autocrlf false
+          git add --all
+          git config user.email "none"
+          git config user.name "GitHub Actions"
+          date > .commit
+          git diff-index --quiet HEAD || git commit -F .commit
+          git push
+
