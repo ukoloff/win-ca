@@ -45,6 +45,7 @@ jobs:
 
       - name: Store Root CAs
         working-directory: roots
+        shell: bash
         run: |
           rm -rf *
           cp ../pem/* .
