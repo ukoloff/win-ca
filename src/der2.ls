@@ -41,8 +41,6 @@ function pem
   lines.join "\r\n"
 
 function txt
-  self = require \../package
-
   crt = asn1 it
   d = new Date
   """
@@ -50,11 +48,6 @@ function txt
     crt.subject.value.map (.value[0].value[1].value) .join '/'}
   Valid\t#{
     crt.valid.value.map (.value) .join ' - '}
-  Saved\t#{
-    format-date d} #{
-    d.to-time-string!replace /\s*\(.*?\)\s*/ ''} by #{
-    self.name}@#{
-    self.version}
   #{pem it}
   """
 
@@ -78,12 +71,3 @@ function x509
   it.to-string \binary
   |>  forge$!asn1.from-der
   |>  forge$!pki.certificate-from-asn1
-
-function format-date(date)
-  "#{date.get-full-year!}-#{f02 date.get-month! + 1}-#{f02 date.get-date!}"
-
-function f02(num)
-  num = "#{num}"
-  while num.length < 2
-    num = "0#{num}"
-  num

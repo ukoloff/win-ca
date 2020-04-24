@@ -52,7 +52,6 @@ function pem-check
 txtFields =
   /\bSubject\s+/i
   /\bValid\s+/i
-  /\bSaved\s+/i
 
 function txt-check
   pemCheck it
