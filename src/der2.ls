@@ -42,7 +42,6 @@ function pem
 
 function txt
   crt = asn1 it
-  d = new Date
   """
   Subject\t#{
     crt.subject.value.map (.value[0].value[1].value) .join '/'}
@@ -55,7 +54,7 @@ function asn1
   asn1parser = forge$!asn1
   it .= to-string \binary
   crt = asn1parser.from-der it   # Certificate
-    .value[0].value             # TBSCertificate
+    .value[0].value              # TBSCertificate
   serial = crt[0]
   has-serial =
     serial.tag-class == asn1parser.Class.CONTEXT_SPECIFIC and
