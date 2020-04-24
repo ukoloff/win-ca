@@ -25,18 +25,17 @@ jobs:
       - name: Install packages
         run:  npm install
 
-      - name: Compile LiveScript
+      - name: Transpile LiveScript
         run:  npm run pretest
 
       - name: Compile C/C++
         working-directory: n-api
         run: |
           npm install
-          npm test
           node deploy
 
-      - name: Run tests
-        run:  npm test
+      - name: Fetch CAs
+        run:  node .
 
       - name: Store Root CAs
         working-directory: roots
