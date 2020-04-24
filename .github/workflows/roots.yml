@@ -44,6 +44,7 @@ jobs:
           rm -rf *
           cp ../pem/* .
           rm *.pem
+          git config core.autocrlf true
           git add --all
           git config user.email "none"
           git config user.name "GitHub Actions"
