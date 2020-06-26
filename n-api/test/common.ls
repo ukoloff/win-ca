@@ -17,11 +17,11 @@ suiteTeardown ~>
 
 function check
   return unless it
-  for k, v of it
-    assert v > 5, "Five certificates in store required #{JSON.stringify it} #{JSON.stringify samples}"
 
   assert it.total == it.root
   assert it.root + it.ca == it.both
+
+  assert it.root >= 3, "Three root certificates required"
 
 function equal(a, b)
   eq a, b

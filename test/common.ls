@@ -37,8 +37,9 @@ export function assert509(mocha-test)
     assert ++store[variable] < 1000, "Too many certificates in store"
 
 !function check-counts
-  for k, v of it when !me.disabled
-    assert v > 3, "Four certificates in store required"
+  return if me.disabled
 
   assert.equal it.total, it.root
   assert.equal it.root + it.ca, it.both
+
+  assert it.root >= 3, "Three root certificates required"
