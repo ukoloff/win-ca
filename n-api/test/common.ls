@@ -18,7 +18,7 @@ suiteTeardown ~>
 function check
   return unless it
   for k, v of it
-    assert v > 5, "Five certificates in store required"
+    assert v > 5, "Five certificates in store required #{JSON.stringify it} #{JSON.stringify samples}"
 
   assert it.total == it.root
   assert it.root + it.ca == it.both
