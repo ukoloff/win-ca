@@ -8,15 +8,37 @@ on:
 
 jobs:
 
-  before:
+  compile:
     runs-on: windows-latest
-    if: "${{ github.event_name }} == 'push' && !contains(github.event.head_commit.message, '[skip ci]')"
     steps:
-      - run: echo "not contains '[skip ci]'"
+    - uses: actions/checkout@v2
+
+    - name: Setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 8
+
+    - run:  npm install
+
+    - name: Transpile LiveScript
+      run:  npm run pretest
+
+    - name: Compile C/C++
+      working-directory: n-api
+      run: |
+        npm install
+        npm test
+        node deploy
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: lib
+        path: lib/*
 
   test:
-    needs: before
+    needs: compile
     runs-on: windows-latest
+    if: github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip ci]')
 
     strategy:
       matrix:
@@ -24,7 +46,7 @@ jobs:
         - 10
         - 12
         - 13
-        # - 14
+        - 14
 
     name: Test with Node v${{ matrix.node }}
 
@@ -39,25 +61,22 @@ jobs:
 
     - run:  npm install
 
-    - name: Transpile LiveScript
-      run:  npm run pretest
-
-    - name: Compile C/C++
-      working-directory: n-api
-      run: |
-        npm install
-        node deploy
+    - uses: actions/download-artifact@v2
+      with:
+        name: lib
 
     - run: npm test
+      if:  false
+
+    - run: ls -al lib
+      shell: bash
 
   store:
     runs-on: windows-latest
+    needs: compile
     if: github.event_name == 'schedule'
 
     steps:
-
-      - name: Dump event name
-        run:  echo ${{ github.event_name }}
 
       - name: Check out
         uses: actions/checkout@v2
@@ -74,14 +93,9 @@ jobs:
       - name: Install packages
         run:  npm install
 
-      - name: Transpile LiveScript
-        run:  npm run pretest
-
-      - name: Compile C/C++
-        working-directory: n-api
-        run: |
-          npm install
-          node deploy
+      - uses: actions/download-artifact@v2
+        with:
+          name: lib
 
       - name: Fetch CAs
         run:  node .
@@ -100,4 +114,3 @@ jobs:
           date > .commit
           git diff-index --quiet HEAD || git commit -F .commit
           git push
-
