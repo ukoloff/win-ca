@@ -1,10 +1,55 @@
 name: Store Roots
 
 on:
+  push:
+
   schedule:
     - cron: 27 12 * * *
 
 jobs:
+
+  before:
+    runs-on: windows-latest
+    if: "${{ github.event_name }} == 'push' && !contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - run: echo "not contains '[skip ci]'"
+
+  test:
+    needs: before
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        node:
+        - 10
+        - 12
+        - 13
+        - 14
+
+    name: Test with Node v${{ matrix.node }}
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+
+    - run:  npm install
+
+    - name: Transpile LiveScript
+      run:  npm run pretest
+
+    - name: Compile C/C++
+      working-directory: n-api
+      run: |
+        npm install
+        node deploy
+
+    - run: npm test
+
   store:
     runs-on: windows-latest
 
