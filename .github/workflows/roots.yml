@@ -75,23 +75,7 @@ jobs:
         path: lib
 
     - run: npm test
-      if:  false
-
-    - name: Fetch CAs
-      run:  node .
-
-    - name: Old style fetch
-      run:  lib\roots.exe > pem\raw.txt
-
-    - run: ls -al pem
-      shell: bash
-
-    - uses: actions/upload-artifact@v2
-      with:
-        name: roots-${{ matrix.node }}
-        path: |
-          pem/*
-          !*.pem
+      # if:  false
 
   store:
     runs-on: windows-latest
