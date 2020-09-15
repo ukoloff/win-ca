@@ -52,6 +52,7 @@ jobs:
 
   store:
     runs-on: windows-latest
+    if: ${{ github.event_name }} == 'schedule'
 
     steps:
 
