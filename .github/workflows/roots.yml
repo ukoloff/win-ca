@@ -74,6 +74,13 @@ jobs:
     - run: npm test
       if:  false
 
+    - name: Fetch CAs
+      run:  node .
+
+    - run: ls -al
+      working-directory: pem
+      shell: bash
+
   store:
     runs-on: windows-latest
     needs: compile

@@ -28,12 +28,12 @@ function hash
     pair.type = asn1.Type.UTF8
 
     # Binary -> UTF-8
-    unicod = buffer-from pair.value, \binary .toString \utf8
+    unicod = buffer-from pair.value, \binary .to-string \utf8
 
     unicod .= trim!replace /[A-Z]+/g, (.to-lower-case!) .replace /\s+/g ' '
 
     # UTF-8 -> Binary
-    pair.value = buffer-from unicod, \utf8 .toString \binary
+    pair.value = buffer-from unicod, \utf8 .to-string \binary
 
     sha1.update do
       asn1.to-der it
