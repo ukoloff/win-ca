@@ -64,6 +64,7 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: lib
+        path: lib
 
     - run: npm test
       if:  false
@@ -96,6 +97,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: lib
+          path: lib
 
       - name: Fetch CAs
         run:  node .
