@@ -44,7 +44,10 @@ function txt
   crt = asn1 it
   """
   Subject\t#{
-    crt.subject.value.map (.value[0].value[1].value) .join '/'}
+    crt.subject.value.map ->
+        buffer-from it.value[0].value[1].value, \binary
+        .toString \utf8
+      .join '/'}
   Valid\t#{
     crt.valid.value.map (.value) .join ' - '}
   #{pem it}
