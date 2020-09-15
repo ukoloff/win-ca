@@ -6,6 +6,9 @@ toASN1 = der2 der2.asn1
 
 module.exports = dispatch
 
+buffer-from = Buffer.from || (data, encoding)->
+  new Buffer data, encoding
+
 # Convert Subject to canonic form (as OpenSSL 1+ does)
 #
 # See x509_name_canon in OpenSSL sources:
@@ -20,10 +23,18 @@ function hash
     it = asn1.copy it
 
     pair = it.value[0].value[1]
-    pair.type = asn1.Type.UTF8
     unless pair.value
       return
-    pair.value .= trim!to-lower-case!.replace /\s+/g ' '
+    pair.type = asn1.Type.UTF8
+
+    # Binary -> UTF-8
+    unicod = buffer-from pair.value, \binary .toString \utf8
+
+    unicod .= trim!replace /[A-Z]+/g, (.to-lower-case!) .replace /\s+/g ' '
+
+    # UTF-8 -> Binary
+    pair.value = buffer-from unicod, \utf8 .toString \binary
+
     sha1.update do
       asn1.to-der it
         .get-bytes!
