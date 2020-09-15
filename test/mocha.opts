@@ -1,5 +1,0 @@
-test/*.ls
---reporter dot
---require choma
---require appveyor-mocha
---require livescript
