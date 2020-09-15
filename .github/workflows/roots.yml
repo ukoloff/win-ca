@@ -28,7 +28,10 @@ jobs:
       run: |
         npm install
         npm test
-        node deploy
+        node deploy exe
+
+    - run: ls -al lib
+      shell: bash
 
     - uses: actions/upload-artifact@v2
       with:
@@ -43,6 +46,7 @@ jobs:
     strategy:
       matrix:
         node:
+        - 4
         - 10
         - 12
         - 13
@@ -69,7 +73,10 @@ jobs:
     - run: npm test
       if:  false
 
-    - run: ls -al lib
+    - name: Fetch CAs
+      run:  node .
+
+    - run: ls -al pem
       shell: bash
 
   store:
