@@ -13,7 +13,7 @@ var save = path.join(__dirname, '../lib', `${parts.name}-${process.arch}${parts.
 console.log('Creating:', save)
 fs.createReadStream(from).pipe(fs.createWriteStream(save))
 
-if (process.arch != "ia32" || 'exe' in process.argv) return
+if (process.arch != "ia32" && 'exe' != process.argv[2]) return
 
 save = path.join(path.dirname(save), exe)
 from = path.join(path.dirname(from), exe)
