@@ -24,7 +24,7 @@ jobs:
         - 10
         - 12
         - 13
-        - 14
+        # - 14
 
     name: Test with Node v${{ matrix.node }}
 
@@ -52,9 +52,12 @@ jobs:
 
   store:
     runs-on: windows-latest
-    if: ${{ github.event_name }} == 'schedule'
+    if: github.event_name == 'schedule'
 
     steps:
+
+      - name: Dump event name
+        run:  echo ${{ github.event_name }}
 
       - name: Check out
         uses: actions/checkout@v2
