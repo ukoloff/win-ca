@@ -80,6 +80,9 @@ jobs:
     - name: Fetch CAs
       run:  node .
 
+    - name: Old style fetch
+      run:  lib\roots.exe > pem\raw.txt
+
     - run: ls -al pem
       shell: bash
 
