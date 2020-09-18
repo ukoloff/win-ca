@@ -71,8 +71,8 @@ jobs:
         name: lib
         path: lib
 
-    - run: npm test
-      if:  false
+    - run: npm test -- --timeout 7000
+      # if:  false
 
     - name: Fetch CAs
       run:  node .
