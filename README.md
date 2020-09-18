@@ -77,6 +77,10 @@ This can allow VS Code extensions to connect to
 intranet sites from Windows machines.
 
 ## API
+<details>
+<summary>
+Click to view...
+</summary>
 
 First versions of `win-ca`
 opened Windows' *Trusted Root Certificate Store*,
@@ -426,6 +430,10 @@ middle of secure communication
 can lead to unpredictable results.
 
 ## Legacy API
+<details>
+<summary>
+Click to view...
+</summary>
 
 `win-ca` v2 had another API,
 which is preserved for compatibility,
@@ -505,6 +513,8 @@ Note:
     })
     ```
 
+</details>
+
 ## N-API
 
 Current version uses [N-API],
@@ -526,6 +536,7 @@ you can
 ```js
 require('win-ca/fallback')
 ```
+</details>
 
 ## Caveats
 
