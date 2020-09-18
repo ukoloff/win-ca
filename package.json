@@ -1,6 +1,6 @@
 {
   "name": "win-ca",
-  "version": "3.3.0-beta.1",
+  "version": "3.3.0",
   "description": "Get Windows System Root certificates",
   "keywords": [
     "n-api",
