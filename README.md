@@ -571,7 +571,7 @@ require('win-ca').inject('+')
 If you use `win-ca` in some Electron app or VS Code extension,
 be warned that
 `node_modules/win-ca/pem` folder
-is likely to be packed into your bundle
+is *highly likely* to be packed into your bundle
 with all root certificates on development machine.
 
 You had better remove said folder
