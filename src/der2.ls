@@ -33,7 +33,7 @@ function der
     buffer-from it, \binary
 
 function pem
-  it = der it .toString \base64
+  it = der it .to-string \base64
   lines = ['-----BEGIN CERTIFICATE-----']
   for i til it.length by 64
     lines.push it.substr i , 64
@@ -44,7 +44,10 @@ function txt
   crt = asn1 it
   """
   Subject\t#{
-    crt.subject.value.map (.value[0].value[1].value) .join '/'}
+    crt.subject.value.map ->
+        buffer-from it.value[0].value[1].value, \binary
+        .to-string \utf8
+      .join '/'}
   Valid\t#{
     crt.valid.value.map (.value) .join ' - '}
   #{pem it}

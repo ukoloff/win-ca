@@ -77,6 +77,10 @@ This can allow VS Code extensions to connect to
 intranet sites from Windows machines.
 
 ## API
+<details>
+<summary>
+Click to view...
+</summary>
 
 First versions of `win-ca`
 opened Windows' *Trusted Root Certificate Store*,
@@ -426,6 +430,10 @@ middle of secure communication
 can lead to unpredictable results.
 
 ## Legacy API
+<details>
+<summary>
+Click to view...
+</summary>
 
 `win-ca` v2 had another API,
 which is preserved for compatibility,
@@ -505,6 +513,8 @@ Note:
     })
     ```
 
+</details>
+
 ## N-API
 
 Current version uses [N-API],
@@ -526,6 +536,7 @@ you can
 ```js
 require('win-ca/fallback')
 ```
+</details>
 
 ## Caveats
 
@@ -560,7 +571,7 @@ require('win-ca').inject('+')
 If you use `win-ca` in some Electron app or VS Code extension,
 be warned that
 `node_modules/win-ca/pem` folder
-is likely to be packed into your bundle
+is *highly likely* to be packed into your bundle
 with all root certificates on development machine.
 
 You had better remove said folder

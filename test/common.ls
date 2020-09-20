@@ -30,7 +30,7 @@ export function assert509(mocha-test)
   !->
     assert Buffer.is-buffer it
     tree = it
-      .toString 'binary'
+      .to-string 'binary'
       |> nodeForge.asn1.fromDer
     assert tree.value.length, "Invalid certificate"
 

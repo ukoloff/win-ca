@@ -1,6 +1,6 @@
 {
   "name": "win-ca",
-  "version": "3.2.2",
+  "version": "3.3.0",
   "description": "Get Windows System Root certificates",
   "keywords": [
     "n-api",
@@ -32,6 +32,18 @@
     "postinstall": "node -e \"try{require('.')}catch(e){}\"",
     "test": "mocha"
   },
+  "mocha": {
+    "extension": [
+      "ls",
+      "js"
+    ],
+    "reporter": "dot",
+    "require": [
+      "livescript",
+      "choma",
+      "appveyor-mocha"
+    ]
+  },
   "files": [
     "lib",
     "api",
@@ -49,7 +61,7 @@
     "choma": "^1.2.1",
     "fs-extra": "^5.0.0",
     "livescript": "^1.6.0",
-    "mocha": "^5.2.0",
-    "node-addon-api": "^1.6.3"
+    "mocha": "^6.2.3",
+    "node-addon-api": "^3.0.0"
   }
 }
