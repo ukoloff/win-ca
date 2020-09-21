@@ -3,6 +3,7 @@ os: windows
 
 language: node_js
 node_js:
+  - 14
   - 13
   - 12
   - 11
@@ -11,8 +12,6 @@ node_js:
   - 8
   - 7
   - 6
-  - 5
-  - 4
 
 # matrix:
 #   allow_failures:

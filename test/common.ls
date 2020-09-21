@@ -30,15 +30,16 @@ export function assert509(mocha-test)
   !->
     assert Buffer.is-buffer it
     tree = it
-      .toString 'binary'
+      .to-string 'binary'
       |> nodeForge.asn1.fromDer
     assert tree.value.length, "Invalid certificate"
 
     assert ++store[variable] < 1000, "Too many certificates in store"
 
 !function check-counts
-  for k, v of it when !me.disabled
-    assert v > 3, "Four certificates in store required"
+  return if me.disabled
 
   assert.equal it.total, it.root
   assert.equal it.root + it.ca, it.both
+
+  assert it.root >= 3, "Three root certificates required"

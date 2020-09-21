@@ -29,7 +29,7 @@ context "DER converters" !->
     for k of me.der2
       assert.equal do
         k
-        fn k .toString \binary
+        fn k .to-string \binary
     for _, v of samples
       assert-eq do
         v
@@ -52,7 +52,6 @@ function pem-check
 txtFields =
   /\bSubject\s+/i
   /\bValid\s+/i
-  /\bSaved\s+/i
 
 function txt-check
   pemCheck it

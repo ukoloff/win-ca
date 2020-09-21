@@ -7,10 +7,11 @@ shallow_clone: true
 
 matrix:
   allow_failures:
-    - NOV: 12
+    - NOV: 14
 
 environment:
   matrix:
+    - NOV: 14
     - NOV: 13
     - NOV: 12
     - NOV: 11
@@ -19,8 +20,6 @@ environment:
     - NOV: 8
     - NOV: 7
     - NOV: 6
-    - NOV: 5
-    - NOV: 4
 
   NOV_LTS: 8
 

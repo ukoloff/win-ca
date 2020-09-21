@@ -1,0 +1,130 @@
+name: Store Roots
+
+on:
+  push:
+
+  schedule:
+    - cron: 27 12 * * *
+
+jobs:
+
+  compile:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 8
+
+    - run:  npm install
+
+    - name: Transpile LiveScript
+      run:  npm run pretest
+
+    - name: Compile C/C++
+      working-directory: n-api
+      run: |
+        npm install
+        npm test
+        node deploy exe
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: lib
+        path: lib/*
+
+  test:
+    needs: compile
+    runs-on: windows-latest
+    if: github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip ci]')
+
+    strategy:
+      matrix:
+        node:
+        - 6
+        - 7
+        - 8
+        - 9
+        - 10
+        - 11
+        - 12
+        - 13
+        - 14
+
+    name: Test with Node v${{ matrix.node }}
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+
+    - run:  npm install
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: lib
+        path: lib
+
+    - run: npm test -- --timeout 7000
+      if:  false
+
+    - name: Fetch CAs
+      run:  node .
+
+    - run: ls -al
+      working-directory: pem
+      shell: bash
+
+  store:
+    runs-on: windows-latest
+    needs: compile
+    if: github.event_name == 'schedule'
+
+    steps:
+
+      - name: Show event name
+        run:  echo ${{ github.event_name }}
+
+      - name: Check out
+        uses: actions/checkout@v2
+
+      - name: Check out roots
+        uses: actions/checkout@v2
+        with:
+          ref: roots
+          path: roots
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+
+      - name: Install packages
+        run:  npm install
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: lib
+          path: lib
+
+      - name: Fetch CAs
+        run:  node .
+
+      - name: Store Root CAs
+        working-directory: roots
+        shell: bash
+        run: |
+          rm -rf *
+          cp ../pem/* .
+          rm *.pem
+          git config core.autocrlf false
+          git add --all
+          git config user.email "none"
+          git config user.name "GitHub Actions"
+          date > .commit
+          git diff-index --quiet HEAD || git commit -F .commit
+          git push

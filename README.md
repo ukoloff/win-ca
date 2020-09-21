@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/ukoloff/win-ca.svg)](https://travis-ci.org/ukoloff/win-ca)
 [![Build status](https://ci.appveyor.com/api/projects/status/e6xhpp9d7aml95j2?svg=true)](https://ci.appveyor.com/project/ukoloff/win-ca)
 [![NPM version](https://badge.fury.io/js/win-ca.svg)](http://badge.fury.io/js/win-ca)
+[![Store Roots](https://github.com/ukoloff/win-ca/workflows/Store%20Roots/badge.svg)](https://github.com/ukoloff/win-ca/actions)
 
 Get Windows System Root certificates for [Node.js][].
 
@@ -76,6 +77,10 @@ This can allow VS Code extensions to connect to
 intranet sites from Windows machines.
 
 ## API
+<details>
+<summary>
+Click to view...
+</summary>
 
 First versions of `win-ca`
 opened Windows' *Trusted Root Certificate Store*,
@@ -425,6 +430,10 @@ middle of secure communication
 can lead to unpredictable results.
 
 ## Legacy API
+<details>
+<summary>
+Click to view...
+</summary>
 
 `win-ca` v2 had another API,
 which is preserved for compatibility,
@@ -504,6 +513,8 @@ Note:
     })
     ```
 
+</details>
+
 ## N-API
 
 Current version uses [N-API],
@@ -525,6 +536,7 @@ you can
 ```js
 require('win-ca/fallback')
 ```
+</details>
 
 ## Caveats
 
@@ -559,7 +571,7 @@ require('win-ca').inject('+')
 If you use `win-ca` in some Electron app or VS Code extension,
 be warned that
 `node_modules/win-ca/pem` folder
-is likely to be packed into your bundle
+is *highly likely* to be packed into your bundle
 with all root certificates on development machine.
 
 You had better remove said folder

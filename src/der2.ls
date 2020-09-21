@@ -33,7 +33,7 @@ function der
     buffer-from it, \binary
 
 function pem
-  it = der it .toString \base64
+  it = der it .to-string \base64
   lines = ['-----BEGIN CERTIFICATE-----']
   for i til it.length by 64
     lines.push it.substr i , 64
@@ -41,20 +41,15 @@ function pem
   lines.join "\r\n"
 
 function txt
-  self = require \../package
-
   crt = asn1 it
-  d = new Date
   """
   Subject\t#{
-    crt.subject.value.map (.value[0].value[1].value) .join '/'}
+    crt.subject.value.map ->
+        buffer-from it.value[0].value[1].value, \binary
+        .to-string \utf8
+      .join '/'}
   Valid\t#{
     crt.valid.value.map (.value) .join ' - '}
-  Saved\t#{
-    format-date d} #{
-    d.to-time-string!replace /\s*\(.*?\)\s*/ ''} by #{
-    self.name}@#{
-    self.version}
   #{pem it}
   """
 
@@ -62,7 +57,7 @@ function asn1
   asn1parser = forge$!asn1
   it .= to-string \binary
   crt = asn1parser.from-der it   # Certificate
-    .value[0].value             # TBSCertificate
+    .value[0].value              # TBSCertificate
   serial = crt[0]
   has-serial =
     serial.tag-class == asn1parser.Class.CONTEXT_SPECIFIC and
@@ -78,12 +73,3 @@ function x509
   it.to-string \binary
   |>  forge$!asn1.from-der
   |>  forge$!pki.certificate-from-asn1
-
-function format-date(date)
-  "#{date.get-full-year!}-#{f02 date.get-month! + 1}-#{f02 date.get-date!}"
-
-function f02(num)
-  num = "#{num}"
-  while num.length < 2
-    num = "0#{num}"
-  num

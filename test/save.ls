@@ -37,23 +37,23 @@ for let N to 3
     .then delay
     .then evaluate
 
-    function candidate2save(allowed)
+    function candidate2save allowed
       dst = path.join playground, tmp-file!
       if allowed
         winner ?:= dst
         dst
       else
-        fs.writeFile dst, new Date
+        fs.writeFile dst, "#{new Date}"
         .then -> dst
 
-    function run-saver(folders)
+    function run-saver folders
       resolve <-! new Promise _
       me do
         save: folders
         async: true
         onsave: resolve
 
-    function evaluate(folder)
+    function evaluate folder
       assert.equal winner, folder, "Wrong save destination"
       unless folder
         return
@@ -97,13 +97,13 @@ specify "cleans stale" ->
   .then delay
   .then evaluate
 
-  function evaluate(folder)
+  function evaluate folder
     assert.equal winner, folder
     fs.readdir folder
     .then !->
       assert.equal count, it.length
 
-function write-stales(folder)
+function write-stales folder
   Promise.all do
     for to 27 * Math.random!
       fs.writeFile do
@@ -111,7 +111,7 @@ function write-stales(folder)
         '# ' + tmp-file!
   .then -> folder
 
-function run-saver(folder)
+function run-saver folder
   resolve <-! new Promise _
   me do
     save: folder
@@ -119,7 +119,7 @@ function run-saver(folder)
 
 function tmp-file
   "#{
-  crypto.createHash \md5
+  crypto.create-hash \md5
     .update "#{Math.random!}"
     .digest \base64
     .replace /\W+/g ''
@@ -128,6 +128,6 @@ function tmp-file
 function promise-all
   Promise.all it
 
-function delay(value)
+function delay value
   resolve <-! new Promise _
   setTimeout resolve, 42 + 12 * Math.random!, value
