@@ -5,7 +5,7 @@
 [![NPM version](https://badge.fury.io/js/win-ca.svg)](http://badge.fury.io/js/win-ca)
 [![Store Roots](https://github.com/ukoloff/win-ca/workflows/Store%20Roots/badge.svg)](https://github.com/ukoloff/win-ca/actions)
 
-Get Windows System Root certificates for [Node.js][].
+Get Windows System Root certificates for [Node.js].
 
 ## Rationale
 
