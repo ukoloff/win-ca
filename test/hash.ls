@@ -32,7 +32,7 @@ before ->
   runner := it
 
 beforeEach ->
-  @skip unless runner
+  @skip! unless runner
 
 <- specify "with OpenSSL"
 resolve, reject <-! new Promise _
