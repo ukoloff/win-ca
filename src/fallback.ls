@@ -68,14 +68,14 @@ export !function async(args)
     for resolver in requests
       resolver!
 
-  !function run(callback)
-    child_process.exec-file bin, args
+  !function run callback
+    child_process.exec-file bin, args, ->
     .stdout
     .pipe splitter callback
     .on \end !->
       callback!
 
-function splitter(callback)
+function splitter callback
   line <-! split
   callback buffer-from line, \hex if line.length
 
