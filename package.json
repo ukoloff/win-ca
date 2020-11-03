@@ -13,7 +13,7 @@
     "electron"
   ],
   "homepage": "https://github.com/ukoloff/win-ca",
-  "license": "ISC",
+  "license": "MIT",
   "author": {
     "name": "Stas Ukolov",
     "email": "ukoloff@gmail.com"
