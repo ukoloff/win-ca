@@ -12,7 +12,7 @@
     "name": "Stas Ukolov",
     "email": "ukoloff@gmail.com"
   },
-  "license": "ISC",
+  "license": "MIT",
   "keywords": [
     "vscode",
     "ssl",
