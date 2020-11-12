@@ -8,6 +8,7 @@ api <<<
   der2: der2 = require \./der2
   hash: hash
   inject: inject
+  exe: exe
 
 api <<<< require \./v2
 
@@ -19,6 +20,9 @@ function hash
 
 function inject
   (api.inject = require \./inject .inject) ...
+
+function exe
+  (api.exe = require \./fallback .exe) ...
 
 # API v3
 !function api(params = {})

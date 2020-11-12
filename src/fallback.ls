@@ -4,6 +4,9 @@ require! <[ path child_process split ]>
 
 bin = path.join __dirname, \roots.exe
 
+export function exe path
+  bin
+
 export !function sync(args)
   return {run, next, done}
 
