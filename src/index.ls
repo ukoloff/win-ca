@@ -6,9 +6,8 @@ api <<<
     and api == require \../fallback
     and not api.electron = do require \is-electron
   der2: der2 = require \./der2
-  hash: hash
-  inject: inject
-  exe: exe
+
+api <<< {hash, inject, exe}
 
 api <<<< require \./v2
 
