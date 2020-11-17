@@ -429,6 +429,36 @@ Changing injection mode in the
 middle of secure communication
 can lead to unpredictable results.
 
+### exe
+
+Applications that use `win-ca`
+are sometimes packed / bundled.
+In this case one should find appropriate
+place for binary utility `roots.exe`
+(used in fallback mode,
+which is always the case with Electron apps)
+and then make `win-ca` to find the binary.
+
+Function `.exe()` is intended to provide this
+functionality.
+You must call it **before** first invocation of library itself,
+eg:
+```js
+var ca = require('win-ca/api')
+
+ca.exe('/full/path/to/roots.exe')
+ca({fallback: true, inject: true})
+```
+
+`.exe()` with no parameters switches to
+default location
+(inside `lib` folder).
+In any case it returns previous
+path to `roots.exe`:
+```
+console.log(require('win-ca').exe()) // Where is my root.exe?
+```
+
 ## Legacy API
 <details>
 <summary>

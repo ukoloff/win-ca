@@ -2,7 +2,14 @@
 
 require! <[ path child_process split ]>
 
-bin = path.join __dirname, \roots.exe
+var bin
+
+do function exe new-bin=\roots.exe
+  old = bin
+  bin := path.resolve __dirname, new-bin
+  old
+
+export exe
 
 export !function sync(args)
   return {run, next, done}
