@@ -1,5 +1,9 @@
 # win-ca ChangeLog
 
+## 3.4.5 - 2020-11-17
+
+- Allow relocating roots.exe utility to different folder for complex packing scenarios
+
 ## 3.3.3 - 2020-11-03
 
 - License changed to MIT
