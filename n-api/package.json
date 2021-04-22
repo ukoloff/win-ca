@@ -17,10 +17,17 @@
     "deploy": "node deploy"
   },
   "mocha": {
-    "extension": ["ls", "js"],
+    "extension": [
+      "ls",
+      "js"
+    ],
     "ui": "tdd",
     "reporter": "dot",
-    "require": ["livescript", "choma", "appveyor-mocha"]
+    "require": [
+      "livescript",
+      "choma",
+      "appveyor-mocha"
+    ]
   },
   "keywords": [],
   "author": "",
