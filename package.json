@@ -62,6 +62,6 @@
     "fs-extra": "^5.0.0",
     "livescript": "^1.6.0",
     "mocha": "^6.2.3",
-    "node-addon-api": "^3.0.0"
+    "node-addon-api": "^3.1.0"
   }
 }
