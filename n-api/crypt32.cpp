@@ -7,11 +7,11 @@
 class Crypt32 : public Napi::ObjectWrap<Crypt32> {
  public:
   Crypt32(const Napi::CallbackInfo& info);
+  ~Crypt32();
 
  private:
   HCERTSTORE hStore;
   PCCERT_CONTEXT pCtx = nullptr;
-  static Napi::FunctionReference constructor;
 
   static HCERTSTORE openStore(const Napi::CallbackInfo&);
 
@@ -28,10 +28,12 @@ class Crypt32 : public Napi::ObjectWrap<Crypt32> {
 
 // Implementation
 
-Napi::FunctionReference Crypt32::constructor;
-
 Crypt32::Crypt32(const Napi::CallbackInfo& info)
     : Napi::ObjectWrap<Crypt32>(info), hStore(openStore(info)) {}
+
+Crypt32::~Crypt32() {
+  if (hStore) CertCloseStore(hStore, 0);
+}
 
 HCERTSTORE Crypt32::openStore(const Napi::CallbackInfo& info) {
   return CertOpenSystemStoreA(
@@ -64,22 +66,26 @@ Napi::Object crypt32exports(const Napi::CallbackInfo& info) {
   for (size_t i = 0; i < args.size(); ++i) {
     args[i] = info[i];
   }
-  Napi::Object obj = Crypt32::constructor.New(args);
+  Napi::FunctionReference* constructor = static_cast<Napi::FunctionReference*>(info.Data());
+  Napi::Object obj = constructor->New(args);
   return scope.Escape(napi_value(obj)).ToObject();
 }
 
 Napi::Object crypt32init(Napi::Env env, Napi::Object) {
   Napi::HandleScope scope(env);
 
-  Crypt32::constructor = Napi::Persistent(Crypt32::DefineClass(
+  Napi::FunctionReference* constructor = new Napi::FunctionReference(Napi::Persistent(Crypt32::DefineClass(
       env, "Crypt32",
       {
           Crypt32::InstanceMethod("done", &Crypt32::done),
           Crypt32::InstanceMethod("next", &Crypt32::next),
           //  Crypt32::InstanceMethod("none", &Crypt32::none),
-      }));
-  Crypt32::constructor.SuppressDestruct();
-  return Napi::Function::New(env, crypt32exports, "Crypt32");
+      })));
+  Napi::Function exports = Napi::Function::New(env, crypt32exports, "Crypt32", constructor);
+  exports.AddFinalizer([](Napi::Env /*env*/, Napi::FunctionReference* constructor) {
+    delete constructor;
+  }, constructor);
+  return exports;
 }
 
 NODE_API_MODULE(crypt32, crypt32init)
