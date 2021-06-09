@@ -11,7 +11,7 @@ Get Windows System Root certificates for [Node.js].
 
 Unlike [Ruby][], [Node.js][] on Windows **allows**
 HTTPS requests out-of-box.
-But it is implemented in a rather bizzare way:
+But it is implemented in a rather bizarre way:
 
 > Node uses a
 > [statically compiled, manually updated, hardcoded list][node.pem]
