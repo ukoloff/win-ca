@@ -1,5 +1,9 @@
 # win-ca ChangeLog
 
+## 3.5.0 - 2022-02-27
+
+- Bump node-forge's version to 1.2.1
+
 ## 3.4.5 - 2020-11-17
 
 - Allow relocating roots.exe utility to different folder for complex packing scenarios
