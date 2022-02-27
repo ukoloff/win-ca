@@ -2,7 +2,7 @@ require! <[ crypto https url split node-forge appveyor-mocha ./me ]>
 
 pki = node-forge.pki
 
-https.globalAgent.maxCachedSessions = 0
+https.global-agent.max-cached-sessions = 0
 
 <-! context \HTTPS
 @timeout 10000
@@ -189,8 +189,8 @@ function newX509(signer)
       cA: !signer
     * name: \subjectAltName
       alt-names:
-        type: 6 # URI
-        value: \https://localhost
+        type: 2 # DNS Name
+        value: \localhost
         ...
 
   crt.public-key = rsa.public-key
@@ -203,7 +203,7 @@ function newX509(signer)
   signer ?= result
 
   crt.set-issuer signer.crt.subject.attributes
-  crt.sign signer.key
+  crt.sign signer.key, node-forge.md.sha256.create!
 
   result.crt-pem = pki.certificate-to-pem crt
 
