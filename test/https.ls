@@ -203,7 +203,7 @@ function newX509(signer)
   signer ?= result
 
   crt.set-issuer signer.crt.subject.attributes
-  crt.sign signer.key
+  crt.sign signer.key, node-forge.md.sha256.create!
 
   result.crt-pem = pki.certificate-to-pem crt
 
