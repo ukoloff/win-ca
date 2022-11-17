@@ -35,7 +35,7 @@ and make them available to
 - No internet access is required at all
 - Windows store is updated automatically (in most modern environments)
 - Manually installed Root certificates are used
-- Enterpise trusted certificates (GPO etc.) are made available too
+- Enterprise trusted certificates (GPO etc.) are made available too
 
 ## Usage
 
