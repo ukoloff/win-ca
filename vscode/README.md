@@ -4,7 +4,7 @@ Make Trusted Root Certificates in Windows available to VS Code extensions.
 
 ## Abstract
 
-This is tiny VS Code extension.
+This is a tiny VS Code extension.
 It's only purpose is to run the [win-ca] package,
 so all Trusted Root Certificates become
 available to other VS Code extensions.
