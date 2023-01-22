@@ -5,16 +5,16 @@ Make Trusted Root Certificates in Windows available to VS Code extensions.
 ## Abstract
 
 This is a tiny VS Code extension.
-It's only purpose is to run the [win-ca] package,
-so all Trusted Root Certificates become
+Its only purpose is to run the [win-ca] package,
+which allows all Trusted Root Certificates become
 available to other VS Code extensions.
 
 This extensions is useful if you are:
 
-1. Running VS Code on Microsoft Windows, and
+1. Running VS Code on Microsoft Windows, <ins>*and*</ins>
 
 2. Trusting some non-standard (not [Mozilla]) root certificates
-(in most cases, your Enterprise Trust), and
+(in most cases, your Enterprise Trust), <ins>*and*</ins>
 
 3. Using another extension that connects to a server
 relying on a root-CA signed cert from #2.
