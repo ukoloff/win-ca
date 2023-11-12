@@ -4,6 +4,9 @@ require! <[ path child_process split ]>
 
 var bin
 
+execFileProperties =
+  maxBuffer: 1024 * 1024 * 1024
+
 do function exe new-bin=\roots.exe
   old = bin
   bin := path.resolve __dirname, new-bin
@@ -34,7 +37,7 @@ export !function sync(args)
     .on \end !->
       callback!
     .end do
-      child_process.exec-file-sync bin, args
+      child_process.exec-file-sync bin, args, execFileProperties
 
 export !function async(args)
   return {run, next, done}
@@ -76,7 +79,7 @@ export !function async(args)
       resolver!
 
   !function run callback
-    child_process.exec-file bin, args, ->
+    child_process.exec-file bin, args, execFileProperties, ->
     .stdout
     .pipe splitter callback
     .on \end !->
