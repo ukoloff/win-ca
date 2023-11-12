@@ -1,6 +1,5 @@
 # win-ca
 
-[![Build Status](https://travis-ci.org/ukoloff/win-ca.svg)](https://travis-ci.org/ukoloff/win-ca)
 [![Build status](https://ci.appveyor.com/api/projects/status/e6xhpp9d7aml95j2?svg=true)](https://ci.appveyor.com/project/ukoloff/win-ca)
 [![NPM version](https://badge.fury.io/js/win-ca.svg)](http://badge.fury.io/js/win-ca)
 [![Store Roots](https://github.com/ukoloff/win-ca/workflows/Store%20Roots/badge.svg)](https://github.com/ukoloff/win-ca/actions)

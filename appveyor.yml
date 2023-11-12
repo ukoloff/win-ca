@@ -11,6 +11,10 @@ matrix:
 
 environment:
   matrix:
+    - NOV: 21
+    - NOV: 20
+    - NOV: 19
+    - NOV: 18
     - NOV: 17
     - NOV: 16
     - NOV: 15
