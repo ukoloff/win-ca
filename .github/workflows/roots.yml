@@ -11,10 +11,10 @@ jobs:
   compile:
     runs-on: windows-2019
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Setup node
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
         node-version: 8
 
@@ -30,7 +30,7 @@ jobs:
         npm test
         node deploy exe
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: lib
         path: lib/*
@@ -55,21 +55,26 @@ jobs:
         - 15
         - 16
         - 17
+        - 18
+        - 19
+        - 20
+        - 21
+        - 22
 
     name: Test with Node v${{ matrix.node }}
 
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Setup node
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node }}
 
     - run:  npm install
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v4
       with:
         name: lib
         path: lib
@@ -95,21 +100,21 @@ jobs:
         run:  echo ${{ github.event_name }}
 
       - name: Check out
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Check out roots
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: roots
           path: roots
 
       - name: Use Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
 
       - name: Install packages
         run:  npm install
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           name: lib
           path: lib
