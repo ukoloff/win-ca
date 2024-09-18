@@ -87,7 +87,7 @@ jobs:
   store:
     runs-on: windows-latest
     needs: compile
-    if: github.event_name == 'schedule'
+    # if: github.event_name == 'schedule'
 
     steps:
 
