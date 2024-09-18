@@ -63,7 +63,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Setup node
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node }}
 
@@ -104,7 +104,7 @@ jobs:
           path: roots
 
       - name: Use Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
 
       - name: Install packages
         run:  npm install
