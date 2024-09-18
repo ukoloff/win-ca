@@ -55,6 +55,11 @@ jobs:
         - 15
         - 16
         - 17
+        - 18
+        - 19
+        - 20
+        - 21
+        - 22
 
     name: Test with Node v${{ matrix.node }}
 
@@ -87,7 +92,7 @@ jobs:
   store:
     runs-on: windows-latest
     needs: compile
-    # if: github.event_name == 'schedule'
+    if: github.event_name == 'schedule'
 
     steps:
 
