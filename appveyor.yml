@@ -25,7 +25,7 @@ environment:
     - NOV: 11
     - NOV: 10
 
-  NOV_LTS: 8
+  NOV_LTS: 16
 
 platform:
   - x64
