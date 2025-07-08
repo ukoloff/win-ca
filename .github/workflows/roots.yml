@@ -9,7 +9,7 @@ on:
 jobs:
 
   compile:
-    runs-on: windows-2019
+    runs-on: windows-2025
     steps:
     - uses: actions/checkout@v4
 
