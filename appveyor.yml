@@ -11,6 +11,7 @@ matrix:
 
 environment:
   matrix:
+    - NOV: 22
     - NOV: 21
     - NOV: 20
     - NOV: 19
@@ -23,10 +24,6 @@ environment:
     - NOV: 12
     - NOV: 11
     - NOV: 10
-    - NOV: 9
-    - NOV: 8
-    - NOV: 7
-    - NOV: 6
 
   NOV_LTS: 8
 
